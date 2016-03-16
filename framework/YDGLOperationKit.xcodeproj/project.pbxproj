@@ -1,0 +1,377 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		42BBE21F1C9962A60035BC01 /* YDGLOperationKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; };
+		42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */; };
+		42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22C1C99630E0035BC01 /* YDDrawModel.m */; };
+		42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */; };
+		42BBE2361C99630E0035BC01 /* YDGLOperationTwoInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2301C99630E0035BC01 /* YDGLOperationTwoInputNode.m */; };
+		42BBE2371C99630E0035BC01 /* YDGLOperationThreeInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2321C99630E0035BC01 /* YDGLOperationThreeInputNode.m */; };
+		42BBE23D1C9963A90035BC01 /* esTransform.c in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2391C9963A90035BC01 /* esTransform.c */; };
+		42BBE23E1C9963A90035BC01 /* ShaderLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE23B1C9963A90035BC01 /* ShaderLoader.c */; };
+		42BBE2401C99657F0035BC01 /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22B1C99630E0035BC01 /* YDDrawModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2441C9965880035BC01 /* YDGLOperationTwoInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22F1C99630E0035BC01 /* YDGLOperationTwoInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2451C99658A0035BC01 /* YDGLOperationThreeInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE2311C99630E0035BC01 /* YDGLOperationThreeInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2461C99658D0035BC01 /* esTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE23A1C9963A90035BC01 /* esTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2471C9965900035BC01 /* ShaderLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE23C1C9963A90035BC01 /* ShaderLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42BBE2E91C996F220035BC01 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BBE2E81C996F220035BC01 /* Foundation.framework */; };
+		42BBE2EB1C996F280035BC01 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BBE2EA1C996F280035BC01 /* UIKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		42BBE2191C9962A60035BC01 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				42BBE21F1C9962A60035BC01 /* YDGLOperationKit.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libYDGLOperationKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDGLOperationKit.h; sourceTree = "<group>"; };
+		42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationSourceNode.m; sourceTree = "<group>"; };
+		42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationSourceNode.h; sourceTree = "<group>"; };
+		42BBE22B1C99630E0035BC01 /* YDDrawModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDDrawModel.h; sourceTree = "<group>"; };
+		42BBE22C1C99630E0035BC01 /* YDDrawModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDDrawModel.m; sourceTree = "<group>"; };
+		42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationNode.h; sourceTree = "<group>"; };
+		42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationNode.m; sourceTree = "<group>"; };
+		42BBE22F1C99630E0035BC01 /* YDGLOperationTwoInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationTwoInputNode.h; sourceTree = "<group>"; };
+		42BBE2301C99630E0035BC01 /* YDGLOperationTwoInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationTwoInputNode.m; sourceTree = "<group>"; };
+		42BBE2311C99630E0035BC01 /* YDGLOperationThreeInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationThreeInputNode.h; sourceTree = "<group>"; };
+		42BBE2321C99630E0035BC01 /* YDGLOperationThreeInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationThreeInputNode.m; sourceTree = "<group>"; };
+		42BBE2391C9963A90035BC01 /* esTransform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esTransform.c; sourceTree = "<group>"; };
+		42BBE23A1C9963A90035BC01 /* esTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = esTransform.h; sourceTree = "<group>"; };
+		42BBE23B1C9963A90035BC01 /* ShaderLoader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ShaderLoader.c; sourceTree = "<group>"; };
+		42BBE23C1C9963A90035BC01 /* ShaderLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderLoader.h; sourceTree = "<group>"; };
+		42BBE2E81C996F220035BC01 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		42BBE2EA1C996F280035BC01 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42BBE2181C9962A60035BC01 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42BBE2EB1C996F280035BC01 /* UIKit.framework in Frameworks */,
+				42BBE2E91C996F220035BC01 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42BBE2121C9962A60035BC01 = {
+			isa = PBXGroup;
+			children = (
+				42BBE2EA1C996F280035BC01 /* UIKit.framework */,
+				42BBE2E81C996F220035BC01 /* Foundation.framework */,
+				42BBE21D1C9962A60035BC01 /* YDGLOperationKit */,
+				42BBE21C1C9962A60035BC01 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		42BBE21C1C9962A60035BC01 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		42BBE21D1C9962A60035BC01 /* YDGLOperationKit */ = {
+			isa = PBXGroup;
+			children = (
+				42BBE2271C9962EE0035BC01 /* source */,
+				42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */,
+			);
+			path = YDGLOperationKit;
+			sourceTree = "<group>";
+		};
+		42BBE2271C9962EE0035BC01 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				42BBE2381C9963A90035BC01 /* common */,
+				42BBE2281C9962F90035BC01 /* core */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		42BBE2281C9962F90035BC01 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */,
+				42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */,
+				42BBE22B1C99630E0035BC01 /* YDDrawModel.h */,
+				42BBE22C1C99630E0035BC01 /* YDDrawModel.m */,
+				42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */,
+				42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */,
+				42BBE22F1C99630E0035BC01 /* YDGLOperationTwoInputNode.h */,
+				42BBE2301C99630E0035BC01 /* YDGLOperationTwoInputNode.m */,
+				42BBE2311C99630E0035BC01 /* YDGLOperationThreeInputNode.h */,
+				42BBE2321C99630E0035BC01 /* YDGLOperationThreeInputNode.m */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		42BBE2381C9963A90035BC01 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				42BBE2391C9963A90035BC01 /* esTransform.c */,
+				42BBE23A1C9963A90035BC01 /* esTransform.h */,
+				42BBE23B1C9963A90035BC01 /* ShaderLoader.c */,
+				42BBE23C1C9963A90035BC01 /* ShaderLoader.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		42BBE23F1C9965780035BC01 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42BBE2401C99657F0035BC01 /* YDGLOperationKit.h in Headers */,
+				42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */,
+				42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */,
+				42BBE2441C9965880035BC01 /* YDGLOperationTwoInputNode.h in Headers */,
+				42BBE2451C99658A0035BC01 /* YDGLOperationThreeInputNode.h in Headers */,
+				42BBE2471C9965900035BC01 /* ShaderLoader.h in Headers */,
+				42BBE2461C99658D0035BC01 /* esTransform.h in Headers */,
+				42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		42BBE21A1C9962A60035BC01 /* YDGLOperationKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42BBE2241C9962A60035BC01 /* Build configuration list for PBXNativeTarget "YDGLOperationKit" */;
+			buildPhases = (
+				42BBE2171C9962A60035BC01 /* Sources */,
+				42BBE2181C9962A60035BC01 /* Frameworks */,
+				42BBE2191C9962A60035BC01 /* CopyFiles */,
+				42BBE23F1C9965780035BC01 /* Headers */,
+				42BBE2FA1C9970DA0035BC01 /* build framework */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YDGLOperationKit;
+			productName = YDGLOperationKit;
+			productReference = 42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		42BBE2131C9962A60035BC01 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = yifan;
+				TargetAttributes = {
+					42BBE21A1C9962A60035BC01 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = 42BBE2161C9962A60035BC01 /* Build configuration list for PBXProject "YDGLOperationKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 42BBE2121C9962A60035BC01;
+			productRefGroup = 42BBE21C1C9962A60035BC01 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42BBE21A1C9962A60035BC01 /* YDGLOperationKit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		42BBE2FA1C9970DA0035BC01 /* build framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "build framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42BBE2171C9962A60035BC01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42BBE2371C99630E0035BC01 /* YDGLOperationThreeInputNode.m in Sources */,
+				42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */,
+				42BBE23D1C9963A90035BC01 /* esTransform.c in Sources */,
+				42BBE2361C99630E0035BC01 /* YDGLOperationTwoInputNode.m in Sources */,
+				42BBE23E1C9963A90035BC01 /* ShaderLoader.c in Sources */,
+				42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */,
+				42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		42BBE2221C9962A60035BC01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		42BBE2231C9962A60035BC01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		42BBE2251C9962A60035BC01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEAD_CODE_STRIPPING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+			};
+			name = Debug;
+		};
+		42BBE2261C9962A60035BC01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEAD_CODE_STRIPPING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42BBE2161C9962A60035BC01 /* Build configuration list for PBXProject "YDGLOperationKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42BBE2221C9962A60035BC01 /* Debug */,
+				42BBE2231C9962A60035BC01 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42BBE2241C9962A60035BC01 /* Build configuration list for PBXNativeTarget "YDGLOperationKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42BBE2251C9962A60035BC01 /* Debug */,
+				42BBE2261C9962A60035BC01 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 42BBE2131C9962A60035BC01 /* Project object */;
+}
