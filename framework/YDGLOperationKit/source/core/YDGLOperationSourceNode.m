@@ -79,7 +79,7 @@
 
 -(void)setupTextureForProgram:(GLuint)program{
 
-    GLint location_s_texture=  [self getUniformLocation:UNIFORM_INPUTTEXTURE];
+    GLint location_s_texture=glGetUniformLocation(program, [UNIFORM_INPUTTEXTURE UTF8String]);
     
     glActiveTexture(GL_TEXTURE0);
     

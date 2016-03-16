@@ -321,10 +321,6 @@
 
     }];
     
-    
-    
-    
-    
 //    dispatch_async([[self class] getWorkQueue], ^{
 //        
 //        dispatch_apply(_nextOperations.count, [[self class] getWorkQueue], ^(size_t index) {
@@ -589,6 +585,16 @@
     
 }
 
+
+-(void)dealloc{
+
+    glDeleteBuffers(1, &_frameBuffer);
+    
+    glDeleteTextures(1, &_renderTexture_out);
+    
+    CVPixelBufferRelease(_pixelBuffer_out);
+
+}
 
 @end
 

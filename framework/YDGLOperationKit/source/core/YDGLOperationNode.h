@@ -200,10 +200,6 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 
 //opengl operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
-
--(int)getUniformLocation:(NSString*_Nonnull)name;
-
--(int)getAttributeLocation:(NSString *_Nonnull)name;
 /**
  *  @author 许辉泽, 16-03-12 18:40:29
  *
