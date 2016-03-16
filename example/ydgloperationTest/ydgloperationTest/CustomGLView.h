@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  CustomGLView.h
 //  test_openges
 //
 //  Created by 辉泽许 on 16/1/4.
@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <YDGLOperationKit/YDGLOperationKit.h>
 
-@interface ViewController : UIViewController
+@interface CustomGLView : UIView<YDGLOperationNode>
 
+-(void)startRender;
 
 @end
-

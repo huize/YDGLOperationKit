@@ -1,8 +1,8 @@
 //
 //  AppDelegate.m
-//  ydgloperationTest
+//  test_openges
 //
-//  Created by 辉泽许 on 16/3/16.
+//  Created by 辉泽许 on 16/1/4.
 //  Copyright © 2016年 yifan. All rights reserved.
 //
 

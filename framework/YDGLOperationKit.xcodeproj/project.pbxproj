@@ -22,20 +22,20 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E043B1C998A1600972691 /* YDGLOperationThreeInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */; };
+		423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */; };
 		42BBE21F1C9962A60035BC01 /* YDGLOperationKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; };
 		42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */; };
 		42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22C1C99630E0035BC01 /* YDDrawModel.m */; };
 		42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */; };
-		42BBE2361C99630E0035BC01 /* YDGLOperationTwoInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2301C99630E0035BC01 /* YDGLOperationTwoInputNode.m */; };
-		42BBE2371C99630E0035BC01 /* YDGLOperationThreeInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2321C99630E0035BC01 /* YDGLOperationThreeInputNode.m */; };
 		42BBE23D1C9963A90035BC01 /* esTransform.c in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2391C9963A90035BC01 /* esTransform.c */; };
 		42BBE23E1C9963A90035BC01 /* ShaderLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE23B1C9963A90035BC01 /* ShaderLoader.c */; };
 		42BBE2401C99657F0035BC01 /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22B1C99630E0035BC01 /* YDDrawModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42BBE2441C9965880035BC01 /* YDGLOperationTwoInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22F1C99630E0035BC01 /* YDGLOperationTwoInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42BBE2451C99658A0035BC01 /* YDGLOperationThreeInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE2311C99630E0035BC01 /* YDGLOperationThreeInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2461C99658D0035BC01 /* esTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE23A1C9963A90035BC01 /* esTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2471C9965900035BC01 /* ShaderLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE23C1C9963A90035BC01 /* ShaderLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2E91C996F220035BC01 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BBE2E81C996F220035BC01 /* Foundation.framework */; };
@@ -66,6 +66,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		423E043B1C998A1600972691 /* YDGLOperationThreeInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationThreeInputNode.h; sourceTree = "<group>"; };
+		423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationThreeInputNode.m; sourceTree = "<group>"; };
+		423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationTwoInputNode.h; sourceTree = "<group>"; };
+		423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationTwoInputNode.m; sourceTree = "<group>"; };
 		42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libYDGLOperationKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDGLOperationKit.h; sourceTree = "<group>"; };
 		42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationSourceNode.m; sourceTree = "<group>"; };
@@ -74,10 +78,6 @@
 		42BBE22C1C99630E0035BC01 /* YDDrawModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDDrawModel.m; sourceTree = "<group>"; };
 		42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationNode.h; sourceTree = "<group>"; };
 		42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationNode.m; sourceTree = "<group>"; };
-		42BBE22F1C99630E0035BC01 /* YDGLOperationTwoInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationTwoInputNode.h; sourceTree = "<group>"; };
-		42BBE2301C99630E0035BC01 /* YDGLOperationTwoInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationTwoInputNode.m; sourceTree = "<group>"; };
-		42BBE2311C99630E0035BC01 /* YDGLOperationThreeInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationThreeInputNode.h; sourceTree = "<group>"; };
-		42BBE2321C99630E0035BC01 /* YDGLOperationThreeInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationThreeInputNode.m; sourceTree = "<group>"; };
 		42BBE2391C9963A90035BC01 /* esTransform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esTransform.c; sourceTree = "<group>"; };
 		42BBE23A1C9963A90035BC01 /* esTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = esTransform.h; sourceTree = "<group>"; };
 		42BBE23B1C9963A90035BC01 /* ShaderLoader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ShaderLoader.c; sourceTree = "<group>"; };
@@ -99,6 +99,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		423E043A1C998A1600972691 /* extends */ = {
+			isa = PBXGroup;
+			children = (
+				423E043B1C998A1600972691 /* YDGLOperationThreeInputNode.h */,
+				423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */,
+				423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */,
+				423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */,
+			);
+			path = extends;
+			sourceTree = "<group>";
+		};
 		42BBE2121C9962A60035BC01 = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +140,7 @@
 		42BBE2271C9962EE0035BC01 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				423E043A1C998A1600972691 /* extends */,
 				42BBE2381C9963A90035BC01 /* common */,
 				42BBE2281C9962F90035BC01 /* core */,
 			);
@@ -144,10 +156,6 @@
 				42BBE22C1C99630E0035BC01 /* YDDrawModel.m */,
 				42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */,
 				42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */,
-				42BBE22F1C99630E0035BC01 /* YDGLOperationTwoInputNode.h */,
-				42BBE2301C99630E0035BC01 /* YDGLOperationTwoInputNode.m */,
-				42BBE2311C99630E0035BC01 /* YDGLOperationThreeInputNode.h */,
-				42BBE2321C99630E0035BC01 /* YDGLOperationThreeInputNode.m */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -173,10 +181,10 @@
 				42BBE2401C99657F0035BC01 /* YDGLOperationKit.h in Headers */,
 				42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */,
 				42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */,
-				42BBE2441C9965880035BC01 /* YDGLOperationTwoInputNode.h in Headers */,
-				42BBE2451C99658A0035BC01 /* YDGLOperationThreeInputNode.h in Headers */,
 				42BBE2471C9965900035BC01 /* ShaderLoader.h in Headers */,
+				423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */,
 				42BBE2461C99658D0035BC01 /* esTransform.h in Headers */,
+				423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */,
 				42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,12 +281,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42BBE2371C99630E0035BC01 /* YDGLOperationThreeInputNode.m in Sources */,
 				42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */,
+				423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */,
 				42BBE23D1C9963A90035BC01 /* esTransform.c in Sources */,
-				42BBE2361C99630E0035BC01 /* YDGLOperationTwoInputNode.m in Sources */,
 				42BBE23E1C9963A90035BC01 /* ShaderLoader.c in Sources */,
 				42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */,
+				423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */,
 				42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,6 +432,7 @@
 				423E04191C99846100972691 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		42BBE2161C9962A60035BC01 /* Build configuration list for PBXProject "YDGLOperationKit" */ = {
 			isa = XCConfigurationList;
