@@ -18,6 +18,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		423E041D1C99849500972691 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42BBE2F31C9970710035BC01 /* YDGLOperationKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 423E04161C99846100972691;
+			remoteInfo = framework;
+		};
 		42BBE2AF1C9969E70035BC01 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42BBE28D1C9969E70035BC01 /* Project object */;
@@ -152,6 +159,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				423E041E1C99849500972691 /* PBXTargetDependency */,
 			);
 			name = ydgloperationTest;
 			productName = ydgloperationTest;
@@ -272,6 +280,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		423E041E1C99849500972691 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = framework;
+			targetProxy = 423E041D1C99849500972691 /* PBXContainerItemProxy */;
+		};
 		42BBE2B01C9969E70035BC01 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 42BBE2941C9969E70035BC01 /* ydgloperationTest */;
