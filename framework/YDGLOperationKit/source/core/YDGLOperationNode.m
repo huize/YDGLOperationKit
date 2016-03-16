@@ -32,10 +32,6 @@
 @property(nonatomic,retain) dispatch_semaphore_t lockForRender;
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *programOperations;//program 的操作
-
-@property(nonatomic,assign) CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
-
-
 @end
 
 @implementation YDGLOperationNode{
@@ -55,6 +51,14 @@
 @synthesize nextOperations=_nextOperations;
 
 @synthesize dependency=_dependency;
+
+static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
+
++(void)load{
+
+    [[self class] initTextureCache];
+
+}
 
 - (instancetype)init
 {
@@ -89,9 +93,7 @@
     self.dependency=[NSMutableArray array];
     
     _glContext=[[self class] getGLContext];
-    
-    [self initTextureCache];
-    
+        
     self.programOperations=[NSMutableArray array];
     
     self.lockForRender=dispatch_semaphore_create(1);
@@ -303,7 +305,6 @@
     //glFlush();
 
     dispatch_semaphore_signal(_lockForRender);
-
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        
@@ -543,9 +544,9 @@
 #pragma -mark 创建纹理缓存池
 
 
--(void)initTextureCache{
++(void)initTextureCache{
 
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_coreVideoTextureCache);
+    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &coreVideoTextureCache);
 
 }
 
@@ -564,7 +565,7 @@
         NSAssert(NO, @"Error at CVPixelBufferCreate %d", err);
     }
     
-    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, _coreVideoTextureCache, _pixelBuffer_out,
+    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, _pixelBuffer_out,
                                                         NULL, // texture attributes
                                                         GL_TEXTURE_2D,
                                                         GL_RGBA, // opengl format
