@@ -138,7 +138,7 @@ static NSString *_Nonnull  const UNIFORM_INPUTTEXTURE=@"inputImageTexture";
 static NSString *_Nonnull  const UNIFORM_POSITION=@"position";
 static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordinate";
 
-@protocol GLOperationTextureLoaderDelegate <NSObject>
+@protocol YDGLOperationTextureLoaderDelegate <NSObject>
 
 @required
 -(NSString*_Nonnull)textureUniformNameAtIndex:(NSInteger)index;
@@ -155,7 +155,7 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
  *  @since 1.0.0
  */
 
-@interface YDGLOperationNode : NSObject<YDGLOperationNode,GLOperationTextureLoaderDelegate>
+@interface YDGLOperationNode : NSObject<YDGLOperationNode,YDGLOperationTextureLoaderDelegate>
 {
     
 @protected
@@ -170,7 +170,7 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
     
     NSMutableArray<id<YDGLOperationNode>> *_nextOperations;
     
-    __weak id<GLOperationTextureLoaderDelegate> _Nonnull _textureLoaderDelegate;
+    __weak id<YDGLOperationTextureLoaderDelegate> _Nonnull _textureLoaderDelegate;
     
     EAGLContext *_glContext;
     
