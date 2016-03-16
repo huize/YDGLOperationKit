@@ -9,7 +9,7 @@
 #import "YDGLOperationNode.h"
 
 
-@implementation YDGLOperationOutput
+@implementation YDGLOperationNodeOutput
 
 @end
 
@@ -23,9 +23,9 @@
 
 @property(nonatomic,nullable,retain) YDDrawModel *drawModel;//
 
-@property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperation>> *nextOperations;//
+@property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperationNode>> *nextOperations;//
 
-@property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperation>> *dependency;//
+@property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperationNode>> *dependency;//
 
 @property(nonatomic,assign) BOOL frameBufferAvailable;
 
@@ -317,7 +317,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;
         
     });
     
-    [self.nextOperations enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperation>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.nextOperations enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         [obj notifyDependencyDone:self];
 
@@ -378,7 +378,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;
 
     for (int index=0; index<self.dependency.count;index++) {
         
-        YDGLOperationOutput *output=[[self.dependency objectAtIndex:index] getOutput];
+        YDGLOperationNodeOutput *output=[[self.dependency objectAtIndex:index] getOutput];
         
         NSString *name=[_textureLoaderDelegate textureUniformNameAtIndex:index];
         
@@ -394,13 +394,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;
     
 }
 
--(void)addNextOperation:(id<YDGLOperation>)nextOperation{
+-(void)addNextOperation:(id<YDGLOperationNode>)nextOperation{
     
     [self.nextOperations addObject:nextOperation];
     
 }
 
--(void)addDependency:(id<YDGLOperation>)operation{
+-(void)addDependency:(id<YDGLOperationNode>)operation{
 
     [self.dependency addObject:operation];
     
@@ -408,14 +408,14 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;
 
 }
 
--(YDGLOperationOutput*)getOutput{
+-(YDGLOperationNodeOutput*)getOutput{
 
     if (_renderTexture_out==0) {
         
         return nil;
     }
     
-    YDGLOperationOutput* output=[YDGLOperationOutput new];
+    YDGLOperationNodeOutput* output=[YDGLOperationNodeOutput new];
     
     output.texture=_renderTexture_out;
     
@@ -429,15 +429,15 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;
 
 }
 
--(void)notifyDependencyDone:(id<YDGLOperation>)doneOperation{
+-(void)notifyDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
     __block BOOL ready=YES;
     
     __block CGSize size=self.size;
     
-    [self.dependency enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperation>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.dependency enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        YDGLOperationOutput *output=[obj getOutput];
+        YDGLOperationNodeOutput *output=[obj getOutput];
         
         if (output==nil) {
             

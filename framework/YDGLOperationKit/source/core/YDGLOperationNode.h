@@ -27,7 +27,7 @@
  *
  *  @since 1.0.0
  */
-@interface YDGLOperationOutput : NSObject
+@interface YDGLOperationNodeOutput : NSObject
 
 @property(nonatomic,assign) GLuint texture;//
 
@@ -48,7 +48,7 @@
  *
  *  @since 1.0.0
  */
-@protocol YDGLOperation <NSObject>
+@protocol YDGLOperationNode <NSObject>
 /**
  *  @author 许辉泽, 16-03-12 14:57:43
  *
@@ -67,7 +67,7 @@
  *
  *  @since 1.0.0
  */
--(void)addDependency:(id<YDGLOperation>_Nonnull)operation;
+-(void)addDependency:(id<YDGLOperationNode>_Nonnull)operation;
 /**
  *  @author 许辉泽, 16-03-12 15:00:01
  *
@@ -77,7 +77,7 @@
  *
  *  @since 1.0.0
  */
--(void)addNextOperation:(id<YDGLOperation>_Nonnull)nextOperation;
+-(void)addNextOperation:(id<YDGLOperationNode>_Nonnull)nextOperation;
 /**
  *  @author 许辉泽, 16-03-12 15:00:21
  *
@@ -87,7 +87,7 @@
  *
  *  @since 1.0.0
  */
--(YDGLOperationOutput*_Nullable)getOutput;
+-(YDGLOperationNodeOutput*_Nullable)getOutput;
 /**
  *  @author 许辉泽, 16-03-12 15:00:34
  *
@@ -97,7 +97,7 @@
  *
  *  @since 1.0.0
  */
--(void)notifyDependencyDone:(id<YDGLOperation>_Nonnull)doneOperation;
+-(void)notifyDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
 
 
 @end
@@ -155,7 +155,7 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
  *  @since 1.0.0
  */
 
-@interface YDGLOperationNode : NSObject<YDGLOperation,GLOperationTextureLoaderDelegate>
+@interface YDGLOperationNode : NSObject<YDGLOperationNode,GLOperationTextureLoaderDelegate>
 {
     
 @protected
@@ -166,9 +166,9 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
     
     ESMatrix _mvpMatrix;
     
-    NSMutableArray<id<YDGLOperation>> *_dependency;
+    NSMutableArray<id<YDGLOperationNode>> *_dependency;
     
-    NSMutableArray<id<YDGLOperation>> *_nextOperations;
+    NSMutableArray<id<YDGLOperationNode>> *_nextOperations;
     
     __weak id<GLOperationTextureLoaderDelegate> _Nonnull _textureLoaderDelegate;
     
@@ -176,7 +176,7 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
     
 }
 
-@property(nonatomic,nullable,copy) void(^operationCompletionBlock)(YDGLOperationOutput*_Nonnull);//
+@property(nonatomic,nullable,copy) void(^operationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);//
 
 -(instancetype _Nullable)initWithVertexShader:(NSString*_Nonnull)vertexShaderString andFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 
