@@ -56,8 +56,6 @@
 
 @synthesize dependency=_dependency;
 
-static CVOpenGLESTextureCacheRef coreVideoTextureCache;
-
 - (instancetype)init
 {
     
@@ -551,7 +549,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;
 
 -(void)initTextureCache{
 
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &coreVideoTextureCache);
+    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_coreVideoTextureCache);
 
 }
 
@@ -570,7 +568,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;
         NSAssert(NO, @"Error at CVPixelBufferCreate %d", err);
     }
     
-    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, _pixelBuffer_out,
+    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, _coreVideoTextureCache, _pixelBuffer_out,
                                                         NULL, // texture attributes
                                                         GL_TEXTURE_2D,
                                                         GL_RGBA, // opengl format
