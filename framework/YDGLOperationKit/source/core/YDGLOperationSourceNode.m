@@ -31,12 +31,15 @@
 
 }
 
--(void)setInputImage:(UIImage *)image{
-    
-    
+-(void)commonInitialization{
+
     glDeleteTextures(1, &_renderTexture_input);
     
     glGenTextures(1, &_renderTexture_input);
+
+}
+
+-(void)setInputImage:(UIImage *)image{
     
     size_t width = CGImageGetWidth(image.CGImage);
     size_t height = CGImageGetHeight(image.CGImage);
@@ -112,5 +115,12 @@
     });
     
 }
+
+-(void)dealloc{
+
+    glDeleteTextures(1, &_renderTexture_input);
+
+}
+
 
 @end

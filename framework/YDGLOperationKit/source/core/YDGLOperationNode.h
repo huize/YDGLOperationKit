@@ -37,7 +37,6 @@
 
 @property(nonatomic,nullable,assign)CVPixelBufferRef pixelBuffer;
 
-
 @end
 
 
@@ -195,20 +194,9 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
  *  @since 1.0.0
  */
 -(void)setupTextureForProgram:(GLuint)program;
-//-------------------------
--(void)setTransform:(ESMatrix)transformMatrix;
 
 //opengl operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
-/**
- *  @author 许辉泽, 16-03-12 18:40:29
- *
- *  @param block 回传program
- *
- *  @since 1.0.0
- */
-//-(void)activeProgram:(void(^_Nullable)(GLuint))block;
-
 
 -(void)activeGLContext:(void(^_Nonnull)(void))block;
 
