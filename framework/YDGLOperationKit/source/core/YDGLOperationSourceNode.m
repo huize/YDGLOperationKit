@@ -339,6 +339,8 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
 -(void)dealloc{
 
     glDeleteTextures(1, &_renderTexture_input);
+    
+    //CVOpenGLESTextureCacheFlush([[self class] getTextureCache], 0);
 
 }
 

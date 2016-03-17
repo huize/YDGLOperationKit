@@ -24,8 +24,10 @@
     
     YDGLOperationSourceNode *_operationSecondSource;
     
-    YDGLOperationNode * _middleNode;
+    YDGLOperationNode *_thirdNode;
 
+    YDGLOperationTwoInputNode *_secondNode;
+    
     CADisplayLink *_displayLink;
 
 }
@@ -44,17 +46,19 @@
     
     [self.view addSubview:_customView];
     
-    _middleNode=[self buildBeautyGroupLayer];
+    [self initLayer];
     
-    [_customView addDependency:_middleNode];
+    [_customView addDependency:_thirdNode];
     
-    _displayLink=[CADisplayLink displayLinkWithTarget:self selector:@selector(startRun)];
+    
+    __weak typeof (self) weakSelf=self;
+    
+    _displayLink=[CADisplayLink displayLinkWithTarget:weakSelf selector:@selector(startRun)];
     _displayLink.frameInterval=3;
     
     _displayLink.paused=YES;
     
     [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -68,7 +72,21 @@
 
 }
 
--(YDGLOperationNode*)buildBeautyGroupLayer{
+-(void)viewDidDisappear:(BOOL)animated{
+
+    [super viewDidDisappear:animated];
+    
+    _displayLink.paused=YES;
+    
+    [_displayLink invalidate];
+    
+    _displayLink=nil;
+    
+    
+}
+
+
+-(void)initLayer{
     
     NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".jpg"];
     
@@ -82,19 +100,17 @@
     
     _operationSecondSource=[[YDGLOperationSourceNode alloc]initWithUIImage:image2];
     
-    YDGLOperationTwoInputNode *secondLayer=[YDGLOperationTwoInputNode new];
+    _secondNode=[YDGLOperationTwoInputNode new];
     
-    [secondLayer addDependency:_operationSource];
+    [_secondNode addDependency:_operationSource];
     
-    [secondLayer addDependency:_operationSecondSource];
+    [_secondNode addDependency:_operationSecondSource];
     
-    [secondLayer setMix:0.5f];
+    [_secondNode setMix:0.5f];
     
-    YDGLOperationNode *thirdLayer=[YDGLOperationNode new];
+    _thirdNode=[YDGLOperationNode new];
     
-    [thirdLayer addDependency:secondLayer];
-
-    return thirdLayer;
+    [_thirdNode addDependency:_secondNode];
     
 }
 
@@ -108,6 +124,18 @@
 -(void)dealloc{
     
     [_displayLink invalidate];
+    
+    NSLog(@"图片测试页面已经销毁了");
+    
+    [_operationSource destory];
+    
+    [_operationSecondSource destory];
+    
+    [_thirdNode destory];
+    
+    [_secondNode destory];
+        
+    [_customView removeFromSuperview];
     
 }
 

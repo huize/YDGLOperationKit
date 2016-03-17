@@ -620,17 +620,36 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
+-(void)destory{
 
+    [self.dependency removeAllObjects];
+    
+    [self.nextOperations removeAllObjects];
+    
+    self.operationCompletionBlock=nil;
+    
+    [self.programOperations removeAllObjects];
+    
+    [self cleanUpTexture];
+
+}
 
 -(void)dealloc{
+
+    NSLog(@"节点销毁了");
+    
+    [self cleanUpTexture];
+
+}
+
+-(void)cleanUpTexture{
 
     glDeleteBuffers(1, &_frameBuffer);
     
     glDeleteTextures(1, &_renderTexture_out);
     
-    CVPixelBufferRelease(_pixelBuffer_out);
-
 }
+
 
 @end
 

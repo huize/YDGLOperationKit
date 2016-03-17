@@ -493,8 +493,28 @@
     
 }
 
+
+-(void)cleanup{
+
+    glDeleteBuffers(1, &_renderBuffer);
+    
+    glDeleteBuffers(1, &_frameBuffer);
+    
+    glDeleteBuffers(1, &_resolveRenderBuffer);
+    
+    glDeleteBuffers(1, &_resolveFrameBuffer);
+    
+    glDeleteBuffers(1, &_resolveDepthBuffer);
+    
+    glDeleteTextures(1, &_textureId);
+    
+}
+
+
 -(void)dealloc{
 
+    
+    [self cleanup];
 
     if ([EAGLContext currentContext]==_context) {
         
@@ -503,7 +523,6 @@
     }
     
     _context=nil;
-    
     
 }
 
@@ -536,7 +555,5 @@
     [operation addNextOperation:self];
 
 }
-
-
 
 @end

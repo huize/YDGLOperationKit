@@ -29,9 +29,6 @@
     YDGLOperationSourceNode *_operationSecondSource;
     
     YDGLOperationNode * _middleNode;
-    
-    
-    CADisplayLink *_displayLink;
 
 }
 
@@ -53,18 +50,13 @@
     
     [self.view addSubview:_customView];
     
-    _middleNode=[self buildBeautyGroupLayer];
+    [self buildBeautyGroupLayer];
     
     [_customView addDependency:_middleNode];
     
-    _displayLink=[CADisplayLink displayLinkWithTarget:self selector:@selector(startRun)];
-    _displayLink.frameInterval=3;
+    __weak typeof(self) weakSelf=self;
     
-    _displayLink.paused=YES;
-    
-    [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    
-    [_captureSessionHelper setSampleBufferDelegate:self queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
+    [_captureSessionHelper setSampleBufferDelegate:weakSelf queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
     
 }
 
@@ -78,7 +70,7 @@
     
 }
 
--(YDGLOperationNode*)buildBeautyGroupLayer{
+-(void)buildBeautyGroupLayer{
     
     
      /*NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".jpg"];
@@ -97,11 +89,9 @@
     
     _operationSource=[YDGLOperationSourceNode new];
     
-    YDGLOperationNode *thirdLayer=[YDGLOperationNode new];
+    _middleNode=[YDGLOperationNode new];
     
-    [thirdLayer addDependency:_operationSource];
-    
-    return thirdLayer;
+    [_middleNode addDependency:_operationSource];
     
 }
 
@@ -131,7 +121,17 @@
 
 -(void)dealloc{
 
-    [_displayLink invalidate];
+    [_captureSessionHelper stopRunning];
+    
+    NSLog(@"视频测试页面已经销毁了");
+    
+    [_operationSource destory];
+    
+    [_operationSecondSource destory];
+    
+    [_middleNode destory];
+    
+    [_customView removeFromSuperview];
 
 }
 
