@@ -48,6 +48,8 @@
 
 @synthesize mvpMatrix=_mvpMatrix;
 
+@synthesize drawModel=_drawModel;
+
 @synthesize nextOperations=_nextOperations;
 
 @synthesize dependency=_dependency;

@@ -165,6 +165,8 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
     
     ESMatrix _mvpMatrix;
     
+    YDDrawModel _drawModel;
+    
     NSMutableArray<id<YDGLOperationNode>> *_dependency;
     
     NSMutableArray<id<YDGLOperationNode>> *_nextOperations;

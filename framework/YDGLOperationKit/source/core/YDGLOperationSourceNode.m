@@ -77,7 +77,8 @@
 
 -(void)uploadCVPixelBuffer:(CVPixelBufferRef)pixelBufferRef{
     
-    
+    OSType pixelFormatType= CVPixelBufferGetPixelFormatType(pixelBufferRef);
+
 }
 
 
