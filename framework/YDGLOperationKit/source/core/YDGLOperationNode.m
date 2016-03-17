@@ -322,7 +322,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     [self.nextOperations enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        [obj notifyDependencyDone:self];
+        [obj renderIfCanWhenDependencyDone:self];
 
     }];
 }
@@ -411,7 +411,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 }
 
--(void)notifyDependencyDone:(id<YDGLOperationNode>)doneOperation{
+-(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
     __block BOOL ready=YES;
     

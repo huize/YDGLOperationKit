@@ -48,14 +48,8 @@
  *  @since 1.0.0
  */
 @protocol YDGLOperationNode <NSObject>
-/**
- *  @author 许辉泽, 16-03-12 14:57:43
- *
- *  开始渲染
- *
- *  @since 1.0.0
- */
--(void)render;
+
+@required
 /**
  *  @author 许辉泽, 16-03-17 16:39:58
  *
@@ -98,13 +92,15 @@
 /**
  *  @author 许辉泽, 16-03-12 15:00:34
  *
- *  通知 doneOperation 已经完成.
- *  注意:在render方法里面最好都应该调用notifyDependencyDone,这样其他依赖于该operation的operation才能进行操作
  *  @param doneOperation 已经完成的dependency
+ *  注意,node必须在这里检查所有的依赖时候已经准备好了,
+ *  如果准备好了,则应该开始进行渲染,然后通知下一个节点
+ *
  *
  *  @since 1.0.0
  */
--(void)notifyDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
+
+-(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
 
 
 @end
@@ -198,8 +194,6 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 
 +(CVOpenGLESTextureCacheRef _Nonnull)getTextureCache;
 
-+(CVOpenGLESTextureRef _Nullable)createTextureFromCacheWith:(CVPixelBufferRef _Nonnull)pixelBuffer;
-
 //-------------------------
 /**
  *  @author 许辉泽, 16-03-12 17:36:46
@@ -209,6 +203,14 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
  *  @since 1.0.0
  */
 -(void)setupTextureForProgram:(GLuint)program;
+/**
+ *  @author 许辉泽, 16-03-12 14:57:43
+ *
+ *  开始渲染
+ *
+ *  @since 1.0.0
+ */
+-(void)render;
 
 //opengl operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;

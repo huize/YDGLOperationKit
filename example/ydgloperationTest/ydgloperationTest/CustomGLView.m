@@ -62,7 +62,6 @@
 
 }
 
-
 -(void)commonInit{
 
     //self.cube=YES;
@@ -538,7 +537,7 @@
 }
 
 
--(void)notifyDependencyDone:(id<YDGLOperationNode>)doneOperation{
+-(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
     YDGLOperationNodeOutput* outData=[doneOperation getOutput];
     
