@@ -52,6 +52,8 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
 
 @property(nonatomic,nullable,assign) CVOpenGLESTextureRef chromaTexture;//
 
+@property(nonatomic,nullable,assign) CVOpenGLESTextureCacheRef textureCache;//
+
 @property(nonatomic,assign) OSType pixelFormatType;//
 
 @property(nonatomic,assign) BOOL shouldSwitchShader;//
@@ -67,7 +69,7 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
 
 -(instancetype)initWithUIImage:(UIImage *)image{
 
-    if (self==[super init]) {
+    if (self==[self init]) {
         
         _image=image;
         
@@ -78,22 +80,27 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
 
 }
 
--(void)commonInitialization{
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+        [self commonInitialization];
+        
+    }
+    return self;
+}
 
+
+-(void)commonInitialization{
+    
     glDeleteTextures(1, &_renderTexture_input);
     
     glGenTextures(1, &_renderTexture_input);
-
-}
-
--(void)uploadImage:(UIImage *)image{
     
-    self.image=image;
+    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_textureCache);
     
-    CVPixelBufferRelease(_pixelBufferRef);
-    
-    _pixelBufferRef=NULL;
-    
+    NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
 }
 
 -(void)innerUploadImageToTexture{
@@ -157,7 +164,7 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
         
     }
     
-    CVOpenGLESTextureCacheRef textureCacheRef=[[self class] getTextureCache];
+    CVOpenGLESTextureCacheRef textureCacheRef=_textureCache;
     
     [self cleanUpTextures];
     
@@ -169,8 +176,8 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
                                                                 NULL,
                                                                 GL_TEXTURE_2D,
                                                                 GL_RED_EXT,
-                                                                width,
-                                                                height,
+                                                                (int)width,
+                                                                (int)height,
                                                                 GL_RED_EXT,
                                                                 GL_UNSIGNED_BYTE,
                                                                 0,
@@ -194,8 +201,8 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
                                                        NULL,
                                                        GL_TEXTURE_2D,
                                                        GL_RG_EXT,
-                                                       width/2,
-                                                       height/2,
+                                                       (int)width/2,
+                                                       (int)height/2,
                                                        GL_RG_EXT,
                                                        GL_UNSIGNED_BYTE,
                                                        1,
@@ -213,21 +220,6 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
     
     CVPixelBufferUnlockBaseAddress(_pixelBufferRef, 0);
 
-}
-
-
-
--(void)uploadCVPixelBuffer:(CVPixelBufferRef)pixelBufferRef{
-    
-    CVPixelBufferRelease(_pixelBufferRef);
-    
-    CVPixelBufferRetain(pixelBufferRef);
-    
-    _pixelBufferRef=pixelBufferRef;
-    
-    self.image=nil;
-    
-    
 }
 
 -(void)setupTextureForProgram:(GLuint)program{
@@ -264,15 +256,15 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
 
 -(void)start{
     
-    dispatch_async([[self class]getWorkQueue], ^{
+    RunInNodeProcessQueue(^{
         
         [self activeGLContext:^{
             
             [self prepareForRender];
-        
+            
             [self render];
         }];
-    
+        
     });
     
 }
@@ -291,7 +283,6 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
         
     }
     
-
     if (_shouldSwitchShader) {
         
         NSString *fragmentShader=fShaderStr;
@@ -328,20 +319,48 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
         _chromaTexture = NULL;
     }
     
-    // Periodic texture cache flush every frame
-    CVOpenGLESTextureCacheFlush([[self class]getTextureCache], 0);
-    
-    
 }
-
 
 
 -(void)dealloc{
 
     glDeleteTextures(1, &_renderTexture_input);
     
-    //CVOpenGLESTextureCacheFlush([[self class] getTextureCache], 0);
+    CVOpenGLESTextureCacheFlush(_textureCache, 0);
 
+}
+
+
+#pragma -mark 对外接口
+
+-(void)uploadImage:(UIImage *)image{
+    
+    RunInNodeProcessQueue(^{
+        
+        self.image=image;
+        
+        CVPixelBufferRelease(_pixelBufferRef);
+        
+        _pixelBufferRef=NULL;
+        
+    });
+    
+}
+
+-(void)uploadCVPixelBuffer:(CVPixelBufferRef)pixelBufferRef{
+    
+    CVPixelBufferRetain(pixelBufferRef);
+    
+    RunInNodeProcessQueue(^{
+        
+        CVPixelBufferRelease(_pixelBufferRef);
+        
+        _pixelBufferRef=pixelBufferRef;
+        
+        self.image=nil;
+        
+    });
+    
 }
 
 @end

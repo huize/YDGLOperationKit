@@ -154,6 +154,9 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 
 @end
 
+
+#define RunInNodeProcessQueue(block) dispatch_async([[YDGLOperationNode class] getWorkQueue], block)
+
 /**
  *  @author 许辉泽, 16-03-11 17:10:21
  *
@@ -161,7 +164,6 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
  *
  *  @since 1.0.0
  */
-
 @interface YDGLOperationNode : NSObject<YDGLOperationNode,YDGLOperationTextureLoaderDelegate>
 {
     
@@ -182,7 +184,6 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
     __weak id<YDGLOperationTextureLoaderDelegate> _Nonnull _textureLoaderDelegate;
     
     EAGLContext *_glContext;
-    
 }
 
 @property(nonatomic,nullable,copy) void(^operationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);//
@@ -198,7 +199,6 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 +(CVOpenGLESTextureCacheRef _Nonnull)getTextureCache;
 
 +(CVOpenGLESTextureRef _Nullable)createTextureFromCacheWith:(CVPixelBufferRef _Nonnull)pixelBuffer;
-
 
 //-------------------------
 /**

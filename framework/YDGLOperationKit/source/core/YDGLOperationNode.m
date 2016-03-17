@@ -8,7 +8,6 @@
 
 #import "YDGLOperationNode.h"
 
-
 @implementation YDGLOperationNodeOutput
 
 @end
@@ -110,7 +109,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     }];
 
     _textureLoaderDelegate=self;
-        
+    
 }
 
 +(EAGLContext *)getGLContext{
@@ -232,8 +231,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)render{
     
-    dispatch_semaphore_wait(_lockForRender, DISPATCH_TIME_FOREVER);
-    
     [self setupBuffer];
 
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
@@ -312,8 +309,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     //glFlush();
 
-    dispatch_semaphore_signal(_lockForRender);
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        
         if (self.operationCompletionBlock) {
@@ -329,23 +324,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         [obj notifyDependencyDone:self];
 
     }];
-    
-//    dispatch_async([[self class] getWorkQueue], ^{
-//        
-//        dispatch_apply(_nextOperations.count, [[self class] getWorkQueue], ^(size_t index) {
-//           
-//            NSLog(@"index%zu",index);
-//            //id<GLOperation> nextOperation=[_nextOperations objectAtIndex:index];
-//            
-//            //[nextOperation markDependencyDone:self];
-//            
-//        });
-//
-//        
-//    });
-
-    
-    
 }
 
 -(void)setTextureCoord{
@@ -468,7 +446,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
             
         }
         
-        dispatch_async([[self class]getWorkQueue], ^{
+        RunInNodeProcessQueue(^{
             
             [self activeGLContext:^{
                
@@ -523,15 +501,21 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 }
 
 -(void)activeGLContext:(void (^)(void))block{
-
+    
     EAGLContext *preContext=[EAGLContext currentContext];
     
-    [EAGLContext setCurrentContext:_glContext];
-    
-    block();
-    
-    [EAGLContext setCurrentContext:preContext];
-
+    if (preContext==_glContext) {
+        
+        block();
+        
+    }else{
+        
+        [EAGLContext setCurrentContext:_glContext];
+        
+        block();
+        
+        [EAGLContext setCurrentContext:preContext];
+    }
 }
 
 
@@ -555,7 +539,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 +(void)initTextureCache{
 
     CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &coreVideoTextureCache);
-
+    
+    NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
+    
 }
 
 -(void)createRenderTexture{
@@ -591,32 +577,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     CFRelease(attrs);
     CFRelease(empty);
     
-    
-}
-
-+(CVOpenGLESTextureRef _Nullable)createTextureFromCacheWith:(CVPixelBufferRef _Nonnull)pixelBuffer{
-    
-    CVOpenGLESTextureRef result;
-    
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    
-    size_t width= CVPixelBufferGetWidth(pixelBuffer);
-    
-    size_t height=CVPixelBufferGetHeight(pixelBuffer);
-    
-    CVReturn err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, pixelBuffer,
-                                                                 NULL, // texture attributes
-                                                                 GL_TEXTURE_2D,
-                                                                 GL_RGBA, // opengl format
-                                                                 (int)width,
-                                                                 (int)height,
-                                                                 GL_RGBA, // native iOS format
-                                                                 GL_UNSIGNED_BYTE,
-                                                                 0,
-                                                                 &result);
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    
-    return result;
     
 }
 
