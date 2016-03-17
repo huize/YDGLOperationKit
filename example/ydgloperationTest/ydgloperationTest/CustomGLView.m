@@ -12,10 +12,6 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
-#import <YDGLOperationKit/YDGLOperationKit.h>
-
-#define DRAWCUBE 1
-
 @implementation CustomGLView{
 
     CAEAGLLayer *_egallayer;
@@ -30,8 +26,6 @@
     
     GLint _framebufferHeight;
     
-    CADisplayLink *_displayLink;
-    
     GLuint _textureId;
     
     CGSize _sizeInPixel;
@@ -43,10 +37,6 @@
     YDDrawModel *_drawModel;
     
     //渲染到纹理的
-    
-    YDGLOperationSourceNode *_operationSource;
-    
-    YDGLOperationSourceNode *_operationSecondSource;
     
     dispatch_queue_t _queue;
 
@@ -79,33 +69,6 @@
 
     _queue=[[YDGLOperationNode class] getWorkQueue];
     
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".jpg"];
-    
-    UIImage *image=[UIImage imageWithContentsOfFile:path];
-
-    _operationSource=[[YDGLOperationSourceNode alloc]initWithUIImage:image];
-    
-    NSString *path2=[[NSBundle mainBundle] pathForResource:@"rgb" ofType:@".png"];
-    
-    UIImage *image2=[UIImage imageWithContentsOfFile:path2];
-    
-    _operationSecondSource=[[YDGLOperationSourceNode alloc]initWithUIImage:image2];
-    
-    YDGLOperationTwoInputNode *secondLayer=[YDGLOperationTwoInputNode new];
-    
-    YDGLOperationNode *thirdLayer=[YDGLOperationNode new];
-    
-    [self addDependency:thirdLayer];
-    
-    [thirdLayer addDependency:secondLayer];
-    
-    [secondLayer addDependency:_operationSource];
-    
-    [secondLayer addDependency:_operationSecondSource];
-    
-    [secondLayer setMix:0.5f];
-    
-
     _sizeInPixel=self.bounds.size;
     
     //dispatch_barrier_sync(_queue, ^{
@@ -141,13 +104,6 @@
     _semaphore_t_render=dispatch_semaphore_create(0);
 
     dispatch_semaphore_wait(_semaphore_t_render, 0);
-    
-    _displayLink=[CADisplayLink displayLinkWithTarget:self selector:@selector(startRun)];
-    _displayLink.frameInterval=3;
-    
-    _displayLink.paused=YES;
-    
-    [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     
 }
 
@@ -540,49 +496,9 @@
     
 }
 
-
-#if DRAWCUBE
-
-
--(void)willMoveToSuperview:(UIView *)newSuperview{
-
-    [super willMoveToSuperview:newSuperview];
-    
-    _displayLink.paused=NO;
-
-}
-
--(void)removeFromSuperview{
-
-    [super removeFromSuperview];
-    
-    _displayLink.paused=YES;
-    
-  }
-
-#else
-
--(void)layoutSubviews{
-
-    [super layoutSubviews];
-    
-    //TODO:部分系统的layoutSubviews 会调用多次
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        [self startRun];
-        
-    });
-    
-}
-
-#endif
-
 -(void)dealloc{
 
-    [_displayLink invalidate];
-    
+
     if ([EAGLContext currentContext]==_context) {
         
         [EAGLContext setCurrentContext:nil];
@@ -594,7 +510,6 @@
     
 }
 
-
 -(void)startRender{
 
     dispatch_semaphore_signal(_semaphore_t_render);
@@ -603,12 +518,6 @@
 
 }
 
--(void)startRun{
-
-    [_operationSource start];
-    
-    [_operationSecondSource start];
-}
 
 -(void)notifyDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
@@ -630,5 +539,7 @@
     [operation addNextOperation:self];
 
 }
+
+
 
 @end
