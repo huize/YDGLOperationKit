@@ -49,14 +49,12 @@
     
     NSMutableDictionary *defaultSetting=[NSMutableDictionary dictionaryWithDictionary:[videoDataOutput recommendedVideoSettingsForAssetWriterWithOutputFileType:AVFileTypeMPEG4]];
     
-    [defaultSetting setObject:@(20) forKey:AVVideoMaxKeyFrameIntervalKey];
+    //[defaultSetting setObject:@(20) forKey:AVVideoMaxKeyFrameIntervalKey];
     
     [defaultSetting setObject:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) forKey:(id)kCVPixelBufferPixelFormatTypeKey];
     
-    //videoDataOutput.videoSettings=defaultSetting;
+    videoDataOutput.alwaysDiscardsLateVideoFrames=YES;
     
-//    [videoDataOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
-//                                                            forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
     [videoDataOutput setVideoSettings:defaultSetting];
     
     [captureSession addOutput:videoDataOutput];
@@ -156,13 +154,23 @@
     AVCaptureConnection *videoConnection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
     if (videoConnection) {
         
-        BOOL mirror = _currentVideoInput==_frontVideoInput;
+        BOOL mirror = _currentVideoInput==_backVideoInput;
         
         if ([videoConnection isVideoMirroringSupported]) {
-            [videoConnection setVideoMirrored:mirror];
+            
             //[videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];//这个方向参数是经过尝试得出来的.
-
-            [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+            [videoConnection setVideoMirrored:mirror];
+            if (mirror) {
+                
+                [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+                
+            }else{
+            
+                [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+                
+            }
+            
+            
             
             
         }
