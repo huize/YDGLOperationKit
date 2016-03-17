@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+@import AVFoundation;
 @protocol AVCaptureVideoDataOutputSampleBufferDelegate;
 /**
  *  @author 许辉泽, 16-03-10 16:48:46

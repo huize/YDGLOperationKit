@@ -11,6 +11,7 @@
 		423E042D1C99873300972691 /* 头像.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 423E04281C99873300972691 /* 头像.jpg */; };
 		423E042E1C99873300972691 /* rgb.png in Resources */ = {isa = PBXBuildFile; fileRef = 423E04291C99873300972691 /* rgb.png */; };
 		423E04801C9A714200972691 /* LVECatpureSessionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */; };
+		424D92C31C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */; };
 		42BBE29A1C9969E70035BC01 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2991C9969E70035BC01 /* main.m */; };
 		42BBE29D1C9969E70035BC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE29C1C9969E70035BC01 /* AppDelegate.m */; };
 		42BBE2A01C9969E70035BC01 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE29F1C9969E70035BC01 /* ViewController.m */; };
@@ -52,6 +53,8 @@
 		423E04291C99873300972691 /* rgb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rgb.png; sourceTree = "<group>"; };
 		423E047E1C9A714200972691 /* LVECatpureSessionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVECatpureSessionHelper.h; sourceTree = "<group>"; };
 		423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVECatpureSessionHelper.m; sourceTree = "<group>"; };
+		424D92C11C9A9EFA006DA52D /* YDGLOperationImageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationImageTestViewController.h; sourceTree = "<group>"; };
+		424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationImageTestViewController.m; sourceTree = "<group>"; };
 		42BBE2951C9969E70035BC01 /* ydgloperationTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ydgloperationTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BBE2991C9969E70035BC01 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		42BBE29B1C9969E70035BC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 				423E04291C99873300972691 /* rgb.png */,
 				42BBE29B1C9969E70035BC01 /* AppDelegate.h */,
 				42BBE29C1C9969E70035BC01 /* AppDelegate.m */,
+				424D92C11C9A9EFA006DA52D /* YDGLOperationImageTestViewController.h */,
+				424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */,
 				42BBE29E1C9969E70035BC01 /* ViewController.h */,
 				42BBE29F1C9969E70035BC01 /* ViewController.m */,
 				42BBE2A11C9969E70035BC01 /* Main.storyboard */,
@@ -281,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				424D92C31C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m in Sources */,
 				42BBE2A01C9969E70035BC01 /* ViewController.m in Sources */,
 				42BBE29D1C9969E70035BC01 /* AppDelegate.m in Sources */,
 				423E04801C9A714200972691 /* LVECatpureSessionHelper.m in Sources */,

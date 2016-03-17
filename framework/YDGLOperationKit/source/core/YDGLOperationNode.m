@@ -160,6 +160,12 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 }
 
++(CVOpenGLESTextureCacheRef)getTextureCache{
+
+    return coreVideoTextureCache;
+}
+
+
 -(void)setupBuffer{
     
     if (_frameBufferAvailable) {
@@ -587,6 +593,33 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     
 }
+
++(CVOpenGLESTextureRef _Nullable)createTextureFromCacheWith:(CVPixelBufferRef _Nonnull)pixelBuffer{
+    
+    CVOpenGLESTextureRef result;
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    
+    size_t width= CVPixelBufferGetWidth(pixelBuffer);
+    
+    size_t height=CVPixelBufferGetHeight(pixelBuffer);
+    
+    CVReturn err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, pixelBuffer,
+                                                                 NULL, // texture attributes
+                                                                 GL_TEXTURE_2D,
+                                                                 GL_RGBA, // opengl format
+                                                                 (int)width,
+                                                                 (int)height,
+                                                                 GL_RGBA, // native iOS format
+                                                                 GL_UNSIGNED_BYTE,
+                                                                 0,
+                                                                 &result);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    
+    return result;
+    
+}
+
 
 
 -(void)dealloc{

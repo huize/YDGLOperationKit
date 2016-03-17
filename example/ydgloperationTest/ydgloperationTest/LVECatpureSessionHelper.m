@@ -51,7 +51,13 @@
     
     [defaultSetting setObject:@(20) forKey:AVVideoMaxKeyFrameIntervalKey];
     
+    [defaultSetting setObject:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+    
     //videoDataOutput.videoSettings=defaultSetting;
+    
+//    [videoDataOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
+//                                                            forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
+    [videoDataOutput setVideoSettings:defaultSetting];
     
     [captureSession addOutput:videoDataOutput];
     
@@ -154,8 +160,11 @@
         
         if ([videoConnection isVideoMirroringSupported]) {
             [videoConnection setVideoMirrored:mirror];
-            [videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];//这个方向参数是经过尝试得出来的.
+            //[videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];//这个方向参数是经过尝试得出来的.
 
+            [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+            
+            
         }
         
     }

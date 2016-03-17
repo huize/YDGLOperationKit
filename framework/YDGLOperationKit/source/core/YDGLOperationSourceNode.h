@@ -12,6 +12,10 @@
 
 -(instancetype _Nonnull)initWithUIImage:(UIImage*_Nonnull)image;
 
+-(void)uploadCVPixelBuffer:(CVPixelBufferRef _Nonnull)pixelBufferRef;
+
+-(void)uploadImage:(UIImage *_Nonnull)image;
+
 -(void)start;
 
 @end

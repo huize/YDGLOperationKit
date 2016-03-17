@@ -85,18 +85,15 @@
     
     [self setupMSAABuffer];
     
-    
-#if DRAWCUBE
-    
-    [self loadCubeVex];
-
-#else
-    
-    [self loadSquareVex];
-    
-#endif
-    
+    //TODO:暂时设置无效
+    if (self.cube) {
         
+        [self loadCubeVex];
+    }else{
+        
+        [self loadSquareVex];
+    }
+    
     //});
     
     [EAGLContext setCurrentContext:nil];

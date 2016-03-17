@@ -187,6 +187,11 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 
 +(dispatch_queue_t _Nonnull)getWorkQueue;
 
++(CVOpenGLESTextureCacheRef _Nonnull)getTextureCache;
+
++(CVOpenGLESTextureRef _Nullable)createTextureFromCacheWith:(CVPixelBufferRef _Nonnull)pixelBuffer;
+
+
 //-------------------------
 /**
  *  @author 许辉泽, 16-03-12 17:36:46
@@ -201,7 +206,6 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
 
 -(void)activeGLContext:(void(^_Nonnull)(void))block;
-
 
 @end
 

@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <YDGLOperationKit/YDGLOperationKit.h>
 
-
-#define DRAWCUBE 0
-
 @interface CustomGLView : UIView<YDGLOperationNode>
+
+@property(nonatomic,assign) BOOL cube;//
 
 -(void)startRender;
 

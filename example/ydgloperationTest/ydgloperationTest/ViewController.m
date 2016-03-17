@@ -16,7 +16,7 @@
 
 @import ImageIO;
 
-@interface ViewController (){
+@interface ViewController ()<AVCaptureVideoDataOutputSampleBufferDelegate>{
 
     UIImage *_image;
     
@@ -27,6 +27,9 @@
     YDGLOperationSourceNode *_operationSource;
     
     YDGLOperationSourceNode *_operationSecondSource;
+    
+    YDGLOperationNode * _middleNode;
+    
     
     CADisplayLink *_displayLink;
 
@@ -40,7 +43,7 @@
     
     [super viewDidLoad];
     
-    //_captureSessionHelper=[[LVECatpureSessionHelper alloc]init];
+    _captureSessionHelper=[[LVECatpureSessionHelper alloc]init];
     
     CGSize screenSize=[UIScreen mainScreen].bounds.size;
     
@@ -50,9 +53,9 @@
     
     [self.view addSubview:_customView];
     
-    YDGLOperationNode *beautyLayer=[self buildBeautyGroupLayer];
+    _middleNode=[self buildBeautyGroupLayer];
     
-    [_customView addDependency:beautyLayer];
+    [_customView addDependency:_middleNode];
     
     _displayLink=[CADisplayLink displayLinkWithTarget:self selector:@selector(startRun)];
     _displayLink.frameInterval=3;
@@ -61,6 +64,7 @@
     
     [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     
+    [_captureSessionHelper setSampleBufferDelegate:self queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
     
 }
 
@@ -70,25 +74,14 @@
     
     [_customView startRender];
     
-
-    if (DRAWCUBE) {
-        
-        _displayLink.paused=NO;
-        
-    }else{
-    
-        [_operationSource start];
-        
-        [_operationSecondSource start];
-    
-    }
+    [_captureSessionHelper startRunning];
     
 }
 
 -(YDGLOperationNode*)buildBeautyGroupLayer{
     
     
-     NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".jpg"];
+     /*NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".jpg"];
      
      UIImage *image=[UIImage imageWithContentsOfFile:path];
      
@@ -100,22 +93,31 @@
      
      _operationSecondSource=[[YDGLOperationSourceNode alloc]initWithUIImage:image2];
      
-     YDGLOperationTwoInputNode *secondLayer=[YDGLOperationTwoInputNode new];
-     
-     YDGLOperationNode *thirdLayer=[YDGLOperationNode new];
-     
-     [_customView addDependency:thirdLayer];
-     
-     [thirdLayer addDependency:secondLayer];
-     
-     [secondLayer addDependency:_operationSource];
-     
-     [secondLayer addDependency:_operationSecondSource];
-     
-     [secondLayer setMix:0.5f];
-     
+     YDGLOperationTwoInputNode *secondLayer=[YDGLOperationTwoInputNode new];*/
+    
+    _operationSource=[YDGLOperationSourceNode new];
+    
+    YDGLOperationNode *thirdLayer=[YDGLOperationNode new];
+    
+    [thirdLayer addDependency:_operationSource];
     
     return thirdLayer;
+    
+}
+
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
+
+    CVImageBufferRef imageBufferRef=CMSampleBufferGetImageBuffer(sampleBuffer);
+    
+    CVPixelBufferLockBaseAddress(imageBufferRef, 0);
+    
+    [_operationSource uploadCVPixelBuffer:imageBufferRef];
+    
+    //[_operationSource uploadImage:[UIImage imageNamed:@"rgb"]];
+    
+    [_operationSource start];
+    
+    CVPixelBufferUnlockBaseAddress(imageBufferRef, 0);
     
 }
 
