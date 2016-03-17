@@ -29,6 +29,9 @@
 -(void)setvShaderSource:(const char *)vSource andfShaderSource:(const char *)fSource{
 
     GLint program=LinkPorgram(vSource, fSource);
+    
+    glDeleteProgram(_program);
+    //TODO:不需要delete shader?
     _program=program;
 
 }

@@ -39,7 +39,7 @@
 
 }
 
--(void)setInputImage:(UIImage *)image{
+-(void)uploadImage:(UIImage *)image{
     
     size_t width = CGImageGetWidth(image.CGImage);
     size_t height = CGImageGetHeight(image.CGImage);
@@ -58,10 +58,7 @@
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)width,(int)height, 0, GL_RGBA,
                  GL_UNSIGNED_BYTE, data);
-    
-    CGContextRelease(context);
-    free(data);
-    
+
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     //TODO 一定要加上这2句话
@@ -72,11 +69,21 @@
     
     _size=CGSizeMake(width, height);
     
+    CGContextRelease(context);
+    free(data);
+
+    
 }
+
+-(void)uploadCVPixelBuffer:(CVPixelBufferRef)pixelBufferRef{
+    
+    
+}
+
 
 -(void)loadTexture{
     
-    [self setInputImage:_image];
+    [self uploadImage:_image];
     
 }
 
@@ -90,14 +97,6 @@
     
     glUniform1i ( location_s_texture,0);
 
-}
-
-
--(void)setCVPixelBuffer:(CVPixelBufferRef)pixelBufferRef{
-
-    
-    
-    
 }
 
 -(void)start{
