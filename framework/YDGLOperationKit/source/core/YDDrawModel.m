@@ -52,6 +52,10 @@
  */
 -(void)setVertices:(struct ArrayWrapper)vertices andTextureVertices:(struct ArrayWrapper)textureVertices andIndices:(struct ArrayWrapper)indices andDrawStyle:(GLenum)drawModel{
     
+    glDeleteBuffers(1, &_vertices_buffer_obj);
+    glDeleteBuffers(1, &_texture_vertices_buffer_obj);
+    glDeleteBuffers(1, &_indices_buffer_obj);
+    
     GLuint* bufferId=malloc(sizeof(GLuint)*3);
     
     glGenBuffers(3, bufferId);

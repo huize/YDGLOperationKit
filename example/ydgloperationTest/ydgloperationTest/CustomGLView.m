@@ -63,8 +63,6 @@
 }
 
 -(void)commonInit{
-
-    //self.cube=YES;
     
     _drawModel=[YDDrawModel new];
 
@@ -232,17 +230,22 @@
 
 -(void)loadCubeVex{
     
-    [_drawModel loadCubeVex];
+    [self activeGLContext:^{
+        
+        [_drawModel loadCubeVex];
+
+    }];
     
 }
 
 -(void)loadSquareVex{
     
-    
-    [_drawModel loadSquareVex];
-    
+    [self activeGLContext:^{
+        
+        [_drawModel loadSquareVex];
+        
+    }];
 }
-
 
 -(ESMatrix)mvpMatrix4Cube{
 
@@ -557,5 +560,40 @@
     [operation addNextOperation:self];
 
 }
+
+
+-(void)setCube:(BOOL)cube{
+
+    _cube=cube;
+    
+    if (cube) {
+        
+        [self loadCubeVex];
+    }else{
+    
+        [self loadSquareVex];
+    }
+    
+
+}
+
+-(void)activeGLContext:(void (^)(void))block{
+    
+    EAGLContext *preContext=[EAGLContext currentContext];
+    
+    if (preContext==_context) {
+        
+        block();
+        
+    }else{
+        
+        [EAGLContext setCurrentContext:_context];
+        
+        block();
+        
+        [EAGLContext setCurrentContext:preContext];
+    }
+}
+
 
 @end

@@ -165,7 +165,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 }
 
 
--(void)setupBuffer{
+-(void)setupFrameBuffer{
     
     if (_frameBufferAvailable) {
         
@@ -231,7 +231,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)render{
     
-    [self setupBuffer];
+    [self setupFrameBuffer];
 
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
     

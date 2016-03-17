@@ -42,7 +42,7 @@
     
     _customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     
-    _customView.cube=YES;
+    _customView.cube=NO;
     
     [self.view addSubview:_customView];
     

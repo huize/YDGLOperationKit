@@ -62,7 +62,6 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
 
 @property(nonatomic,assign) CVPixelBufferRef pixelBufferRef;//
 
-
 @end
 
 @implementation YDGLOperationSourceNode
