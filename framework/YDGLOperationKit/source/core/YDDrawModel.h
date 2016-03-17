@@ -70,5 +70,29 @@ struct ArrayWrapper {
  *  @since 1.0.0
  */
 -(void)loadCubeVex;
+/**
+ *  @author 许辉泽, 16-03-17 21:56:21
+ *
+ *  查询该program attribute的位置
+ *
+ *  @param attributeName
+ *
+ *  @return
+ *
+ *  @since 1.0.0
+ */
+-(GLint)locationOfAttribute:(NSString*_Nonnull)attributeName;
+/**
+ *  @author 许辉泽, 16-03-17 21:56:43
+ *
+ *  查询该program 统一变量的位置
+ *
+ *  @param uniformName
+ *
+ *  @return
+ *
+ *  @since 1.0.0
+ */
+-(GLint)locationOfUniform:(NSString*_Nonnull)uniformName;
 
 @end

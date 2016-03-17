@@ -9,9 +9,11 @@
 #import "YDDrawModel.h"
 #import "ShaderLoader.h"
 
-@interface YDDrawModel(){
+@interface YDDrawModel()
 
-}
+@property(nonatomic,nullable,retain) NSMutableDictionary *varDictionary;//
+
+
 
 @end
 
@@ -21,6 +23,8 @@
 {
     self = [super init];
     if (self) {
+        
+        self.varDictionary=[NSMutableDictionary dictionary];
         
     }
     return self;
@@ -33,7 +37,9 @@
     glDeleteProgram(_program);
     //TODO:不需要delete shader?
     _program=program;
-
+    
+    [self loadProgram];
+    
 }
 /**
  *  @author 许辉泽, 16-01-14 20:18:45
@@ -181,5 +187,101 @@
     
 }
 
+/**
+ *  @author 许辉泽, 16-03-17 19:53:30
+ *
+ *  查询位置是一个比较耗时的操作
+ *
+ *  @since 1.0.0
+ */
+-(void)loadProgram{
+
+    [self.varDictionary removeAllObjects];
+    
+    glUseProgram(_program);
+    
+    //查询统一变量
+    
+    GLint maxUniformLen;
+    GLint numUniforms;
+    char *uniformName;
+    glGetProgramiv ( _program, GL_ACTIVE_UNIFORMS, &numUniforms );
+    glGetProgramiv ( _program, GL_ACTIVE_UNIFORM_MAX_LENGTH,
+                    &maxUniformLen);
+    
+    uniformName = malloc ( sizeof ( char ) * maxUniformLen );
+    
+    for (int index=0; index<numUniforms; index++) {
+        
+        GLint size;
+        GLenum type;
+        GLint location;
+        
+        glGetActiveUniform(_program, index, maxUniformLen, NULL, &size, &type, uniformName);
+        
+        location=glGetUniformLocation(_program, uniformName);
+        
+        NSString *name=[NSString stringWithUTF8String:uniformName];
+        
+        //NSLog(@" uniform name:%@  location:%i",name,location);
+    
+        [self.varDictionary setObject:@(location) forKey:name];
+        
+    }
+    
+    free(uniformName);
+    
+    //查询 attribute
+    
+    GLint maxAttributeLen;
+    GLint numAttributes;
+    char *attributeName;
+    
+    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
+    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeLen);
+    
+    attributeName=malloc(sizeof(char)*maxAttributeLen);
+    
+    for (int index=0; index<maxAttributeLen; index++) {
+        
+        GLint size;
+        GLenum type;
+        GLint location;
+        
+        glGetActiveAttrib(_program, index, maxAttributeLen, NULL, &size, &type, attributeName);
+        
+        location=glGetAttribLocation(_program, attributeName);
+        
+        NSString *name=[NSString stringWithUTF8String:attributeName];
+        
+        //NSLog(@" attribute name:%@  location:%i",name,location);
+
+        [self.varDictionary setObject:@(location) forKey:name];
+    }
+    
+    free(attributeName);
+    
+    
+}
+
+-(GLint)locationOfUniform:(NSString *)uniformName{
+
+    NSNumber *location=self.varDictionary[uniformName];
+    
+    //NSAssert(location!=nil, @"招不到着色器里面的统一变量名:%@,请检查清楚",uniformName);
+    
+    return location.intValue;
+
+}
+
+-(GLint)locationOfAttribute:(NSString *)attributeName{
+
+    NSNumber *location=self.varDictionary[attributeName];
+    
+    //NSAssert(location!=nil, @"招不到着色器里面的属性名:%@,请检查清楚",attributeName);
+    
+    return location.intValue;
+
+}
 
 @end

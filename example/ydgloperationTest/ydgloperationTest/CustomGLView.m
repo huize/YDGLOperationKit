@@ -65,6 +65,8 @@
 
 -(void)commonInit{
 
+    //self.cube=YES;
+    
     _drawModel=[YDDrawModel new];
 
     _queue=[[YDGLOperationNode class] getWorkQueue];
@@ -327,23 +329,23 @@
     
     glUseProgram(_drawModel.program);
     
-    GLint location= glGetUniformLocation(_drawModel.program, [@"u_mvpMatrix" UTF8String]);
+    GLint location= [_drawModel locationOfUniform:@"u_mvpMatrix"];
     
     ESMatrix _mvpMatrix;
     
-#if DRAWCUBE
+    if (self.cube) {
+        
+        _mvpMatrix=[self mvpMatrix4Cube];
+    }else{
     
-    _mvpMatrix=[self mvpMatrix4Cube];
-#else
-    _mvpMatrix=[self mvpMatrix4Square];
-    
-#endif
+        _mvpMatrix=[self mvpMatrix4Square];
+    }
     
     ESMatrix matrix=_mvpMatrix;
     
     glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&matrix);
     
-    GLint location_s_texture= glGetUniformLocation(_drawModel.program, [@"inputImageTexture" UTF8String]);
+    GLint location_s_texture= [_drawModel locationOfUniform:@"inputImageTexture"];
     
     glActiveTexture(GL_TEXTURE0);
     
@@ -351,7 +353,7 @@
     
     glUniform1i ( location_s_texture, 0);
     
-    GLint location_position=glGetAttribLocation(_drawModel.program, [@"position" UTF8String]);
+    GLint location_position=[_drawModel locationOfAttribute:@"position"];
     
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
     
@@ -361,7 +363,7 @@
     
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
     
-    GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [@"inputTextureCoordinate" UTF8String]);
+    GLint location_texturecoord=[_drawModel locationOfAttribute:@"inputTextureCoordinate"];
     
     glEnableVertexAttribArray(location_texturecoord);
     
@@ -405,7 +407,7 @@
     glDisableVertexAttribArray(location_s_texture);
     glDisableVertexAttribArray(location_texturecoord);
     
-    
+
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER_APPLE, _frameBuffer);
     
     glBindFramebuffer(GL_READ_FRAMEBUFFER_APPLE, _resolveFrameBuffer);
@@ -413,6 +415,7 @@
     //glBlitFramebuffer(0, 0, _sizeInPixel.width, _sizeInPixel.height, 0, 0, _sizeInPixel.width, _sizeInPixel.height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
     
     //glInvalidateFramebuffer(GL_READ_FRAMEBUFFER, 1, (GLenum[]){GL_COLOR_ATTACHMENT0});
+    
     
     glResolveMultisampleFramebufferAPPLE();
     
