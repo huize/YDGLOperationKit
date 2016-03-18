@@ -8,9 +8,14 @@
 
 #import "CustomGLView.h"
 
-#import <QuartzCore/QuartzCore.h>
-#include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
+
+@import AVFoundation;
+
+@import OpenGLES.ES2;
+
+@import QuartzCore;
+
 
 @implementation CustomGLView{
 
@@ -39,7 +44,8 @@
     //渲染到纹理的
     
     dispatch_queue_t _queue;
-
+    
+    CGSize _inputImageSize;//要显示的纹理的大小
     
 }
 
@@ -83,6 +89,8 @@
     [self setupBuffer];
     
     [self setupMSAABuffer];
+    
+    _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
     
     //TODO:暂时设置无效
     if (self.cube) {
@@ -246,6 +254,67 @@
         
     }];
 }
+
+-(void)loadSquareByFillModeType{
+
+    if (CGSizeEqualToSize(_inputImageSize, CGSizeZero)) {
+    
+        return ;
+    }
+    
+    CGFloat heightScaling, widthScaling;
+    
+    CGSize currentViewSize = self.bounds.size;
+    
+    //    CGFloat imageAspectRatio = inputImageSize.width / inputImageSize.height;
+    //    CGFloat viewAspectRatio = currentViewSize.width / currentViewSize.height;
+    
+    CGRect insetRect = AVMakeRectWithAspectRatioInsideRect(_inputImageSize, self.bounds);
+    
+    switch(_fillMode)
+    {
+        case kYDGLOperationImageFillModeFillModeStretch:
+        {
+            widthScaling = 1.0;
+            heightScaling = 1.0;
+        }; break;
+        case kYDGLOperationImageFillModePreserveAspectRatio:
+        {
+            widthScaling = insetRect.size.width / currentViewSize.width;
+            heightScaling = insetRect.size.height / currentViewSize.height;
+        }; break;
+        case kYDGLOperationImageFillModePreserveAspectRatioAndFill:
+        {
+            //            CGFloat widthHolder = insetRect.size.width / currentViewSize.width;
+            widthScaling = currentViewSize.height / insetRect.size.height;
+            heightScaling = currentViewSize.width / insetRect.size.width;
+        }; break;
+    }
+    
+    CGFloat *imageVertices=malloc(12*sizeof(GLfloat));
+    
+    imageVertices[0] = -widthScaling;
+    imageVertices[1] = -heightScaling;
+    imageVertices[2]=0.0;
+    
+    
+    imageVertices[3] = widthScaling;
+    imageVertices[4] = -heightScaling;
+    imageVertices[5]=0.0;
+    
+    imageVertices[6] = widthScaling;
+    imageVertices[7] = heightScaling;
+    imageVertices[8]=0.0;
+    
+    imageVertices[9] = -widthScaling;
+    imageVertices[10] = heightScaling;
+    imageVertices[11]=0.0;
+    
+    [_drawModel loadSquareVex:imageVertices];
+
+}
+
+
 
 -(ESMatrix)mvpMatrix4Cube{
 
@@ -546,6 +615,13 @@
     
     _textureId=outData.texture;
     
+    if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO) {
+        
+        _inputImageSize=outData.size;
+        
+        [self loadSquareByFillModeType];
+    }
+    
     [doneOperation lock];
     
     [self render];
@@ -594,5 +670,17 @@
     }
 }
 
+-(void)setFillModeType:(YDGLOperationImageFillModeType)fillModeType{
+    
+    if (self.cube) {
+        
+        return;
+    }else{
+        
+        _fillMode=fillModeType;
+        
+    }
+    
+}
 
 @end

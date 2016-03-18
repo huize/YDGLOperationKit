@@ -54,6 +54,17 @@ struct ArrayWrapper {
 @property(nonatomic,assign) GLenum drawStyle;//
 
 -(void)setvShaderSource:(const char*)vSource andfShaderSource:(const char*)fSource;
+
+/**
+ *  @author 许辉泽, 16-03-18 14:07:09
+ *
+ *  加载指定矩形顶点,必须是逆时针的
+ *
+ *  @param vertices_position
+ *
+ *  @since 1.0.0
+ */
+-(void)loadSquareVex:(const GLfloat[12])vertices_position;
 /**
  *  @author 许辉泽, 16-03-11 16:29:39
  *

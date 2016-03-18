@@ -92,6 +92,28 @@
     
 }
 
+-(void)loadSquareVex:(const GLfloat [12])vertices_position{
+
+    const GLubyte indices_position[]={
+        
+        0,1,2,3,
+        
+    };
+    
+    const GLfloat vertices_texture[]={
+        
+        0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0,
+        
+    };
+    
+    struct ArrayWrapper vertices_wrapper={vertices_position,12*sizeof(GLfloat),12};
+    struct ArrayWrapper texturecoord_warpper={vertices_texture,sizeof(vertices_texture),sizeof(vertices_texture)/sizeof(GLfloat)};
+    struct ArrayWrapper indices_warpper={indices_position,sizeof(indices_position),sizeof(indices_position)/sizeof(GLubyte)};
+    
+    [self setVertices:vertices_wrapper andTextureVertices:texturecoord_warpper andIndices:indices_warpper andDrawStyle:GL_TRIANGLE_FAN];
+
+
+}
 
 -(void)loadSquareVex{
     
@@ -107,24 +129,7 @@
         
     };
     
-    const GLubyte indices_position[]={
-        
-        0,1,2,3,
-        
-    };
-    
-    const GLfloat vertices_texture[]={
-        
-        0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0,
-        
-    };
-    
-    struct ArrayWrapper vertices_wrapper={vertices_position,sizeof(vertices_position),sizeof(vertices_position)/sizeof(GLfloat)};
-    struct ArrayWrapper texturecoord_warpper={vertices_texture,sizeof(vertices_texture),sizeof(vertices_texture)/sizeof(GLfloat)};
-    struct ArrayWrapper indices_warpper={indices_position,sizeof(indices_position),sizeof(indices_position)/sizeof(GLubyte)};
-    
-    [self setVertices:vertices_wrapper andTextureVertices:texturecoord_warpper andIndices:indices_warpper andDrawStyle:GL_TRIANGLE_FAN];
-    
+    [self loadSquareVex:vertices_position];
 }
 
 
