@@ -316,10 +316,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     });
     
-    [self.nextOperations enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
+    [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+       
         [obj renderIfCanWhenDependencyDone:self];
-
     }];
 }
 
@@ -420,7 +419,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     __block CGSize size=self.size;
     
-    [self.dependency enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         YDGLOperationNodeOutput *output=[obj getOutput];
         
@@ -606,8 +605,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
     _locked=YES;
     
-    [self.dependency enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-       
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
         [obj lock];
         
     }];
@@ -618,7 +617,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
     _locked=NO;
     
-    [self.dependency enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         [obj unlock];
         

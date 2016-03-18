@@ -383,7 +383,9 @@
 
 -(void)renderFrame{
 
-    glBindFramebuffer(GL_FRAMEBUFFER, _resolveFrameBuffer);
+    //glBindFramebuffer(GL_FRAMEBUFFER, _resolveFrameBuffer);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
     
     //glBindRenderbuffer(GL_RENDERBUFFER, _resolveRenderBuffer);
     
@@ -480,7 +482,7 @@
     glDisableVertexAttribArray(location_s_texture);
     glDisableVertexAttribArray(location_texturecoord);
     
-
+/*
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER_APPLE, _frameBuffer);
     
     glBindFramebuffer(GL_READ_FRAMEBUFFER_APPLE, _resolveFrameBuffer);
@@ -493,7 +495,7 @@
     glResolveMultisampleFramebufferAPPLE();
     
     const GLenum discards[]  = {GL_COLOR_ATTACHMENT0};
-    glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE,1,discards);
+    glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE,1,discards);*/
     
     glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
     
