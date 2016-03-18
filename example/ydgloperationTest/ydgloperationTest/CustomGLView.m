@@ -311,6 +311,8 @@
     imageVertices[11]=0.0;
     
     [_drawModel loadSquareVex:imageVertices];
+    
+    free(imageVertices);
 
 }
 
