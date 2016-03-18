@@ -42,7 +42,7 @@
     
     _customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     
-    _customView.cube=NO;
+    _customView.cube=YES;
     
     [self.view addSubview:_customView];
     
@@ -64,9 +64,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-    
-    [_customView startRender];
-    
+
     _displayLink.paused=NO;
     
 

@@ -21,8 +21,6 @@ typedef enum {
 
 @property(nonatomic,assign) BOOL cube;//
 
--(void)startRender;
-
 @property(nonatomic,assign) YDGLOperationImageFillModeType fillMode;//
 
 @end

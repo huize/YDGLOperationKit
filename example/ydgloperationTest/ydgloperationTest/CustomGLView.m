@@ -37,8 +37,6 @@
     
     float _angle;
 
-    dispatch_semaphore_t _semaphore_t_render;
-    
     YDDrawModel *_drawModel;
     
     //渲染到纹理的
@@ -76,8 +74,6 @@
     
     _sizeInPixel=self.bounds.size;
     
-    //dispatch_barrier_sync(_queue, ^{
-        
     [self setupLayer];
     
     [self setupContext];
@@ -92,7 +88,6 @@
     
     _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
     
-    //TODO:暂时设置无效
     if (self.cube) {
         
         [self loadCubeVex];
@@ -101,13 +96,7 @@
         [self loadSquareVex];
     }
     
-    //});
-    
     [EAGLContext setCurrentContext:nil];
-    
-    _semaphore_t_render=dispatch_semaphore_create(0);
-
-    dispatch_semaphore_wait(_semaphore_t_render, 0);
     
 }
 
@@ -175,7 +164,7 @@
  *
  *  创建用于多重采样的缓冲区,用于offscreen 渲染
  *
- *  @since <#1.0.2#>
+ *  @since 1.0.2
  */
 - (void)setupMSAABuffer {
     
@@ -547,25 +536,13 @@
 
 -(void)render{
     
-    //[super layoutSubviews];
-    
     dispatch_barrier_async(_queue, ^{
         
-        long timeout=dispatch_semaphore_wait(_semaphore_t_render, DISPATCH_TIME_FOREVER);
-        if (timeout==0) {
-            
-            [EAGLContext setCurrentContext:_context];
-            
-            [self renderFrame];
-            
-            [EAGLContext setCurrentContext:nil];
-            
-        }else{
+        [EAGLContext setCurrentContext:_context];
         
-          //  NSLog(@"超时了");
-        }
+        [self renderFrame];
         
-        dispatch_semaphore_signal(_semaphore_t_render);
+        [EAGLContext setCurrentContext:nil];
     
     });
     
@@ -604,22 +581,13 @@
     
 }
 
--(void)startRender{
-
-    dispatch_semaphore_signal(_semaphore_t_render);
-    
-    NSLog(@"可以开始渲染了");
-
-}
-
-
 -(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
     YDGLOperationNodeOutput* outData=[doneOperation getOutput];
     
     _textureId=outData.texture;
     
-    if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO) {
+    if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO&&self.cube==NO) {
         
         _inputImageSize=outData.size;
         
