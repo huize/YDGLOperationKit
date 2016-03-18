@@ -39,10 +39,6 @@
 
     YDDrawModel *_drawModel;
     
-    //渲染到纹理的
-    
-    dispatch_queue_t _queue;
-    
     CGSize _inputImageSize;//要显示的纹理的大小
     
 }
@@ -53,24 +49,29 @@
 
 }
 
--(void)setupLayer{
-
-    self.opaque = YES;
-    self.hidden = NO;
-   
-    _egallayer=(CAEAGLLayer *)[self layer];
-
-    _egallayer.opaque=YES;
-    
-    _egallayer.drawableProperties = @{kEAGLDrawablePropertyRetainedBacking:@NO, kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8};
-
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self commonInit];
+    }
+    return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self commonInit];
+    }
+    return self;
+}
+
+
+#pragma -mark 初始化
 -(void)commonInit{
     
     _drawModel=[YDDrawModel new];
-
-    _queue=[[YDGLOperationNode class] getWorkQueue];
     
     _sizeInPixel=self.bounds.size;
     
@@ -100,22 +101,17 @@
     
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self commonInit];
-    }
-    return self;
-}
+-(void)setupLayer{
 
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
-    self = [super initWithCoder:coder];
-    if (self) {
-        [self commonInit];
-    }
-    return self;
+    self.opaque = YES;
+    self.hidden = NO;
+   
+    _egallayer=(CAEAGLLayer *)[self layer];
+
+    _egallayer.opaque=YES;
+    
+    _egallayer.drawableProperties = @{kEAGLDrawablePropertyRetainedBacking:@NO, kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8};
+
 }
 
 - (void)setupContext {
@@ -203,26 +199,31 @@
     
 }
 
--(void)destoryRenderAndFrameBuffer{
+-(void)setupProgram{
+    
+    
+    [_drawModel setvShaderSource:[vShaderStr UTF8String] andfShaderSource:[fShaderStr UTF8String]];
+    
+}
 
-    glDeleteBuffers(1, &_frameBuffer);
-    
-    _frameBuffer=0;
-    
-    glDeleteBuffers(1, &_renderBuffer);
-    
-    _renderBuffer=0;
-    
-    
-    glDeleteBuffers(1, &_resolveFrameBuffer);
-    
-    _resolveFrameBuffer=0;
-    
-    glDeleteBuffers(1, &_resolveRenderBuffer);
-    
-    _resolveRenderBuffer=0;
-    
+#pragma -mark 内部接口
 
+-(void)activeGLContext:(void (^)(void))block{
+    
+    EAGLContext *preContext=[EAGLContext currentContext];
+    
+    if (preContext==_context) {
+        
+        block();
+        
+    }else{
+        
+        [EAGLContext setCurrentContext:_context];
+        
+        block();
+        
+        [EAGLContext setCurrentContext:preContext];
+    }
 }
 
 -(void)loadCubeVex{
@@ -362,15 +363,7 @@
     
 }
 
-
--(void)setupProgram{
-
-    
-    [_drawModel setvShaderSource:[vShaderStr UTF8String] andfShaderSource:[fShaderStr UTF8String]];
-    
-}
-
--(void)renderFrame{
+-(void)render{
 
     //glBindFramebuffer(GL_FRAMEBUFFER, _resolveFrameBuffer);
     
@@ -492,65 +485,31 @@
     
 }
 
-/**
- *  @author 许辉泽, 16-01-13 18:21:26
- *
- *  从帧缓冲区对象读取像素数据
- *
- *  @since 1.0.2
- */
--(void)readBuffer{
-
-    glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
+-(void)innerRender{
     
-    //glViewport(0, 0, _sizeInPixel.width, _sizeInPixel.height);
-    
-    GLubyte *t=malloc(_sizeInPixel.width*_sizeInPixel.height*4*sizeof(GLubyte));
-    
-    glReadPixels(0, 0, _sizeInPixel.width, _sizeInPixel.height, GL_RGBA, GL_UNSIGNED_BYTE, t);
-    
-    struct RGBA{
-        
-        uint8_t R;
-        uint8_t G;
-        uint8_t B;
-        uint8_t A;
-        
-    };
- 
-    struct RGBA *tt=(struct RGBA*)t;
-    
-    for (int index=0; index<300; index++) {
-        
-        struct   RGBA pixel=tt[index];
-        
-         NSLog(@"r:%i g:%i b:%i a:%i",pixel.R,pixel.G,pixel.B,pixel.A);
-    }
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-    free(t);
-
+    [self render];
     
 }
 
--(void)render{
+
+#pragma -mark 资源清理
+
+-(void)dealloc{
     
-    dispatch_barrier_async(_queue, ^{
-        
-        [EAGLContext setCurrentContext:_context];
-        
-        [self renderFrame];
+    
+    [self cleanup];
+    
+    if ([EAGLContext currentContext]==_context) {
         
         [EAGLContext setCurrentContext:nil];
+        
+    }
     
-    });
+    _context=nil;
     
 }
-
-
 -(void)cleanup{
-
+    
     glDeleteBuffers(1, &_renderBuffer);
     
     glDeleteBuffers(1, &_frameBuffer);
@@ -566,20 +525,30 @@
 }
 
 
--(void)dealloc{
-
+-(void)destoryRenderAndFrameBuffer{
     
-    [self cleanup];
-
-    if ([EAGLContext currentContext]==_context) {
-        
-        [EAGLContext setCurrentContext:nil];
-        
-    }
+    glDeleteBuffers(1, &_frameBuffer);
     
-    _context=nil;
+    _frameBuffer=0;
+    
+    glDeleteBuffers(1, &_renderBuffer);
+    
+    _renderBuffer=0;
+    
+    
+    glDeleteBuffers(1, &_resolveFrameBuffer);
+    
+    _resolveFrameBuffer=0;
+    
+    glDeleteBuffers(1, &_resolveRenderBuffer);
+    
+    _resolveRenderBuffer=0;
+    
     
 }
+
+#pragma -mark  GLOperationNode 协议实现
+
 
 -(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
@@ -596,7 +565,11 @@
     
     [doneOperation lock];
     
-    [self render];
+    [self activeGLContext:^{
+       
+        [self innerRender];
+        
+    }];
     
     [doneOperation unlock];
     
@@ -608,6 +581,8 @@
 
 }
 
+
+#pragma -mark 外部接口
 
 -(void)setCube:(BOOL)cube{
 
@@ -624,24 +599,6 @@
 
 }
 
--(void)activeGLContext:(void (^)(void))block{
-    
-    EAGLContext *preContext=[EAGLContext currentContext];
-    
-    if (preContext==_context) {
-        
-        block();
-        
-    }else{
-        
-        [EAGLContext setCurrentContext:_context];
-        
-        block();
-        
-        [EAGLContext setCurrentContext:preContext];
-    }
-}
-
 -(void)setFillModeType:(YDGLOperationImageFillModeType)fillModeType{
     
     if (self.cube) {
@@ -652,6 +609,50 @@
         _fillMode=fillModeType;
         
     }
+    
+}
+
+#pragma -mark 测试代码
+
+/**
+ *  @author 许辉泽, 16-01-13 18:21:26
+ *
+ *  从帧缓冲区对象读取像素数据
+ *
+ *  @since 1.0.2
+ */
+-(void)readBuffer{
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
+    
+    //glViewport(0, 0, _sizeInPixel.width, _sizeInPixel.height);
+    
+    GLubyte *t=malloc(_sizeInPixel.width*_sizeInPixel.height*4*sizeof(GLubyte));
+    
+    glReadPixels(0, 0, _sizeInPixel.width, _sizeInPixel.height, GL_RGBA, GL_UNSIGNED_BYTE, t);
+    
+    struct RGBA{
+        
+        uint8_t R;
+        uint8_t G;
+        uint8_t B;
+        uint8_t A;
+        
+    };
+    
+    struct RGBA *tt=(struct RGBA*)t;
+    
+    for (int index=0; index<300; index++) {
+        
+        struct   RGBA pixel=tt[index];
+        
+        NSLog(@"r:%i g:%i b:%i a:%i",pixel.R,pixel.G,pixel.B,pixel.A);
+    }
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    free(t);
+    
     
 }
 
