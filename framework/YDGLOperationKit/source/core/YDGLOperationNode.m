@@ -28,8 +28,6 @@
 
 @property(nonatomic,assign) BOOL frameBufferAvailable;
 
-@property(nonatomic,retain) dispatch_semaphore_t lockForRender;
-
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *programOperations;//program 的操作
 @end
 
@@ -96,8 +94,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     _glContext=[[self class] getGLContext];
         
     self.programOperations=[NSMutableArray array];
-    
-    self.lockForRender=dispatch_semaphore_create(1);
     
     [self activeGLContext:^{
         
@@ -413,6 +409,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
+    
+    if (_locked){
+    
+        return ;
+    
+    }
+    
     __block BOOL ready=YES;
     
     __block CGSize size=self.size;
@@ -597,6 +600,31 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     glDeleteTextures(1, &_renderTexture_out);
     
+}
+
+-(void)lock{
+
+    _locked=YES;
+    
+    [self.dependency enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+       
+        [obj lock];
+        
+    }];
+
+}
+
+-(void)unlock{
+
+    _locked=NO;
+    
+    [self.dependency enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [obj unlock];
+        
+    }];
+
+
 }
 
 

@@ -102,6 +102,23 @@
 
 -(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
 
+/**
+ *  @author 许辉泽, 16-03-18 13:53:26
+ *
+ *  锁节点,将不再收到输入
+ *  注意:目前的实现是一个递归操作,会锁住所有的dependency 节点
+ *
+ *  @since 1.0.0
+ */
+-(void)lock;
+/**
+ *  @author 许辉泽, 16-03-18 13:54:41
+ *
+ *  解锁节点
+ *
+ *  @since 1.0.0
+ */
+-(void)unlock;
 
 @end
 
@@ -183,6 +200,9 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 }
 
 @property(nonatomic,nullable,copy) void(^operationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);//
+@property(nonatomic,readonly,getter=isLocked) BOOL locked;
+
+
 
 -(instancetype _Nullable)initWithVertexShader:(NSString*_Nonnull)vertexShaderString andFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 

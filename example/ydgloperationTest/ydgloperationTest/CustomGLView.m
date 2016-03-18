@@ -546,13 +546,12 @@
     
     _textureId=outData.texture;
     
-    BOOL ready=YES;
+    [doneOperation lock];
     
-    if (ready) {
-        
-        [self render];
-    }
-
+    [self render];
+    
+    [doneOperation unlock];
+    
 }
 
 -(void)addDependency:(id<YDGLOperationNode>)operation{
