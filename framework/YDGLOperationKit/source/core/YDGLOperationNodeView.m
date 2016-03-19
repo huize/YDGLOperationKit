@@ -281,7 +281,7 @@
         }; break;
     }
     
-    CGFloat *imageVertices=malloc(12*sizeof(GLfloat));
+    GLfloat *imageVertices=malloc(12*sizeof(GLfloat));
     
     imageVertices[0] = -widthScaling;
     imageVertices[1] = -heightScaling;
