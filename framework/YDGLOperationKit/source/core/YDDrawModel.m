@@ -11,8 +11,9 @@
 
 @interface YDDrawModel()
 
-@property(nonatomic,nullable,retain) NSMutableDictionary *varDictionary;//
+@property(nonatomic,nullable,retain) NSMutableDictionary *uniformDictionary;//
 
+@property(nonatomic,nullable,retain) NSMutableDictionary *attributeDictionary;//
 
 
 @end
@@ -24,7 +25,9 @@
     self = [super init];
     if (self) {
         
-        self.varDictionary=[NSMutableDictionary dictionary];
+        self.uniformDictionary=[NSMutableDictionary dictionary];
+        
+        self.attributeDictionary=[NSMutableDictionary dictionary];
         
     }
     return self;
@@ -196,6 +199,10 @@
     
     glDeleteProgram(_program);
     
+    [_uniformDictionary removeAllObjects];
+    
+    [_attributeDictionary removeAllObjects];
+    
 }
 
 /**
@@ -207,7 +214,9 @@
  */
 -(void)loadProgram{
 
-    [self.varDictionary removeAllObjects];
+    [self.uniformDictionary removeAllObjects];
+    
+    [self.attributeDictionary removeAllObjects];
     
     glUseProgram(_program);
     
@@ -236,7 +245,7 @@
         
         //NSLog(@" uniform name:%@  location:%i",name,location);
     
-        [self.varDictionary setObject:@(location) forKey:name];
+        [self.uniformDictionary setObject:@(location) forKey:name];
         
     }
     
@@ -267,7 +276,7 @@
         
         //NSLog(@" attribute name:%@  location:%i",name,location);
 
-        [self.varDictionary setObject:@(location) forKey:name];
+        [self.attributeDictionary setObject:@(location) forKey:name];
     }
     
     free(attributeName);
@@ -277,9 +286,14 @@
 
 -(GLint)locationOfUniform:(NSString *)uniformName{
 
-    NSNumber *location=self.varDictionary[uniformName];
+    NSNumber *location=self.uniformDictionary[uniformName];
     
     //NSAssert(location!=nil, @"招不到着色器里面的统一变量名:%@,请检查清楚",uniformName);
+    
+//    if (location==nil) {
+//        
+//        NSLog(@"错误,找不到unifrom %@ location",uniformName);
+//    }
     
     return location.intValue;
 
@@ -287,12 +301,14 @@
 
 -(GLint)locationOfAttribute:(NSString *)attributeName{
 
-    NSNumber *location=self.varDictionary[attributeName];
+    NSNumber *location=self.attributeDictionary[attributeName];
     
     //NSAssert(location!=nil, @"招不到着色器里面的属性名:%@,请检查清楚",attributeName);
     
     return location.intValue;
 
 }
+
+
 
 @end
