@@ -51,10 +51,29 @@
     
     //[defaultSetting setObject:@(20) forKey:AVVideoMaxKeyFrameIntervalKey];
     
-    [defaultSetting setObject:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) forKey:(id)kCVPixelBufferPixelFormatTypeKey];
-    
     videoDataOutput.alwaysDiscardsLateVideoFrames=YES;
     
+    BOOL supportsFullYUVRange=NO;
+    
+    NSArray *supportedPixelFormats = videoDataOutput.availableVideoCVPixelFormatTypes;
+    
+    for (NSNumber *currentPixelFormat in supportedPixelFormats)
+    {
+        if ([currentPixelFormat intValue] == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)
+        {
+            supportsFullYUVRange = YES;
+        }
+    }
+    
+    if (supportsFullYUVRange)
+    {
+        [defaultSetting setObject:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+    }
+    else
+    {
+        [defaultSetting setObject:@(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+    }
+
     [videoDataOutput setVideoSettings:defaultSetting];
     
     [captureSession addOutput:videoDataOutput];
