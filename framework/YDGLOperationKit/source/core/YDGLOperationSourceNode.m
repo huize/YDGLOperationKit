@@ -119,20 +119,89 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)innerUploadImageToTexture{
 
-    size_t width = CGImageGetWidth(_image.CGImage);
-    size_t height = CGImageGetHeight(_image.CGImage);
     
-    GLubyte *data=calloc(1, width*height*4*sizeof(GLubyte));
+    CGImageRef newImageSource=_image.CGImage;
     
-    CGContextRef context= CGBitmapContextCreate(data, width, height, 8, width*4, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Big);
-    CGImageRef ci=_image.CGImage;
+    // TODO: Dispatch this whole thing asynchronously to move image loading off main thread
+    CGFloat widthOfImage = CGImageGetWidth(newImageSource);
+    CGFloat heightOfImage = CGImageGetHeight(newImageSource);
     
-    CGContextDrawImage(context, CGRectMake(0, 0, width, height), ci);
+    // If passed an empty image reference, CGContextDrawImage will fail in future versions of the SDK.
+    NSAssert( widthOfImage > 0 && heightOfImage > 0, @"Passed image must not be empty - it should be at least 1px tall and wide");
     
+    CGSize pixelSizeOfImage = CGSizeMake(widthOfImage, heightOfImage);
+    CGSize pixelSizeToUseForTexture = pixelSizeOfImage;
+    
+    BOOL shouldRedrawUsingCoreGraphics = NO;
+    
+    GLubyte *imageData = NULL;
+    CFDataRef dataFromImageDataProvider = NULL;
+    GLenum format = GL_BGRA;
+    
+    if (!shouldRedrawUsingCoreGraphics) {
+        /* Check that the memory layout is compatible with GL, as we cannot use glPixelStore to
+         * tell GL about the memory layout with GLES.
+         */
+        if (CGImageGetBytesPerRow(newImageSource) != CGImageGetWidth(newImageSource) * 4 ||
+            CGImageGetBitsPerPixel(newImageSource) != 32 ||
+            CGImageGetBitsPerComponent(newImageSource) != 8)
+        {
+            shouldRedrawUsingCoreGraphics = YES;
+        } else {
+            /* Check that the bitmap pixel format is compatible with GL */
+            CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(newImageSource);
+            if ((bitmapInfo & kCGBitmapFloatComponents) != 0) {
+                /* We don't support float components for use directly in GL */
+                shouldRedrawUsingCoreGraphics = YES;
+            } else {
+                CGBitmapInfo byteOrderInfo = bitmapInfo & kCGBitmapByteOrderMask;
+                if (byteOrderInfo == kCGBitmapByteOrder32Little) {
+                    /* Little endian, for alpha-first we can use this bitmap directly in GL */
+                    CGImageAlphaInfo alphaInfo = bitmapInfo & kCGBitmapAlphaInfoMask;
+                    if (alphaInfo != kCGImageAlphaPremultipliedFirst && alphaInfo != kCGImageAlphaFirst &&
+                        alphaInfo != kCGImageAlphaNoneSkipFirst) {
+                        shouldRedrawUsingCoreGraphics = YES;
+                    }
+                } else if (byteOrderInfo == kCGBitmapByteOrderDefault || byteOrderInfo == kCGBitmapByteOrder32Big) {
+                    /* Big endian, for alpha-last we can use this bitmap directly in GL */
+                    CGImageAlphaInfo alphaInfo = bitmapInfo & kCGBitmapAlphaInfoMask;
+                    if (alphaInfo != kCGImageAlphaPremultipliedLast && alphaInfo != kCGImageAlphaLast &&
+                        alphaInfo != kCGImageAlphaNoneSkipLast) {
+                        shouldRedrawUsingCoreGraphics = YES;
+                    } else {
+                        /* Can access directly using GL_RGBA pixel format */
+                        format = GL_RGBA;
+                    }
+                }
+            }
+        }
+    }
+    
+    //    CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
+    
+    if (shouldRedrawUsingCoreGraphics)
+    {
+        // For resized or incompatible image: redraw
+        imageData = (GLubyte *) calloc(1, (int)pixelSizeToUseForTexture.width * (int)pixelSizeToUseForTexture.height * 4);
+        
+        CGColorSpaceRef genericRGBColorspace = CGColorSpaceCreateDeviceRGB();
+        
+        CGContextRef imageContext = CGBitmapContextCreate(imageData, (size_t)pixelSizeToUseForTexture.width, (size_t)pixelSizeToUseForTexture.height, 8, (size_t)pixelSizeToUseForTexture.width * 4, genericRGBColorspace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+        //        CGContextSetBlendMode(imageContext, kCGBlendModeCopy); // From Technical Q&A QA1708: http://developer.apple.com/library/ios/#qa/qa1708/_index.html
+        CGContextDrawImage(imageContext, CGRectMake(0.0, 0.0, pixelSizeToUseForTexture.width, pixelSizeToUseForTexture.height), newImageSource);
+        CGContextRelease(imageContext);
+        CGColorSpaceRelease(genericRGBColorspace);
+    }
+    else
+    {
+        // Access the raw image bytes directly
+        dataFromImageDataProvider = CGDataProviderCopyData(CGImageGetDataProvider(newImageSource));
+        imageData = (GLubyte *)CFDataGetBytePtr(dataFromImageDataProvider);
+    }
+
     glBindTexture(GL_TEXTURE_2D, _renderTexture_input);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)width,(int)height, 0, GL_RGBA,
-                 GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)pixelSizeToUseForTexture.width, (int)pixelSizeToUseForTexture.height, 0, format, GL_UNSIGNED_BYTE, imageData);
     
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -142,17 +211,16 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     
     glBindTexture(GL_TEXTURE_2D, 0);
     
-    _size=CGSizeMake(width, height);
+    _size=pixelSizeToUseForTexture;
     
-    if (_pixelFormatType!=kCVPixelFormatType_32RGBA) {
+    if (_pixelFormatType!=kCVPixelFormatType_32BGRA) {
         
-        _pixelFormatType=kCVPixelFormatType_32RGBA;
+        _pixelFormatType=kCVPixelFormatType_32BGRA;
+        
         _shouldSwitchShader=YES;
         
     }
     
-    CGContextRelease(context);
-    free(data);
 }
 
 -(void)innerUploadPixelBufferToTexture{
