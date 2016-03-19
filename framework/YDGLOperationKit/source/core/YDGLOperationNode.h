@@ -242,6 +242,17 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 - (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName;
 
 /**
+ *  @author 许辉泽, 16-03-19 16:14:32
+ *
+ *  该node的size 发生改变了
+ *
+ *  @param newInputSize node 最新的size
+ *
+ *  @since 1.0.0
+ */
+-(void)didSetInputSize:(CGSize)newInputSize;
+
+/**
  *  @author 许辉泽, 16-03-18 17:56:56
  *
  * 绕Z轴旋转

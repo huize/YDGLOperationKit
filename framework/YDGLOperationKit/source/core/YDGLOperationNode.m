@@ -524,7 +524,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
-    
     if (_locked){
     
         return ;
@@ -560,8 +559,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
         if (size.width!=self.size.width||size.height!=self.size.height) {
             
-            self.size=size;
-            self.frameBufferAvailable=NO;
+            [self innerSetInputSize:size];
             
         }
         
@@ -576,6 +574,23 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     }
     
 }
+
+-(void)innerSetInputSize:(CGSize)newSize{
+
+    self.size=[self calculateSizeByRotatedAngle:newSize];
+
+    self.frameBufferAvailable=NO;
+    
+    [self didSetInputSize:self.size];
+}
+
+
+-(void)didSetInputSize:(CGSize)newInputSize{
+
+    
+
+}
+
 
 -(void)activeGLContext:(void (^)(void))block{
     
@@ -708,10 +723,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     RunInNodeProcessQueue(^{
         
+        CGSize currentSize=self.size;
+        
         self.angle=angle;
+        
         esRotate(&_mvpMatrix, self.angle, 0, 0, 1.0);
-        self.frameBufferAvailable=NO;
-        self.size=[self calculateSizeByRotatedAngle:_size];
+        
+        [self innerSetInputSize:currentSize];
         
     });
     
