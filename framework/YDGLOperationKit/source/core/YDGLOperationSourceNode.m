@@ -8,7 +8,7 @@
 
 #import "YDGLOperationSourceNode.h"
 
-NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
+NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 (
  
  uniform sampler2D SamplerY;
@@ -16,33 +16,45 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
  
  varying highp vec2 textureCoordinate;
  
+ uniform lowp int isFullRange;
+ 
+ uniform lowp int isBT709;
+ 
  void main()
 {
     mediump vec3 yuv;
     lowp vec3 rgb;
     
-    yuv.x = texture2D(SamplerY, textureCoordinate).r;
-    yuv.yz = texture2D(SamplerUV, textureCoordinate).rg - vec2(0.5, 0.5);
+    if(isFullRange==1){
     
-    // BT.601, which is the standard for SDTV is provided as a reference
-    /*
-     rgb = mat3(    1,       1,     1,
-     0, -.34413, 1.772,
-     1.402, -.71414,     0) * yuv;*/
-     
+        yuv.x = texture2D(SamplerY, textureCoordinate).r;
+        
+    }else{
     
-    // Using BT.709 which is the standard for HDTV
-    rgb = mat3(      1,       1,      1,
-               0, -.18732, 1.8556,
-               1.57481, -.46813,      0) * yuv;
+        yuv.x = texture2D(SamplerY, textureCoordinate).r - (16.0/255.0);
+    
+    }
+
+    yuv.yz = texture2D(SamplerUV, textureCoordinate).ra - vec2(0.5, 0.5);
+    
+    if(isBT709==1){
+    
+        rgb=mat3( 1.164,  1.164, 1.164,
+                 0.0, -0.213, 2.112,
+                 1.793, -0.533,   0.0)*yuv;
+    }else{
+    
+        rgb=mat3( 1.0,    1.0,    1.0,
+                 0.0,    -0.343, 1.765,
+                 1.4,    -0.711, 0.0)*yuv;
+    
+    }
     
     gl_FragColor = vec4(rgb, 1);
 }
 
  
  );
-
-
 
 @interface YDGLOperationSourceNode ()
 
@@ -174,10 +186,10 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
                                                                 _pixelBufferRef,
                                                                 NULL,
                                                                 GL_TEXTURE_2D,
-                                                                GL_RED_EXT,
+                                                                GL_LUMINANCE,
                                                                 (int)width,
                                                                 (int)height,
-                                                                GL_RED_EXT,
+                                                                GL_LUMINANCE,
                                                                 GL_UNSIGNED_BYTE,
                                                                 0,
                                                                 &_lumaTexture);
@@ -199,10 +211,10 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
                                                        _pixelBufferRef,
                                                        NULL,
                                                        GL_TEXTURE_2D,
-                                                       GL_RG_EXT,
+                                                       GL_LUMINANCE_ALPHA,
                                                        (int)width/2,
                                                        (int)height/2,
-                                                       GL_RG_EXT,
+                                                       GL_LUMINANCE_ALPHA,
                                                        GL_UNSIGNED_BYTE,
                                                        1,
                                                        &_chromaTexture);
@@ -269,14 +281,14 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
 }
 
 -(void)prepareForRender{
-
-
+    
+    
     if (_image) {
         
         [self innerUploadImageToTexture];
         
     }else if(_pixelBufferRef!=NULL){
-    
+        
         [self innerUploadPixelBufferToTexture];
         
     }
@@ -287,12 +299,40 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
         
         switch (_pixelFormatType) {
             case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange:
+            {
+                
+                fragmentShader=kYDGLOperationYUVToLAFragmentShaderString;
+                [self setBool:NO forUniformName:@"isFullRange"];
+                
+            }
+                break;
             case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:
-                fragmentShader=kYDGLOperationYUVFragmentShaderString;
+            {
+                
+                fragmentShader=kYDGLOperationYUVToLAFragmentShaderString;
+                
+                [self setBool:YES forUniformName:@"isFullRange"];
+            }
+                
                 break;
                 
             default:
                 break;
+        }
+        
+        
+        CFTypeRef colorAttachments = CVBufferGetAttachment(_pixelBufferRef, kCVImageBufferYCbCrMatrixKey, NULL);
+        if (colorAttachments != NULL)
+        {
+            if(CFStringCompare(colorAttachments, kCVImageBufferYCbCrMatrix_ITU_R_601_4, 0) == kCFCompareEqualTo)
+            {
+                
+                [self setBool:NO forUniformName:@"isBT709"];
+            }
+            else
+            {
+                [self setBool:YES forUniformName:@"isBT709"];
+            }
         }
         
         [_drawModel setvShaderSource:[vShaderStr UTF8String] andfShaderSource:[fragmentShader UTF8String]];

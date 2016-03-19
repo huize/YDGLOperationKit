@@ -237,6 +237,10 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 //opengl operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
 
+- (void)setInt:(GLint)newInt forUniformName:(NSString *_Nonnull)uniformName;
+
+- (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName;
+
 /**
  *  @author 许辉泽, 16-03-18 17:56:56
  *

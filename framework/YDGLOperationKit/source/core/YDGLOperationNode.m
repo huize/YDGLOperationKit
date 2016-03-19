@@ -674,6 +674,36 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
+- (void)setInt:(GLint)newInt forUniformName:(NSString *_Nonnull)uniformName{
+
+    dispatch_block_t operation=^{
+        
+        GLint location=[_drawModel locationOfUniform:uniformName];
+        
+        glUniform1i(location, newInt);
+        
+    };
+    
+    [self.programOperations addObject:operation];
+
+}
+
+- (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName{
+
+    dispatch_block_t operation=^{
+        
+        GLint location=[_drawModel locationOfUniform:uniformName];
+            
+        glUniform1i(location, newBool==true);
+        
+    };
+    
+    [self.programOperations addObject:operation];
+
+}
+
+
+
 -(void)rotateAtZ:(int)angle{
     
     RunInNodeProcessQueue(^{
