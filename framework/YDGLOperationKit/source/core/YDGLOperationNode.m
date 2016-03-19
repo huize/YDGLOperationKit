@@ -154,6 +154,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     dispatch_once(&onceToken, ^{
         
         workQueue=dispatch_queue_create([@"GLOperationKit工作线程" UTF8String],DISPATCH_QUEUE_SERIAL);
+        NSString * contextProxy=@"YDGLOperationKitQueueContext";
+        
+        dispatch_queue_set_specific(workQueue, @"YDGLOperationKit",(__bridge void *)(contextProxy), NULL);
         
     });
     
@@ -164,6 +167,23 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 +(CVOpenGLESTextureCacheRef)getTextureCache{
 
     return coreVideoTextureCache;
+}
+
++(void)runInWorkQueueImmediately:(dispatch_block_t)block{
+
+    if (dispatch_get_specific(@"YDGLOperationKit")) {
+        
+        if (block) {
+            
+            block();
+        }
+        
+    }else{
+    
+        dispatch_async([YDGLOperationNode getWorkQueue],block);
+    
+    }
+
 }
 
 
@@ -393,7 +413,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     //glFlush();
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
        
         if (self.operationCompletionBlock) {
             
@@ -680,12 +700,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     dispatch_block_t operation=^{
         
         GLint location=[_drawModel locationOfUniform:uniformName];
-        
+
         glUniform1f(location, newFloat);
         
     };
     
     [self.programOperations addObject:operation];
+    
     
 }
 

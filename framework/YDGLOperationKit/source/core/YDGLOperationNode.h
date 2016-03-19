@@ -168,7 +168,7 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 @end
 
 
-#define RunInNodeProcessQueue(block) dispatch_async([[YDGLOperationNode class] getWorkQueue], block)
+#define RunInNodeProcessQueue(block) [[YDGLOperationNode class] runInWorkQueueImmediately:block]
 
 /**
  *  @author 许辉泽, 16-03-11 17:10:21
@@ -213,6 +213,16 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
 +(dispatch_queue_t _Nonnull)getWorkQueue;
 
 +(CVOpenGLESTextureCacheRef _Nonnull)getTextureCache;
+/**
+ *  @author 许辉泽, 16-03-19 19:47:39
+ *
+ *  立即运行在workQueue,如果可以的话
+ *
+ *  @param block
+ *
+ *  @since 1.0.0
+ */
++(void)runInWorkQueueImmediately:(dispatch_block_t _Nonnull)block;
 
 //-------------------------
 /**
