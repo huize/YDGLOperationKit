@@ -232,10 +232,39 @@ static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordi
  */
 -(void)render;
 
+-(void)activeGLContext:(void(^_Nonnull)(void))block;
+
 //opengl operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
 
--(void)activeGLContext:(void(^_Nonnull)(void))block;
+/**
+ *  @author 许辉泽, 16-03-18 17:56:56
+ *
+ * 绕Z轴旋转
+ *
+ *  @param angle 90,180,270
+ *
+ *  @since 1.0.0
+ */
+-(void)rotateAtZ:(int)angle;
+/**
+ *  @author 许辉泽, 16-03-18 21:57:48
+ *
+ *  绕Y轴旋转
+ *
+ *  @param angle
+ *
+ *  @since 1.0.0
+ */
+-(void)rotateAtY:(int)angle;
+
+/**
+ *  @author 许辉泽, 16-03-18 18:00:28
+ *
+ *  根据angle 属性重新计算一次size
+ *
+ *  @since 1.0.0
+ */
 
 @end
 

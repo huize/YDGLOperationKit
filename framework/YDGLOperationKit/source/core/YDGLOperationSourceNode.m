@@ -100,6 +100,9 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
     CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_textureCache);
     
     NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
+    
+    [self rotateAtZ:180];//注意:UIKit和AVFoundationKit的坐标原点在左上角,openGL ES/CGContext 的坐标原点在左下角
+    
 }
 
 -(void)innerUploadImageToTexture{
@@ -111,9 +114,6 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
     
     CGContextRef context= CGBitmapContextCreate(data, width, height, 8, width*4, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Big);
     CGImageRef ci=_image.CGImage;
-    
-    CGContextTranslateCTM(context, 0, height);
-    CGContextScaleCTM(context, 1.0, -1.0);
     
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), ci);
     
@@ -267,7 +267,6 @@ NSString *const kYDGLOperationYUVFragmentShaderString = SHADER_STRING
     });
     
 }
-
 
 -(void)prepareForRender{
 

@@ -8,6 +8,14 @@
 
 #import "YDGLOperationNode.h"
 
+/**
+ *  注意:UIKit和AVFoundationKit的坐标原点在左上角,
+ *  openGL ES/CGContext 的坐标原点在左下角
+ *  所以该类型的节点初始化的时候是旋转了180度的
+ *
+ *
+ *
+ */
 @interface YDGLOperationSourceNode :YDGLOperationNode
 
 -(instancetype _Nonnull)initWithUIImage:(UIImage*_Nonnull)image;

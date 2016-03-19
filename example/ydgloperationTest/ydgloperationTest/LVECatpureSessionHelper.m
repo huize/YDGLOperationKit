@@ -159,7 +159,7 @@
         if ([videoConnection isVideoMirroringSupported]) {
             
             [videoConnection setVideoMirrored:mirror];
-            [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+            [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
         }
         
     }

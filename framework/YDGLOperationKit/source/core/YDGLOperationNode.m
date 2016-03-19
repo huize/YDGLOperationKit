@@ -29,6 +29,10 @@
 @property(nonatomic,assign) BOOL frameBufferAvailable;
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *programOperations;//program 的操作
+
+@property(nonatomic,assign) int angle;//旋转的角度
+
+
 @end
 
 @implementation YDGLOperationNode{
@@ -107,6 +111,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     _textureLoaderDelegate=self;
     
 }
+
+#pragma -mark 类方法
 
 +(EAGLContext *)getGLContext{
     
@@ -205,9 +211,21 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 }
 
 
--(void)setTransform:(ESMatrix)transformMatrix{
+#pragma -mark 内部接口
+
+-(void)activeProgram:(void(^_Nullable)(GLuint))block{
     
-    self.mvpMatrix=transformMatrix;
+    [self activeGLContext:^{
+        
+        glUseProgram(_drawModel.program);
+        
+        if(block){
+            
+            block(_drawModel.program);
+            
+        }
+        
+    }];
     
 }
 
@@ -224,6 +242,75 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     return modelview;
     
 }
+
+-(void)createRenderTexture{
+    
+    CFDictionaryRef empty; // empty value for attr value.
+    CFMutableDictionaryRef attrs;
+    empty = CFDictionaryCreate(kCFAllocatorDefault, NULL, NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks); // our empty IOSurface properties dictionary
+    attrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    CFDictionarySetValue(attrs, kCVPixelBufferIOSurfacePropertiesKey, empty);
+    
+    CVReturn err = CVPixelBufferCreate(kCFAllocatorDefault, (int)_size.width, (int)_size.height, kCVPixelFormatType_32BGRA, attrs, &_pixelBuffer_out);
+    if (err)
+    {
+        NSLog(@"FBO size: %f, %f", _size.width, _size.height);
+        NSAssert(NO, @"Error at CVPixelBufferCreate %d", err);
+    }
+    
+    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, _pixelBuffer_out,
+                                                        NULL, // texture attributes
+                                                        GL_TEXTURE_2D,
+                                                        GL_RGBA, // opengl format
+                                                        (int)_size.width,
+                                                        (int)_size.height,
+                                                        GL_RGBA, // native iOS format
+                                                        GL_UNSIGNED_BYTE,
+                                                        0,
+                                                        &_cvTextureRef);
+    if (err)
+    {
+        NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
+    }
+    
+    CFRelease(attrs);
+    CFRelease(empty);
+    
+    
+}
+
+/**
+ *  @author 许辉泽, 16-03-18 18:00:28
+ *
+ *  根据angle 属性重新计算一次size
+ *
+ *  @since 1.0.0
+ */
+-(CGSize)calculateSizeByRotatedAngle:(CGSize)size{
+    
+    CGSize result=size;
+    
+    switch (self.angle) {
+        case 90:
+        case 270:
+        {
+            
+            result=CGSizeMake(size.height, size.width);
+            
+        }
+            
+            break;
+            
+        default:
+            result=size;
+            break;
+    }
+    
+    return result;
+    
+}
+
+#pragma -mark 支持子类重载的接口
 
 -(void)render{
     
@@ -371,6 +458,35 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
+
+#pragma -mark Node 协议的实现
+
+-(void)lock{
+    
+    _locked=YES;
+    
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [obj lock];
+        
+    }];
+    
+}
+
+-(void)unlock{
+    
+    _locked=NO;
+    
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [obj unlock];
+        
+    }];
+    
+    
+}
+
+
 -(void)addNextOperation:(id<YDGLOperationNode>)nextOperation{
     
     [self.nextOperations addObject:nextOperation];
@@ -461,36 +577,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(void)setFloat:(GLfloat)newFloat forUniformName:(NSString *)uniformName{
-    
-    dispatch_block_t operation=^{
-    
-        GLint location=[_drawModel locationOfUniform:uniformName];
-        
-        glUniform1f(location, newFloat);
-    
-    };
-    
-    [self.programOperations addObject:operation];
-    
-}
-
--(void)activeProgram:(void(^_Nullable)(GLuint))block{
-    
-    [self activeGLContext:^{
-        
-        glUseProgram(_drawModel.program);
-        
-        if(block){
-            
-            block(_drawModel.program);
-            
-        }
-        
-    }];
-    
-}
-
 -(void)activeGLContext:(void (^)(void))block{
     
     EAGLContext *preContext=[EAGLContext currentContext];
@@ -508,7 +594,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         [EAGLContext setCurrentContext:preContext];
     }
 }
-
 
 #pragma -mark  纹理加载的代理
 
@@ -535,41 +620,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(void)createRenderTexture{
-
-    CFDictionaryRef empty; // empty value for attr value.
-    CFMutableDictionaryRef attrs;
-    empty = CFDictionaryCreate(kCFAllocatorDefault, NULL, NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks); // our empty IOSurface properties dictionary
-    attrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    CFDictionarySetValue(attrs, kCVPixelBufferIOSurfacePropertiesKey, empty);
-    
-    CVReturn err = CVPixelBufferCreate(kCFAllocatorDefault, (int)_size.width, (int)_size.height, kCVPixelFormatType_32BGRA, attrs, &_pixelBuffer_out);
-    if (err)
-    {
-        NSLog(@"FBO size: %f, %f", _size.width, _size.height);
-        NSAssert(NO, @"Error at CVPixelBufferCreate %d", err);
-    }
-    
-    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, _pixelBuffer_out,
-                                                        NULL, // texture attributes
-                                                        GL_TEXTURE_2D,
-                                                        GL_RGBA, // opengl format
-                                                        (int)_size.width,
-                                                        (int)_size.height,
-                                                        GL_RGBA, // native iOS format
-                                                        GL_UNSIGNED_BYTE,
-                                                        0,
-                                                        &_cvTextureRef);
-    if (err)
-    {
-        NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
-    }
-    
-    CFRelease(attrs);
-    CFRelease(empty);
-    
-    
-}
+#pragma  -mark 清理资源
 
 -(void)destory{
 
@@ -601,31 +652,50 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(void)lock{
+#pragma -mark 对外接口
 
-    _locked=YES;
+-(void)setTransform:(ESMatrix)transformMatrix{
     
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        [obj lock];
-        
-    }];
-
+    self.mvpMatrix=transformMatrix;
+    
 }
 
--(void)unlock{
-
-    _locked=NO;
+-(void)setFloat:(GLfloat)newFloat forUniformName:(NSString *)uniformName{
     
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    dispatch_block_t operation=^{
         
-        [obj unlock];
+        GLint location=[_drawModel locationOfUniform:uniformName];
         
-    }];
-
-
+        glUniform1f(location, newFloat);
+        
+    };
+    
+    [self.programOperations addObject:operation];
+    
 }
 
+-(void)rotateAtZ:(int)angle{
+    
+    RunInNodeProcessQueue(^{
+        
+        self.angle=angle;
+        esRotate(&_mvpMatrix, self.angle, 0, 0, 1.0);
+        self.frameBufferAvailable=NO;
+        self.size=[self calculateSizeByRotatedAngle:_size];
+        
+    });
+    
+}
+
+-(void)rotateAtY:(int)angle{
+    
+    RunInNodeProcessQueue(^{
+        
+        esRotate(&_mvpMatrix, angle, 0.0, 1.0, 0.0);
+        
+    });
+    
+}
 
 @end
 
