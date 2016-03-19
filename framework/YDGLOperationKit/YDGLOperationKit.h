@@ -15,3 +15,5 @@
 #import "YDGLOperationTwoInputNode.h"
 
 #import "YDGLOperationThreeInputNode.h"
+
+#import "YDGLOperationNodeView.h"

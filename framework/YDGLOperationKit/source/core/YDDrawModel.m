@@ -104,6 +104,8 @@
         
         0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0,
         
+        //旋转90度 1.0,1.0, 0.0,1.0 ,0.0,0.0, 1.0,0.0,
+        
     };
     
     struct ArrayWrapper vertices_wrapper={vertices_position,12*sizeof(GLfloat),12};

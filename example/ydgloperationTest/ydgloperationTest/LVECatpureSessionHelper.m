@@ -158,28 +158,12 @@
         
         if ([videoConnection isVideoMirroringSupported]) {
             
-            //[videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];//这个方向参数是经过尝试得出来的.
             [videoConnection setVideoMirrored:mirror];
-            if (mirror) {
-                
-                [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
-                
-            }else{
-            
-                [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
-                
-            }
-            
-            
-            
-            
+            [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
         }
         
     }
     
-    
 }
-
-
 
 @end

@@ -7,7 +7,7 @@
 //
 
 @import UIKit;
-#import "YDGLOperationKit.h"
+#import "YDGLOperationNode.h"
 
 typedef enum {
     kYDGLOperationImageFillModeFillModeStretch,                       // Stretch to fill the full view, which may distort the image outside of its normal aspect ratio

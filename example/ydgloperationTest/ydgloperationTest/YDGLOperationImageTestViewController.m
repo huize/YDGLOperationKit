@@ -8,7 +8,6 @@
 
 #import "YDGLOperationImageTestViewController.h"
 
-#import "CustomGLView.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import <YDGLOperationKit/YDGLOperationKit.h>
@@ -18,7 +17,7 @@
 
     UIImage *_image;
     
-    CustomGLView *_customView;
+    YDGLOperationNodeView *_customView;
     
     YDGLOperationSourceNode *_operationSource;
     
@@ -38,7 +37,7 @@
     
     CGSize screenSize=[UIScreen mainScreen].bounds.size;
     
-    _customView=[[CustomGLView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
+    _customView=[[YDGLOperationNodeView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
     
     _customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     
