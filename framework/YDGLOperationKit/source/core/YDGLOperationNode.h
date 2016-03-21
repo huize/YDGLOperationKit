@@ -291,6 +291,10 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
  *  @since 1.0.0
  */
 
+
+
++(void)bindTexture:(GLuint)textureId;
+
 @end
 
 

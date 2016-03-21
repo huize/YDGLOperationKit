@@ -56,6 +56,9 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
  
  );
 
+
+#define  DEFAULT_IMAGE_PIXEL_FORMAT_TYPE kCVPixelFormatType_32BGRA
+
 @interface YDGLOperationSourceNode ()
 
 @property(nonatomic,assign) GLuint renderTexture_input;//
@@ -108,10 +111,6 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)commonInitialization{
     
-    glDeleteTextures(1, &_renderTexture_input);
-    
-    glGenTextures(1, &_renderTexture_input);
-
     CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_textureCache);
     
     NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
@@ -206,8 +205,8 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         imageData = (GLubyte *)CFDataGetBytePtr(dataFromImageDataProvider);
     }
-
-    glBindTexture(GL_TEXTURE_2D, _renderTexture_input);
+    
+    [YDGLOperationNode bindTexture:_renderTexture_input];
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)pixelSizeToUseForTexture.width, (int)pixelSizeToUseForTexture.height, 0, format, GL_UNSIGNED_BYTE, imageData);
     
@@ -216,14 +215,12 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     //TODO 一定要加上这2句话
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-    
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
+        
     _size=pixelSizeToUseForTexture;
     
-    if (_pixelFormatType!=kCVPixelFormatType_32BGRA) {
+    if (_pixelFormatType!=DEFAULT_IMAGE_PIXEL_FORMAT_TYPE) {
         
-        _pixelFormatType=kCVPixelFormatType_32BGRA;
+        _pixelFormatType=DEFAULT_IMAGE_PIXEL_FORMAT_TYPE;
         
         _shouldSwitchShader=YES;
         
@@ -289,7 +286,8 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
     }
     
-    glBindTexture(CVOpenGLESTextureGetTarget(_lumaTexture), CVOpenGLESTextureGetName(_lumaTexture));
+    [YDGLOperationNode bindTexture:CVOpenGLESTextureGetName(_lumaTexture)];
+    
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -314,7 +312,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
     }
     
-    glBindTexture(CVOpenGLESTextureGetTarget(_chromaTexture), CVOpenGLESTextureGetName(_chromaTexture));
+    [YDGLOperationNode bindTexture:CVOpenGLESTextureGetName(_chromaTexture)];
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -326,13 +324,13 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)setupTextureForProgram:(GLuint)program{
     
-    if (_pixelFormatType==kCVPixelFormatType_32RGBA) {
+    if (_pixelFormatType==DEFAULT_IMAGE_PIXEL_FORMAT_TYPE) {
         
         GLint location_s_texture=[_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
         
         glActiveTexture(GL_TEXTURE0);
         
-        glBindTexture(GL_TEXTURE_2D, _renderTexture_input);
+        [YDGLOperationNode bindTexture:_renderTexture_input];
         
         glUniform1i ( location_s_texture,0);
     }else{
@@ -341,7 +339,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         glActiveTexture(GL_TEXTURE0);
         
-        glBindTexture(CVOpenGLESTextureGetTarget(_lumaTexture), CVOpenGLESTextureGetName(_lumaTexture));
+        [YDGLOperationNode bindTexture:CVOpenGLESTextureGetName(_lumaTexture)];
         
         glUniform1i(location_texture_Y, 0);
         
@@ -349,7 +347,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         glActiveTexture(GL_TEXTURE1);
         
-        glBindTexture(CVOpenGLESTextureGetTarget(_chromaTexture), CVOpenGLESTextureGetName(_chromaTexture));
+        [YDGLOperationNode bindTexture:CVOpenGLESTextureGetName(_chromaTexture)];
         
         glUniform1i(location_texture_UV, 1);
     }
@@ -372,6 +370,11 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 }
 
 -(void)prepareForRender{
+    
+    if (_renderTexture_input==0) {
+        
+        glGenTextures(1, &_renderTexture_input);
+    }
     
     if (self.textureAvailable==NO) {
         

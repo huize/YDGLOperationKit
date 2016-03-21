@@ -210,8 +210,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     glActiveTexture(GL_TEXTURE0);
     
-    glBindTexture(CVOpenGLESTextureGetTarget(_cvTextureRef), CVOpenGLESTextureGetName(_cvTextureRef));
     _renderTexture_out = CVOpenGLESTextureGetName(_cvTextureRef);
+    
+    [YDGLOperationNode bindTexture:_renderTexture_out];
     
     glTexImage2D(GL_TEXTURE_2D, 0 ,GL_RGBA, (int)_size.width, (int)_size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     
@@ -409,10 +410,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-    //glFlush();
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
        
         if (self.operationCompletionBlock) {
@@ -470,7 +467,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
         glActiveTexture(GL_TEXTURE0+index);
         
-        glBindTexture(GL_TEXTURE_2D, output.texture);
+        [YDGLOperationNode bindTexture:output.texture];
         
         glUniform1i ( location_s_texture,index);
         
@@ -764,6 +761,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     });
     
+}
+
+
++(void)bindTexture:(GLuint)textureId{
+
+    glBindTexture(GL_TEXTURE_2D, textureId);
+
 }
 
 @end

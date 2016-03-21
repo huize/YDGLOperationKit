@@ -409,8 +409,8 @@
     GLint location_s_texture= [_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
     
     glActiveTexture(GL_TEXTURE0);
-    
-    glBindTexture(GL_TEXTURE_2D, _textureId);
+        
+    [YDGLOperationNode bindTexture:_textureId];
     
     glUniform1i ( location_s_texture, 0);
     
