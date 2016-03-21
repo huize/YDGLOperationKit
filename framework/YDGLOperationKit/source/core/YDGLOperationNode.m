@@ -364,7 +364,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     //[_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
     //1.设置顶点坐标
     
-    GLint location_position=[_drawModel locationOfAttribute:ATTRIBUTE_POSITION];
+    GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
     
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
     
@@ -385,7 +385,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     [self setupTextureForProgram:_drawModel.program];
     
     //4.设置变换矩阵
-    GLint location= [_drawModel locationOfUniform:UNIFORM_MATRIX];
+    GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
     ESMatrix matrix=self.mvpMatrix;
     
@@ -438,7 +438,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
     if (self.dependency.count==0) {
         
-        GLint location_texturecoord=[_drawModel  locationOfAttribute:ATTRIBUTE_TEXTURE_COORDINATE];
+        GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_TEXTURE_COORDINATE UTF8String]);
         
         glEnableVertexAttribArray(location_texturecoord);
         
@@ -450,7 +450,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
             
             NSString *name=[_textureLoaderDelegate textureCoordAttributeNameAtIndex:index];
             
-            GLint location_texturecoord=[_drawModel  locationOfAttribute:name];
+            GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [name UTF8String]);
             
             glEnableVertexAttribArray(location_texturecoord);
             
@@ -471,7 +471,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
         NSString *name=[_textureLoaderDelegate textureUniformNameAtIndex:index];
         
-        GLint location_s_texture= [_drawModel locationOfUniform:name];
+        GLint location_s_texture=glGetUniformLocation(_drawModel.program, [name UTF8String]);
         
         glActiveTexture(GL_TEXTURE0+index);
         
@@ -704,7 +704,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_block_t operation=^{
         
-        GLint location=[_drawModel locationOfUniform:uniformName];
+        GLint location=glGetUniformLocation(_drawModel.program, [uniformName UTF8String]);
 
         glUniform1f(location, newFloat);
         
@@ -719,7 +719,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
     dispatch_block_t operation=^{
         
-        GLint location=[_drawModel locationOfUniform:uniformName];
+        GLint location=glGetUniformLocation(_drawModel.program, [uniformName UTF8String]);
         
         glUniform1i(location, newInt);
         
@@ -733,7 +733,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
     dispatch_block_t operation=^{
         
-        GLint location=[_drawModel locationOfUniform:uniformName];
+        GLint location=glGetUniformLocation(_drawModel.program, [uniformName UTF8String]);
             
         glUniform1i(location, newBool==true);
         

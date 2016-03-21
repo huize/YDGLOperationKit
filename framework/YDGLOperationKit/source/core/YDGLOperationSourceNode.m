@@ -326,7 +326,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     
     if (_pixelFormatType==DEFAULT_IMAGE_PIXEL_FORMAT_TYPE) {
         
-        GLint location_s_texture=[_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
+        GLint location_s_texture=glGetUniformLocation(program, [UNIFORM_INPUTTEXTURE UTF8String]);
         
         glActiveTexture(GL_TEXTURE0);
         
@@ -335,7 +335,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         glUniform1i ( location_s_texture,0);
     }else{
         
-        GLint location_texture_Y=[_drawModel locationOfUniform:@"SamplerY"];
+        GLint location_texture_Y=glGetUniformLocation(program, [@"SamplerY" UTF8String]);
         
         glActiveTexture(GL_TEXTURE0);
         
@@ -343,7 +343,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         glUniform1i(location_texture_Y, 0);
         
-        GLint location_texture_UV=[_drawModel locationOfUniform:@"SamplerUV"];
+        GLint location_texture_UV=glGetUniformLocation(program, [@"SamplerUV" UTF8String]);
         
         glActiveTexture(GL_TEXTURE1);
         

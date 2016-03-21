@@ -267,33 +267,33 @@
     
     //查询 attribute
     
-    GLint maxAttributeLen;
-    GLint numAttributes;
-    char *attributeName;
-    
-    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
-    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeLen);
-    
-    attributeName=malloc(sizeof(char)*maxAttributeLen);
-    
-    for (int index=0; index<maxAttributeLen; index++) {
-        
-        GLint size;
-        GLenum type;
-        GLint location;
-        
-        glGetActiveAttrib(_program, index, maxAttributeLen, NULL, &size, &type, attributeName);
-        
-        location=glGetAttribLocation(_program, attributeName);
-        
-        NSString *name=[NSString stringWithUTF8String:attributeName];
-        
-        //NSLog(@" attribute name:%@  location:%i",name,location);
-
-        [_attributeDictionary setObject:@(location) forKey:name];
-    }
-    
-    free(attributeName);
+//    GLint maxAttributeLen;
+//    GLint numAttributes;
+//    char *attributeName;
+//    
+//    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
+//    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeLen);
+//    
+//    attributeName=malloc(sizeof(char)*100);
+//    
+//    for (int index=0; index<maxAttributeLen; index++) {
+//        
+//        GLint size;
+//        GLenum type;
+//        GLint location;
+//        
+//        glGetActiveAttrib(_program, index, maxAttributeLen, NULL, &size, &type, attributeName);
+//        
+//        location=glGetAttribLocation(_program, attributeName);
+//        
+//        NSString *name=[NSString stringWithUTF8String:attributeName];
+//        
+//        NSLog(@" attribute name:%@  location:%i",name,location);
+//
+//        [_attributeDictionary setObject:@(location) forKey:name];
+//    }
+//    
+//    free(attributeName);
     
     
 }

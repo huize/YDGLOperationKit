@@ -390,7 +390,7 @@
     
     glUseProgram(_drawModel.program);
     
-    GLint location= [_drawModel locationOfUniform:UNIFORM_MATRIX];
+    GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
     ESMatrix _mvpMatrix;
     
@@ -406,16 +406,14 @@
     
     glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&matrix);
     
-    GLint location_s_texture= [_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
-    
+    GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
     glActiveTexture(GL_TEXTURE0);
         
     [YDGLOperationNode bindTexture:_textureId];
     
     glUniform1i ( location_s_texture, 0);
     
-    GLint location_position=[_drawModel locationOfAttribute:ATTRIBUTE_POSITION];
-    
+    GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
     
     glEnableVertexAttribArray(location_position);//顶点坐标
@@ -424,8 +422,9 @@
     
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
     
-    GLint location_texturecoord=[_drawModel locationOfAttribute:ATTRIBUTE_TEXTURE_COORDINATE];
+    GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_TEXTURE_COORDINATE UTF8String]);
     
+
     glEnableVertexAttribArray(location_texturecoord);
     
     glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标

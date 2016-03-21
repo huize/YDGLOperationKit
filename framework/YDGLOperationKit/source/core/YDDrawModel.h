@@ -113,7 +113,7 @@ struct ArrayWrapper {
  *
  *  @since 1.0.0
  */
--(GLint)locationOfAttribute:(NSString*_Nonnull)attributeName;
+//-(GLint)locationOfAttribute:(NSString*_Nonnull)attributeName;
 /**
  *  @author 许辉泽, 16-03-17 21:56:43
  *
@@ -125,6 +125,6 @@ struct ArrayWrapper {
  *
  *  @since 1.0.0
  */
--(GLint)locationOfUniform:(NSString*_Nonnull)uniformName;
+//-(GLint)locationOfUniform:(NSString*_Nonnull)uniformName;
 
 @end
