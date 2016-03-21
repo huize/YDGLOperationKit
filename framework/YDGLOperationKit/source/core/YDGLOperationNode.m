@@ -98,7 +98,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     _glContext=[[self class] getGLContext];
         
     self.programOperations=[NSMutableArray array];
-    
+
     [self activeGLContext:^{
         
         [_drawModel setvShaderSource:[vertexShaderString UTF8String] andfShaderSource:[fragmentShaderString UTF8String]];
@@ -124,12 +124,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     dispatch_once(&onceToken, ^{
         
         context= [[EAGLContext alloc] initWithAPI:api];
-        context.multiThreaded=YES;
+        //context.multiThreaded=YES;
         
         locker=dispatch_semaphore_create(1);
         
     });
     
+    /*
     EAGLContext *instance;
     
     long success=dispatch_semaphore_wait(locker, dispatch_time(DISPATCH_TIME_NOW, 3*NSEC_PER_SEC));
@@ -141,7 +142,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     instance=[[EAGLContext alloc]initWithAPI:context.API sharegroup:context.sharegroup];
     
-    dispatch_semaphore_signal(locker);
+    dispatch_semaphore_signal(locker);*/
+    
         
     return context;//使用instance的话7.1.2的真机会有问题
 }
@@ -359,7 +361,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     }
     
-    [_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
+    //[_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
     //1.设置顶点坐标
     
     GLint location_position=[_drawModel locationOfAttribute:ATTRIBUTE_POSITION];
