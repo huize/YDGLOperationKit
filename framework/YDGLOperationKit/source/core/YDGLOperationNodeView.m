@@ -390,7 +390,7 @@
     
     glUseProgram(_drawModel.program);
     
-    GLint location= [_drawModel locationOfUniform:@"u_mvpMatrix"];
+    GLint location= [_drawModel locationOfUniform:UNIFORM_MATRIX];
     
     ESMatrix _mvpMatrix;
     
@@ -406,7 +406,7 @@
     
     glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&matrix);
     
-    GLint location_s_texture= [_drawModel locationOfUniform:@"inputImageTexture"];
+    GLint location_s_texture= [_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
     
     glActiveTexture(GL_TEXTURE0);
     
@@ -414,7 +414,7 @@
     
     glUniform1i ( location_s_texture, 0);
     
-    GLint location_position=[_drawModel locationOfAttribute:@"position"];
+    GLint location_position=[_drawModel locationOfAttribute:ATTRIBUTE_POSITION];
     
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
     
@@ -424,7 +424,7 @@
     
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
     
-    GLint location_texturecoord=[_drawModel locationOfAttribute:@"inputTextureCoordinate"];
+    GLint location_texturecoord=[_drawModel locationOfAttribute:ATTRIBUTE_TEXTURE_COORDINATE];
     
     glEnableVertexAttribArray(location_texturecoord);
     

@@ -155,15 +155,15 @@ static NSString *_Nonnull const fShaderStr=SHADER_STRING(
 
 static NSString *_Nonnull  const UNIFORM_MATRIX=@"u_mvpMatrix";
 static NSString *_Nonnull  const UNIFORM_INPUTTEXTURE=@"inputImageTexture";
-static NSString *_Nonnull  const UNIFORM_POSITION=@"position";
-static NSString *_Nonnull  const UNIFORM_TEXTURE_COORDINATE=@"inputTextureCoordinate";
+static NSString *_Nonnull  const ATTRIBUTE_POSITION=@"position";
+static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoordinate";
 
 @protocol YDGLOperationTextureLoaderDelegate <NSObject>
 
 @required
 -(NSString*_Nonnull)textureUniformNameAtIndex:(NSInteger)index;
 
--(NSString*_Nonnull)textureCoordUniformNameAtIndex:(NSInteger)index;
+-(NSString*_Nonnull)textureCoordAttributeNameAtIndex:(NSInteger)index;
 
 @end
 

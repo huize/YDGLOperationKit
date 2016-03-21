@@ -361,7 +361,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     [_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
     //1.设置顶点坐标
     
-    GLint location_position=[_drawModel locationOfAttribute:UNIFORM_POSITION];
+    GLint location_position=[_drawModel locationOfAttribute:ATTRIBUTE_POSITION];
     
     glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
     
@@ -433,7 +433,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
     if (self.dependency.count==0) {
         
-        GLint location_texturecoord=[_drawModel  locationOfAttribute:UNIFORM_TEXTURE_COORDINATE];
+        GLint location_texturecoord=[_drawModel  locationOfAttribute:ATTRIBUTE_TEXTURE_COORDINATE];
         
         glEnableVertexAttribArray(location_texturecoord);
         
@@ -443,7 +443,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
         for (int index=0; index<_dependency.count; index++) {
             
-            NSString *name=[_textureLoaderDelegate textureCoordUniformNameAtIndex:index];
+            NSString *name=[_textureLoaderDelegate textureCoordAttributeNameAtIndex:index];
             
             GLint location_texturecoord=[_drawModel  locationOfAttribute:name];
             
@@ -638,9 +638,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 }
 
--(NSString *)textureCoordUniformNameAtIndex:(NSInteger)index{
+-(NSString *)textureCoordAttributeNameAtIndex:(NSInteger)index{
 
-    return UNIFORM_TEXTURE_COORDINATE;
+    return ATTRIBUTE_TEXTURE_COORDINATE;
 
 }
 
