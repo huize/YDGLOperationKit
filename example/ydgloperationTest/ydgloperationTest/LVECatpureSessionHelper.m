@@ -104,7 +104,7 @@
     self.customCaptureSession=captureSession;
     self.videoDataOutput=videoDataOutput;
     
-    [self setVideoInput:_backVideoInput];
+    [self setVideoInput:_frontVideoInput];
     
 }
 
