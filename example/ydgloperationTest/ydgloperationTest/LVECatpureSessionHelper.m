@@ -104,7 +104,7 @@
     self.customCaptureSession=captureSession;
     self.videoDataOutput=videoDataOutput;
     
-    [self setVideoInput:_frontVideoInput];
+    [self setVideoInput:_backVideoInput];
     
 }
 
@@ -173,7 +173,7 @@
     AVCaptureConnection *videoConnection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
     if (videoConnection) {
         
-        BOOL mirror = _currentVideoInput==_backVideoInput;
+        BOOL mirror = _currentVideoInput==_frontVideoInput;
         
         if ([videoConnection isVideoMirroringSupported]) {
             
