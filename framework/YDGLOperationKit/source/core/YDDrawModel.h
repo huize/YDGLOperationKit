@@ -58,13 +58,29 @@ struct ArrayWrapper {
 /**
  *  @author 许辉泽, 16-03-18 14:07:09
  *
- *  加载指定矩形顶点,必须是逆时针的
+ *  加载指定矩形顶点,必须左下角开始,逆时针顺序
  *
  *  @param vertices_position
  *
  *  @since 1.0.0
  */
 -(void)loadSquareVex:(const GLfloat[12])vertices_position;
+
+/**
+ *  @author 许辉泽, 16-03-21 16:04:32
+ *
+ *
+ *
+ *  @param vertices_position 顶点坐标
+ *  @param textureCoord      纹理坐标
+ *
+ *  @since 1.0.0
+ *
+ *注意:左下角开始,逆时针顺序,GL_TRIANGLE_FAN 方式,必须是这种顺序
+ *
+ */
+-(void)loadSquareVex:(const GLfloat [12])vertices_position andTextureCoord:(const GLfloat[8])textureCoord;
+
 /**
  *  @author 许辉泽, 16-03-11 16:29:39
  *

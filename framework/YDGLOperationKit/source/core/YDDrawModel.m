@@ -97,12 +97,6 @@
 
 -(void)loadSquareVex:(const GLfloat [12])vertices_position{
 
-    const GLubyte indices_position[]={
-        
-        0,1,2,3,
-        
-    };
-    
     const GLfloat vertices_texture[]={
         
         0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0,
@@ -111,14 +105,27 @@
         
     };
     
+    [self loadSquareVex:vertices_position andTextureCoord:vertices_texture];
+
+}
+
+-(void)loadSquareVex:(const GLfloat [12])vertices_position andTextureCoord:(const GLfloat [8])textureCoord{
+
+    const GLubyte indices_position[]={
+        
+        0,1,2,3,
+        
+    };
+
     struct ArrayWrapper vertices_wrapper={vertices_position,12*sizeof(GLfloat),12};
-    struct ArrayWrapper texturecoord_warpper={vertices_texture,sizeof(vertices_texture),sizeof(vertices_texture)/sizeof(GLfloat)};
+    struct ArrayWrapper texturecoord_warpper={textureCoord,8*sizeof(GLfloat),8};
     struct ArrayWrapper indices_warpper={indices_position,sizeof(indices_position),sizeof(indices_position)/sizeof(GLubyte)};
     
     [self setVertices:vertices_wrapper andTextureVertices:texturecoord_warpper andIndices:indices_warpper andDrawStyle:GL_TRIANGLE_FAN];
 
-
 }
+
+
 
 -(void)loadSquareVex{
     
