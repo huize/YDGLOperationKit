@@ -15,6 +15,10 @@ typedef enum {
     kYDGLOperationImageFillModePreserveAspectRatioAndFill     // Maintains the aspect ratio of the source image, zooming in on its center to fill the view
 } YDGLOperationImageFillModeType;
 
+
+typedef enum { kYDGLOperationImageNoRotation, kYDGLOperationImageRotateLeft, kYDGLOperationImageRotateRight, kYDGLOperationImageFlipVertical, kYDGLOperationImageFlipHorizonal, kYDGLOperationImageRotateRightFlipVertical, kYDGLOperationImageRotateRightFlipHorizontal, kYDGLOperationImageRotate180 } YDGLOperationImageRotationMode;
+
+
 /**
  *  @author 许辉泽, 16-03-18 16:22:15
  *

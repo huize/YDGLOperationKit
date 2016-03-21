@@ -74,6 +74,9 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 @property(nonatomic,assign) CVPixelBufferRef pixelBufferRef;//
 
+@property(nonatomic,assign) BOOL textureAvailable;//纹理是否可用
+
+
 @end
 
 @implementation YDGLOperationSourceNode
@@ -108,17 +111,21 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     glDeleteTextures(1, &_renderTexture_input);
     
     glGenTextures(1, &_renderTexture_input);
-    
+
     CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_textureCache);
     
     NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
     
-    [self rotateAtZ:180];//注意:UIKit和AVFoundationKit的坐标原点在左上角,openGL ES/CGContext 的坐标原点在左下角
+    //[self rotateAtZ:180];//注意:UIKit和AVFoundationKit的坐标原点在左上角,openGL ES/CGContext 的坐标原点在左下角
+    
+    
     
 }
 
 -(void)innerUploadImageToTexture{
 
+    
+    self.textureAvailable=YES;
     
     CGImageRef newImageSource=_image.CGImage;
     
@@ -196,6 +203,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     {
         // Access the raw image bytes directly
         dataFromImageDataProvider = CGDataProviderCopyData(CGImageGetDataProvider(newImageSource));
+        
         imageData = (GLubyte *)CFDataGetBytePtr(dataFromImageDataProvider);
     }
 
@@ -221,10 +229,25 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
     }
     
+    
+//    if (shouldRedrawUsingCoreGraphics)
+//    {
+//        free(imageData);
+//    }
+//    else
+//    {
+//        if (dataFromImageDataProvider)
+//        {
+//            CFRelease(dataFromImageDataProvider);
+//        }
+//    }
+   
 }
 
 -(void)innerUploadPixelBufferToTexture{
 
+    //self.textureAvailable=YES;
+    
     CVPixelBufferLockBaseAddress(_pixelBufferRef, 0);
     
     size_t width= CVPixelBufferGetWidth(_pixelBufferRef);
@@ -350,65 +373,67 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)prepareForRender{
     
-    
-    if (_image) {
+    if (self.textureAvailable==NO) {
         
-        [self innerUploadImageToTexture];
-        
-    }else if(_pixelBufferRef!=NULL){
-        
-        [self innerUploadPixelBufferToTexture];
-        
-    }
-    
-    if (_shouldSwitchShader) {
-        
-        NSString *fragmentShader=fShaderStr;
-        
-        switch (_pixelFormatType) {
-            case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange:
-            {
-                
-                fragmentShader=kYDGLOperationYUVToLAFragmentShaderString;
-                [self setBool:NO forUniformName:@"isFullRange"];
-                
-            }
-                break;
-            case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:
-            {
-                
-                fragmentShader=kYDGLOperationYUVToLAFragmentShaderString;
-                
-                [self setBool:YES forUniformName:@"isFullRange"];
-            }
-                
-                break;
-                
-            default:
-                break;
+        if (_image) {
+            
+            [self innerUploadImageToTexture];
+            
+        }else if(_pixelBufferRef!=NULL){
+            
+            [self innerUploadPixelBufferToTexture];
+            
         }
         
-        
-        CFTypeRef colorAttachments = CVBufferGetAttachment(_pixelBufferRef, kCVImageBufferYCbCrMatrixKey, NULL);
-        if (colorAttachments != NULL)
-        {
-            if(CFStringCompare(colorAttachments, kCVImageBufferYCbCrMatrix_ITU_R_601_4, 0) == kCFCompareEqualTo)
-            {
-                
-                [self setBool:NO forUniformName:@"isBT709"];
+        if (_shouldSwitchShader) {
+            
+            NSString *fragmentShader=fShaderStr;
+            
+            switch (_pixelFormatType) {
+                case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange:
+                {
+                    
+                    fragmentShader=kYDGLOperationYUVToLAFragmentShaderString;
+                    [self setBool:NO forUniformName:@"isFullRange"];
+                    
+                }
+                    break;
+                case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:
+                {
+                    
+                    fragmentShader=kYDGLOperationYUVToLAFragmentShaderString;
+                    
+                    [self setBool:YES forUniformName:@"isFullRange"];
+                }
+                    
+                    break;
+                    
+                default:
+                    break;
             }
-            else
+            
+            
+            CFTypeRef colorAttachments = CVBufferGetAttachment(_pixelBufferRef, kCVImageBufferYCbCrMatrixKey, NULL);
+            if (colorAttachments != NULL)
             {
-                [self setBool:YES forUniformName:@"isBT709"];
+                if(CFStringCompare(colorAttachments, kCVImageBufferYCbCrMatrix_ITU_R_601_4, 0) == kCFCompareEqualTo)
+                {
+                    
+                    [self setBool:NO forUniformName:@"isBT709"];
+                }
+                else
+                {
+                    [self setBool:YES forUniformName:@"isBT709"];
+                }
             }
+            
+            [_drawModel setvShaderSource:[vShaderStr UTF8String] andfShaderSource:[fragmentShader UTF8String]];
+            
+            _shouldSwitchShader=NO;
+            
         }
         
-        [_drawModel setvShaderSource:[vShaderStr UTF8String] andfShaderSource:[fragmentShader UTF8String]];
-        
-        _shouldSwitchShader=NO;
-        
     }
-    
 }
 
 - (void)cleanUpTextures
@@ -441,6 +466,11 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)uploadImage:(UIImage *)image{
     
+    if (self.image==image) {
+        
+        return;
+    }
+    
     RunInNodeProcessQueue(^{
         
         self.image=image;
@@ -448,6 +478,8 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         CVPixelBufferRelease(_pixelBufferRef);
         
         _pixelBufferRef=NULL;
+        
+        self.textureAvailable=NO;
         
     });
     
@@ -465,6 +497,8 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         self.image=nil;
         
+        self.textureAvailable=NO;
+
     });
     
 }

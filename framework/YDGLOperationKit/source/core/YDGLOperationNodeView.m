@@ -41,6 +41,8 @@
     
     CGSize _inputImageSize;//要显示的纹理的大小
     
+    YDGLOperationImageRotationMode _inputRotationMode;
+    
 }
 
 +(Class)layerClass{
@@ -74,6 +76,8 @@
     _drawModel=[YDDrawModel new];
     
     _sizeInPixel=self.bounds.size;
+    
+    _inputRotationMode=kYDGLOperationImageNoRotation;
     
     [self setupLayer];
     
@@ -300,7 +304,7 @@
     imageVertices[10] = heightScaling;
     imageVertices[11]=0.0;
     
-    [_drawModel loadSquareVex:imageVertices];
+    [_drawModel loadSquareVex:imageVertices andTextureCoord:[YDGLOperationNodeView textureCoordinatesForRotation:_inputRotationMode]];
     
     free(imageVertices);
 
@@ -491,6 +495,90 @@
     
 }
 
+/**
+ *  @author 许辉泽, 16-03-21 16:18:16
+ *
+ *  注意目前只实现了 kYDGLOperationImageNoRotation
+ *
+ *  @param rotationMode
+ *
+ *  @return
+ *
+ *  @since 1.0.0
+ */
++ (const GLfloat *)textureCoordinatesForRotation:(YDGLOperationImageRotationMode)rotationMode;
+{
+       
+    static const GLfloat noRotationTextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    static const GLfloat rotateRightTextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    static const GLfloat rotateLeftTextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    static const GLfloat verticalFlipTextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    static const GLfloat horizontalFlipTextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    static const GLfloat rotateRightVerticalFlipTextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    static const GLfloat rotateRightHorizontalFlipTextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    static const GLfloat rotate180TextureCoordinates[] = {
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
+    
+    switch(rotationMode)
+    {
+        case kYDGLOperationImageNoRotation: return noRotationTextureCoordinates;
+        case kYDGLOperationImageRotateLeft: return rotateLeftTextureCoordinates;
+        case kYDGLOperationImageRotateRight: return rotateRightTextureCoordinates;
+        case kYDGLOperationImageFlipVertical: return verticalFlipTextureCoordinates;
+        case kYDGLOperationImageFlipHorizonal: return horizontalFlipTextureCoordinates;
+        case kYDGLOperationImageRotateRightFlipVertical: return rotateRightVerticalFlipTextureCoordinates;
+        case kYDGLOperationImageRotateRightFlipHorizontal: return rotateRightHorizontalFlipTextureCoordinates;
+        case kYDGLOperationImageRotate180: return rotate180TextureCoordinates;
+    }
+}
+
+
 
 #pragma -mark 资源清理
 
@@ -652,8 +740,7 @@
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     free(t);
-    
-    
+
 }
 
 @end
