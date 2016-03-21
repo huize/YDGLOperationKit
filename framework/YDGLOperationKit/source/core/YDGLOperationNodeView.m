@@ -448,26 +448,13 @@
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
-    //    static dispatch_once_t onceToken;
-    //    dispatch_once(&onceToken, ^{
-    //
-    //
-    //        dispatch_queue_t t=dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
-    //
-    //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), t, ^{
-    //
-    //            [self readBuffer];
-    //        });
-    //
-    //
-    //    });
-
     //glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices_position)/sizeof(GLfloat));
     
     //glDisable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
-    glDisableVertexAttribArray(location_s_texture);
-    glDisableVertexAttribArray(location_texturecoord);
-    
+    //glDisableVertexAttribArray(location_s_texture);
+    //glDisableVertexAttribArray(location_texturecoord);
+    //glDisableVertexAttribArray(location);
+
 /*
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER_APPLE, _frameBuffer);
     

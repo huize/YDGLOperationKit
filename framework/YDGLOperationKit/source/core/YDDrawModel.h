@@ -55,6 +55,11 @@ struct ArrayWrapper {
 
 -(void)setvShaderSource:(const char*)vSource andfShaderSource:(const char*)fSource;
 
+
+@property(nonatomic,readonly)NSDictionary<NSString*,NSNumber*> *uniformDictionary;
+
+@property(nonatomic,readonly)NSDictionary<NSString*,NSNumber*> *attributeDictionary;
+
 /**
  *  @author 许辉泽, 16-03-18 14:07:09
  *

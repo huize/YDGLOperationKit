@@ -404,8 +404,14 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
-    //glDisableVertexAttribArray(location_s_texture);
+    //glDisableVertexAttribArray(location);
     
+//    for (NSNumber* tmpIndex in _drawModel.uniformDictionary.allValues) {
+//        
+//        glDisableVertexAttribArray(tmpIndex.unsignedIntegerValue);
+//    }
+    
+
     //glDisableVertexAttribArray(location_texturecoord);
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

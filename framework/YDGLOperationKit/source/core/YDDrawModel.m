@@ -11,23 +11,30 @@
 
 @interface YDDrawModel()
 
-@property(nonatomic,nullable,retain) NSMutableDictionary *uniformDictionary;//
-
-@property(nonatomic,nullable,retain) NSMutableDictionary *attributeDictionary;//
-
-
 @end
 
 @implementation YDDrawModel
+
+{
+
+    NSMutableDictionary<NSString*,NSNumber*> *_uniformDictionary;
+
+    NSMutableDictionary<NSString*,NSNumber*> *_attributeDictionary;//
+
+}
+
+@synthesize uniformDictionary=_uniformDictionary;
+
+@synthesize attributeDictionary=_attributeDictionary;
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         
-        self.uniformDictionary=[NSMutableDictionary dictionary];
+        _uniformDictionary=[NSMutableDictionary dictionary];
         
-        self.attributeDictionary=[NSMutableDictionary dictionary];
+        _attributeDictionary=[NSMutableDictionary dictionary];
         
     }
     return self;
@@ -221,9 +228,9 @@
  */
 -(void)loadProgram{
 
-    [self.uniformDictionary removeAllObjects];
+    [_uniformDictionary removeAllObjects];
     
-    [self.attributeDictionary removeAllObjects];
+    [_attributeDictionary removeAllObjects];
     
     glUseProgram(_program);
     
@@ -252,7 +259,7 @@
         
         //NSLog(@" uniform name:%@  location:%i",name,location);
     
-        [self.uniformDictionary setObject:@(location) forKey:name];
+        [_uniformDictionary setObject:@(location) forKey:name];
         
     }
     
@@ -283,7 +290,7 @@
         
         //NSLog(@" attribute name:%@  location:%i",name,location);
 
-        [self.attributeDictionary setObject:@(location) forKey:name];
+        [_attributeDictionary setObject:@(location) forKey:name];
     }
     
     free(attributeName);
