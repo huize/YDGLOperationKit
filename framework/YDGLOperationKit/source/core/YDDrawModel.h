@@ -39,19 +39,19 @@ struct ArrayWrapper {
 
 @property(nonatomic,readonly,assign) GLuint program;//
 
-@property(nonatomic,assign) GLuint vertices_buffer_obj;//顶点数组缓存对象
+@property(nonatomic,assign,readonly) GLuint vertices_buffer_obj;//顶点数组缓存对象
 
-@property(nonatomic,assign) GLuint texture_vertices_buffer_obj;//纹理坐标缓存对象
+@property(nonatomic,assign,readonly) GLuint texture_vertices_buffer_obj;//纹理坐标缓存对象
 
-@property(nonatomic,assign) GLuint indices_buffer_obj;//索引数组缓存对象
+@property(nonatomic,assign,readonly) GLuint indices_buffer_obj;//索引数组缓存对象
 
-@property(nonatomic,assign) int count_vertices;//顶点数组元素个数
+@property(nonatomic,assign,readonly) int count_vertices;//顶点数组元素个数
 
-@property(nonatomic,assign) int count_texture_vertices;//纹理坐标数组元素的个数
+@property(nonatomic,assign,readonly) int count_texture_vertices;//纹理坐标数组元素的个数
 
-@property(nonatomic,assign) int count_indices;//索引数组元素的个数
+@property(nonatomic,assign,readonly) int count_indices;//索引数组元素的个数
 
-@property(nonatomic,assign) GLenum drawStyle;//
+@property(nonatomic,assign,readonly) GLenum drawStyle;//
 
 -(void)setvShaderSource:(const char*)vSource andfShaderSource:(const char*)fSource;
 
