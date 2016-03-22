@@ -288,7 +288,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
                                                         GL_RGBA, // opengl format
                                                         (int)_size.width,
                                                         (int)_size.height,
-                                                        GL_RGBA, // native iOS format
+                                                        GL_BGRA, // native iOS format
                                                         GL_UNSIGNED_BYTE,
                                                         0,
                                                         &_cvTextureRef);
@@ -299,7 +299,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     CFRelease(attrs);
     CFRelease(empty);
-    
     
 }
 
