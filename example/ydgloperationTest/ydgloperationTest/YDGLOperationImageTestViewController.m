@@ -144,6 +144,36 @@
 
     _thirdNode=_secondNode;
     
+    
+//    _secondNode.operationCompletionBlock=^(YDGLOperationNodeOutput *outputData){
+//    
+//        
+//        CVPixelBufferRef imageBufferRef=outputData.pixelBuffer;
+//        
+//        CVPixelBufferLockBaseAddress(imageBufferRef, 0);
+//        
+//        UInt8 *data=CVPixelBufferGetBaseAddress(imageBufferRef);
+//        
+//        struct BGRA{
+//            
+//            uint8_t B;
+//            uint8_t G;
+//            uint8_t R;
+//            uint8_t A;
+//            
+//        };
+//        
+//        struct BGRA *tt=(struct BGRA*)data;
+//        
+//        for (int index=0; index<50; index++) {
+//            
+//            struct   BGRA pixel=tt[index];
+//            
+//            NSLog(@"B:%i G:%i R:%i A:%i",pixel.B,pixel.G,pixel.R,pixel.A);
+//        }
+//        
+//    };
+    
 }
 
 -(void)startRun{
