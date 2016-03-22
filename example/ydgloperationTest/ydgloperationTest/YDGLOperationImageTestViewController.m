@@ -28,7 +28,12 @@
     YDGLOperationTwoInputNode *_secondNode;
     
     CADisplayLink *_displayLink;
+    
+    
+    UIButton *_button;
 
+    
+    BOOL _stoped;
 }
 
 - (void)viewDidLoad {
@@ -37,9 +42,9 @@
     
     CGSize screenSize=[UIScreen mainScreen].bounds.size;
     
-    _customView=[[YDGLOperationNodeView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
+    _customView=[[YDGLOperationNodeView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height-100)];
     
-    _customView.center=[_customView convertPoint:self.view.center fromView:self.view];
+    //_customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     
     _customView.cube=YES;
     
@@ -53,12 +58,43 @@
     __weak typeof (self) weakSelf=self;
     
     _displayLink=[CADisplayLink displayLinkWithTarget:weakSelf selector:@selector(startRun)];
-    _displayLink.frameInterval=3;
-    
+
     _displayLink.paused=YES;
     
     [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    
+    
+    _button=[[UIButton alloc]initWithFrame:CGRectMake(0, screenSize.height-100, 50, 40)];
+    
+    [_button setTitle:@"挂起" forState:UIControlStateNormal];
+    [_button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    
+    
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:weakSelf action:@selector(stopGPUQueue:)];
+    
+    [_button addGestureRecognizer:tap];
+    
+    [self.view addSubview:_button];
+    
 }
+
+-(void)stopGPUQueue:(id)sender{
+   
+    if (_stoped) {
+        
+        dispatch_resume([YDGLOperationSourceNode getWorkQueue]);
+        _stoped=NO;
+        
+        
+    }else{
+    
+        dispatch_suspend([YDGLOperationSourceNode getWorkQueue]);
+        
+        _stoped=YES;
+    }
+
+}
+
 
 -(void)viewDidAppear:(BOOL)animated{
     
@@ -95,27 +131,35 @@
     
     UIImage *image2=[UIImage imageWithContentsOfFile:path2];
     
-    _operationSecondSource=[[YDGLOperationSourceNode alloc]initWithUIImage:image2];
+    
+    _operationSecondSource =[[YDGLOperationSourceNode alloc]initWithUIImage:image2];
     
     _secondNode=[YDGLOperationTwoInputNode new];
+    
+    [_secondNode setMix:0.5f];
     
     [_secondNode addDependency:_operationSource];
     
     [_secondNode addDependency:_operationSecondSource];
-    
-    [_secondNode setMix:0.5f];
-    
-    _thirdNode=[YDGLOperationNode new];
-    
-    [_thirdNode addDependency:_secondNode];
+
+    _thirdNode=_secondNode;
     
 }
 
 -(void)startRun{
     
-    [_operationSource start];
+   // [_operationSource start];
     
-    [_operationSecondSource start];
+    if ([_operationSource isLocked]==NO) {
+        
+        [_operationSource start];
+        
+        [_operationSecondSource start];
+    }else{
+    
+       // NSLog(@"掉帧了");
+    }
+    
 }
 
 -(void)dealloc{
