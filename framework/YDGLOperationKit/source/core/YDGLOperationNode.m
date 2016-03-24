@@ -202,11 +202,10 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     glGenFramebuffers(1, &_frameBuffer);
     
-
     //TODO:glGenTextures(1, &_renderTexture_out);
     //上面那种方式创建的纹理会导致美艳算法在iOS8.4以下的机器上无效
     
-    [self createRenderTexture];
+    [self createCVPixelBufferRef:&_pixelBuffer_out andTextureRef:&_cvTextureRef withSize:_size];
     
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
     
@@ -267,7 +266,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(void)createRenderTexture{
+-(void)createCVPixelBufferRef:(CVPixelBufferRef*)pixelBuffer andTextureRef:(CVOpenGLESTextureRef*)textureRef withSize:(CGSize)size{
     
     CFDictionaryRef empty; // empty value for attr value.
     CFMutableDictionaryRef attrs;
@@ -275,10 +274,10 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     attrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CFDictionarySetValue(attrs, kCVPixelBufferIOSurfacePropertiesKey, empty);
     
-    CVReturn err = CVPixelBufferCreate(kCFAllocatorDefault, (int)_size.width, (int)_size.height, kCVPixelFormatType_32BGRA, attrs, &_pixelBuffer_out);
+    CVReturn err = CVPixelBufferCreate(kCFAllocatorDefault, (int)size.width, (int)size.height, kCVPixelFormatType_32BGRA, attrs,pixelBuffer);
     if (err)
     {
-        NSLog(@"FBO size: %f, %f", _size.width, _size.height);
+        NSLog(@"FBO size: %f, %f", size.width, size.height);
         NSAssert(NO, @"Error at CVPixelBufferCreate %d", err);
     }
     
@@ -286,12 +285,12 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
                                                         NULL, // texture attributes
                                                         GL_TEXTURE_2D,
                                                         GL_RGBA, // opengl format
-                                                        (int)_size.width,
-                                                        (int)_size.height,
+                                                        (int)size.width,
+                                                        (int)size.height,
                                                         GL_BGRA, // native iOS format
                                                         GL_UNSIGNED_BYTE,
                                                         0,
-                                                        &_cvTextureRef);
+                                                        textureRef);
     if (err)
     {
         NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
@@ -383,11 +382,15 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)innerSetInputSize:(CGSize)newSize{
     
-    self.size=[self calculateSizeByRotatedAngle:newSize];
-    
-    self.frameBufferAvailable=NO;
-    
-    [self didSetInputSize:self.size];
+    if (newSize.width!=self.size.width||newSize.height!=self.size.height) {
+        
+        self.size=[self calculateSizeByRotatedAngle:newSize];
+        
+        self.frameBufferAvailable=NO;
+        
+        [self didSetInputSize:self.size];
+        
+    }
 }
 
 
@@ -655,18 +658,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
         RunInNodeProcessQueue(^{
             
-            if (size.width!=self.size.width||size.height!=self.size.height) {
-                
-                [self innerSetInputSize:size];
-                
-            }
-
+            [self innerSetInputSize:size];
+            
             [self activeGLContext:^{
                
                 [self setupFrameBuffer];
                 
                 [self renderAndNotify];
-                
                 
             }];
 
@@ -810,7 +808,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     });
     
 }
-
 
 +(void)bindTexture:(GLuint)textureId{
 
