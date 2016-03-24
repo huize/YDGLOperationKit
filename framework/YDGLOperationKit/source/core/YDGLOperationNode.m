@@ -26,7 +26,7 @@
 
 @property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperationNode>> *dependency;//
 
-@property(nonatomic,assign) BOOL frameBufferAvailable;
+@property(nonatomic,assign) BOOL needLayout;//是否需要重新计算framebuffer的大小
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *programOperations;//program 的操作
 
@@ -99,6 +99,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     self.programOperations=[NSMutableArray array];
 
+    self.needLayout=YES;
+    
     [self activeGLContext:^{
         
         [_drawModel setvShaderSource:[vertexShaderString UTF8String] andfShaderSource:[fragmentShaderString UTF8String]];
@@ -191,11 +193,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)setupFrameBuffer{
     
-    if (_frameBufferAvailable) {
-        
-        return;
-    }
-    
     glDeleteFramebuffers(1, &_frameBuffer);
     
     glDeleteTextures(1, &_renderTexture_out);
@@ -230,7 +227,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     glBindTexture(GL_TEXTURE_2D, 0);
     
-    self.frameBufferAvailable=YES;
+    self.needLayout=NO;
+    
 }
 
 
@@ -386,7 +384,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
         self.size=[self calculateSizeByRotatedAngle:newSize];
         
-        self.frameBufferAvailable=NO;
+        [self setNeedLayout:YES];
         
         [self didSetInputSize:self.size];
         
@@ -661,8 +659,12 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
             [self innerSetInputSize:size];
             
             [self activeGLContext:^{
-               
-                [self setupFrameBuffer];
+                
+                if(self.needLayout){
+                    
+                    [self setupFrameBuffer];
+                    
+                }
                 
                 [self renderAndNotify];
                 
