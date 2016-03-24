@@ -442,15 +442,15 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 #pragma -mark 支持子类重载的接口
 
--(void)draw{
+-(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect{
     
-    glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     
     //glEnable(GL_CULL_FACE);
     
     //glCullFace(GL_BACK);
     
-    glViewport(0, 0,_size.width,_size.height);
+    glViewport(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
     
@@ -518,7 +518,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)renderAndNotify{
     
-    [self draw];
+    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
     
     [self notifyNextOperation];
     

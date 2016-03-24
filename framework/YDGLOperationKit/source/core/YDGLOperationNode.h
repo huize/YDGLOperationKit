@@ -234,13 +234,16 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
  */
 -(void)setupTextureForProgram:(GLuint)program;
 /**
- *  @author 许辉泽, 16-03-12 14:57:43
+ *  @author 许辉泽, 16-03-24 15:28:13
  *
- *  渲染并且通知下一级节点
+ *  该节点的渲染过程
+ *
+ *  @param frameBuffer 渲染缓冲区
+ *  @param CGRect      区域
  *
  *  @since 1.0.0
  */
--(void)renderAndNotify;
+-(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect;
 
 -(void)activeGLContext:(void(^_Nonnull)(void))block;
 
