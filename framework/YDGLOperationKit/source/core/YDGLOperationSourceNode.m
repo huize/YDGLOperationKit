@@ -361,9 +361,10 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         [self activeGLContext:^{
             
             [self prepareForRender];
-            
-            [self render];
+        
         }];
+        
+        [self renderIfCanWhenDependencyDone:self];
         
     });
     

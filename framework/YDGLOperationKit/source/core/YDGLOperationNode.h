@@ -236,11 +236,11 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 /**
  *  @author 许辉泽, 16-03-12 14:57:43
  *
- *  开始渲染
+ *  渲染并且通知下一级节点
  *
  *  @since 1.0.0
  */
--(void)render;
+-(void)renderAndNotify;
 
 -(void)activeGLContext:(void(^_Nonnull)(void))block;
 

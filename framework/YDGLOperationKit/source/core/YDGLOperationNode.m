@@ -333,12 +333,114 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
+/**
+ *  @author 许辉泽, 16-03-24 14:29:00
+ *
+ *  查询改node的所有依赖是否已经完成了
+ *
+ *  @param maxSize  最大尺寸
+ *
+ *  @return
+ *
+ *  @since 1.0.0
+ */
+-(BOOL)allDependencyDoneWithMaxSize:(CGSize*)maxSize{
+    
+    __block BOOL done=YES;
+    
+    __block CGSize size=CGSizeZero;
+    
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        YDGLOperationNodeOutput *output=[obj getOutput];
+        
+        if (output==nil) {
+            
+            done=NO;
+            *stop=YES;
+            
+        }else{
+            
+            //使用最大的size
+            if (output.size.width>size.width&&output.size.height>size.height) {
+                
+                size=output.size;
+            }
+            
+        }
+        
+    }];
+    
+    if (CGSizeEqualToSize(size, CGSizeZero)==NO) {
+        
+        *maxSize=size;
+    }
+    
+    return done;
+    
+}
+
+
+-(void)innerSetInputSize:(CGSize)newSize{
+    
+    self.size=[self calculateSizeByRotatedAngle:newSize];
+    
+    self.frameBufferAvailable=NO;
+    
+    [self didSetInputSize:self.size];
+}
+
+
+-(void)activeGLContext:(void (^)(void))block{
+    
+    EAGLContext *preContext=[EAGLContext currentContext];
+    
+    if (preContext==_glContext) {
+        
+        block();
+        
+    }else{
+        
+        [EAGLContext setCurrentContext:_glContext];
+        
+        block();
+        
+        [EAGLContext setCurrentContext:preContext];
+    }
+}
+
+/**
+ *  @author 许辉泽, 16-03-24 14:35:42
+ *
+ *  通知所有下一个node
+ *
+ *  @since 1.0.0
+ */
+-(void)notifyNextOperation{
+
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        if (self.operationCompletionBlock) {
+            
+            self.operationCompletionBlock([self getOutput]);
+            
+        }
+        
+    });
+    
+    [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [obj renderIfCanWhenDependencyDone:self];
+    }];
+
+
+}
+
 #pragma -mark 支持子类重载的接口
 
--(void)render{
+-(void)draw{
     
-    [self setupFrameBuffer];
-
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
     
     //glEnable(GL_CULL_FACE);
@@ -403,35 +505,20 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(GLvoid*)(index*4));
         
     }
-
+    
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    
-    //glDisableVertexAttribArray(location);
-    
-//    for (NSNumber* tmpIndex in _drawModel.uniformDictionary.allValues) {
-//        
-//        glDisableVertexAttribArray(tmpIndex.unsignedIntegerValue);
-//    }
-    
-
-    //glDisableVertexAttribArray(location_texturecoord);
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-       
-        if (self.operationCompletionBlock) {
-            
-            self.operationCompletionBlock([self getOutput]);
-            
-        }
-        
-    });
     
-    [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-       
-        [obj renderIfCanWhenDependencyDone:self];
-    }];
+}
+
+-(void)renderAndNotify{
+    
+    [self draw];
+    
+    [self notifyNextOperation];
+    
 }
 
 -(void)setTextureCoord{
@@ -483,6 +570,11 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
+-(void)didSetInputSize:(CGSize)newInputSize{
+    
+    
+    
+}
 
 #pragma -mark Node 协议的实现
 
@@ -555,84 +647,32 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     }
     
-    __block BOOL ready=YES;
+    CGSize size=CGSizeMake(self.size.width, self.size.height);
     
-    __block CGSize size=self.size;
-    
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        YDGLOperationNodeOutput *output=[obj getOutput];
-        
-        if (output==nil) {
-            
-            ready=NO;
-            *stop=YES;
-            
-        }else{
-            
-            //使用最大的size
-            if (output.size.width>size.width&&output.size.height>size.height) {
-                
-                size=output.size;
-            }
-    
-        }
-        
-    }];
+    BOOL ready =[self allDependencyDoneWithMaxSize:&size];
     
     if (ready) {
         
-        if (size.width!=self.size.width||size.height!=self.size.height) {
-            
-            [self innerSetInputSize:size];
-            
-        }
-        
         RunInNodeProcessQueue(^{
             
+            if (size.width!=self.size.width||size.height!=self.size.height) {
+                
+                [self innerSetInputSize:size];
+                
+            }
+
             [self activeGLContext:^{
                
-                [self render];
+                [self setupFrameBuffer];
+                
+                [self renderAndNotify];
+                
+                
             }];
 
         });
     }
     
-}
-
--(void)innerSetInputSize:(CGSize)newSize{
-
-    self.size=[self calculateSizeByRotatedAngle:newSize];
-
-    self.frameBufferAvailable=NO;
-    
-    [self didSetInputSize:self.size];
-}
-
-
--(void)didSetInputSize:(CGSize)newInputSize{
-
-    
-
-}
-
-
--(void)activeGLContext:(void (^)(void))block{
-    
-    EAGLContext *preContext=[EAGLContext currentContext];
-    
-    if (preContext==_glContext) {
-        
-        block();
-        
-    }else{
-        
-        [EAGLContext setCurrentContext:_glContext];
-        
-        block();
-        
-        [EAGLContext setCurrentContext:preContext];
-    }
 }
 
 #pragma -mark  纹理加载的代理
