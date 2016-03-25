@@ -193,6 +193,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)setupFrameBuffer{
     
+    if (self.needLayout==NO) {
+        
+        //self.size 没有发生改变的时候,是不需要重新设置framebuffer的
+        
+        return ;
+    }
+    
     glDeleteFramebuffers(1, &_frameBuffer);
     
     glDeleteTextures(1, &_renderTexture_out);
@@ -308,7 +315,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
  */
 -(CGSize)calculateSizeByRotatedAngle:(CGSize)size{
     
-    CGSize result=size;
+    CGSize result;
     
     switch (self.angle) {
         case 90:

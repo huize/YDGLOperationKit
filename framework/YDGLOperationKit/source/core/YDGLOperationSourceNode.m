@@ -86,7 +86,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(instancetype)initWithUIImage:(UIImage *)image{
 
-    if (self==[self init]) {
+    if (self=[self init]) {
         
         _image=image;
         
