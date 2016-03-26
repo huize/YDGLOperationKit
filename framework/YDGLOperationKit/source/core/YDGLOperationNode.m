@@ -425,24 +425,20 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
  *  @since 1.0.0
  */
 -(void)notifyNextOperation{
-
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    
+    if (self.operationCompletionBlock) {
         
-        if (self.operationCompletionBlock) {
-            
-            self.operationCompletionBlock([self getOutput]);
-            
-        }
+        self.operationCompletionBlock([self getOutput]);
         
-    });
+    }
     
     [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         [obj renderIfCanWhenDependencyDone:self];
     }];
-
-
+    
+    
 }
 
 #pragma -mark 支持子类重载的接口
