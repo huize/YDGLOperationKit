@@ -227,17 +227,17 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     }
     
     
-//    if (shouldRedrawUsingCoreGraphics)
-//    {
-//        free(imageData);
-//    }
-//    else
-//    {
-//        if (dataFromImageDataProvider)
-//        {
-//            CFRelease(dataFromImageDataProvider);
-//        }
-//    }
+    if (shouldRedrawUsingCoreGraphics)
+    {
+        free(imageData);
+    }
+    else
+    {
+        if (dataFromImageDataProvider)
+        {
+            CFRelease(dataFromImageDataProvider);
+        }
+    }
    
 }
 

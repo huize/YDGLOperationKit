@@ -100,6 +100,8 @@
     
     _drawStyle=drawModel;
     
+    free(bufferId);
+    
 }
 
 -(void)loadSquareVex:(const GLfloat [12])vertices_position{
