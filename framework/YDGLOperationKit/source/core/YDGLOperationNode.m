@@ -387,7 +387,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)innerSetInputSize:(CGSize)newSize{
     
-    if (newSize.width!=self.size.width||newSize.height!=self.size.height) {
+    CGSize fixedSize=[self calculateSizeByRotatedAngle:newSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
+    
+    if (CGSizeEqualToSize(fixedSize, _size)==false) {
         
         self.size=[self calculateSizeByRotatedAngle:newSize];
         
@@ -652,34 +654,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     }
     
     //TODO:注意,以下2句代码会导致 innerSetInputSize 一直被调用,即size!=_size,allDependencyDoneWithMaxSize 逻辑有问题,需要排查
-    //CGSize size=CGSizeMake(self.size.width, self.size.height);
+    CGSize size=CGSizeMake(self.size.width, self.size.height);
     
-    //BOOL ready =[self allDependencyDoneWithMaxSize:&size];
-    
-    __block BOOL ready=YES;
-    
-    __block CGSize size=self.size;
-    
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        YDGLOperationNodeOutput *output=[obj getOutput];
-        
-        if (output==nil) {
-            
-            ready=NO;
-            *stop=YES;
-            
-        }else{
-            
-            //使用最大的size
-            if (output.size.width>size.width&&output.size.height>size.height) {
-                
-                size=output.size;
-            }
-            
-        }
-        
-    }];
+    BOOL ready =[self allDependencyDoneWithMaxSize:&size];
     
     if (ready) {
         
