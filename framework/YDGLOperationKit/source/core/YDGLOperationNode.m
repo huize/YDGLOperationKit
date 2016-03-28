@@ -375,7 +375,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     }];
     
-    if (CGSizeEqualToSize(size, CGSizeZero)==NO) {
+    if (CGSizeEqualToSize(size, CGSizeZero)==NO&&done) {
         
         *maxSize=size;
     }
@@ -651,9 +651,35 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     }
     
-    CGSize size=CGSizeMake(self.size.width, self.size.height);
+    //TODO:注意,以下2句代码会导致 innerSetInputSize 一直被调用,即size!=_size,allDependencyDoneWithMaxSize 逻辑有问题,需要排查
+    //CGSize size=CGSizeMake(self.size.width, self.size.height);
     
-    BOOL ready =[self allDependencyDoneWithMaxSize:&size];
+    //BOOL ready =[self allDependencyDoneWithMaxSize:&size];
+    
+    __block BOOL ready=YES;
+    
+    __block CGSize size=self.size;
+    
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        YDGLOperationNodeOutput *output=[obj getOutput];
+        
+        if (output==nil) {
+            
+            ready=NO;
+            *stop=YES;
+            
+        }else{
+            
+            //使用最大的size
+            if (output.size.width>size.width&&output.size.height>size.height) {
+                
+                size=output.size;
+            }
+            
+        }
+        
+    }];
     
     if (ready) {
         
