@@ -16,8 +16,6 @@
 
 #import "ShaderLoader.h"
 
-#import "ESTransform.h"
-
 #import "YDDrawModel.h"
 
 /**
@@ -186,7 +184,7 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
     
     CGSize _size;
     
-    ESMatrix _mvpMatrix;
+    CATransform3D _mvpMatrix;
     
     YDDrawModel *_drawModel;
     

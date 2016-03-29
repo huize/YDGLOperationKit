@@ -17,7 +17,7 @@
 @property(nonatomic,assign) GLuint frameBuffer;//
 @property(nonatomic,assign) GLuint renderTexture_out;//
 @property(nonatomic,assign) CVPixelBufferRef pixelBuffer_out;//
-@property(nonatomic,assign) ESMatrix mvpMatrix;
+@property(nonatomic,assign) CATransform3D mvpMatrix;
 @property(nonatomic,assign) CGSize size;//
 
 @property(nonatomic,nullable,retain) YDDrawModel *drawModel;//
@@ -257,17 +257,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(ESMatrix)mvpMatrix4Square{
+-(CATransform3D)mvpMatrix4Square{
     
-    ESMatrix modelview;
-    
-    // Generate a model view matrix to rotate/translate the cube
-    esMatrixLoadIdentity ( &modelview );
-    
-    // Translate away from the viewer
-    //esTranslate (&modelview, 0, 0,-3.0);
-    
-    return modelview;
+    return CATransform3DIdentity;
     
 }
 
@@ -559,9 +551,21 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     //4.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
-    ESMatrix matrix=self.mvpMatrix;
+    CATransform3D matrix=self.mvpMatrix;
     
-    glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&matrix);
+    CGFloat*mm=(CGFloat*)&matrix;
+    
+    GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
+    
+    for (int index=0; index<16; index++) {
+        
+        finalMatrix[index]=(GLfloat)mm[index];
+        
+    }
+
+    glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
+    
+    free(finalMatrix);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
     
@@ -822,12 +826,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 #pragma -mark 对外接口
 
--(void)setTransform:(ESMatrix)transformMatrix{
-    
-    self.mvpMatrix=transformMatrix;
-    
-}
-
 -(void)setFloat:(GLfloat)newFloat forUniformName:(NSString *)uniformName{
     
     dispatch_block_t operation=^{
@@ -885,7 +883,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_block_t rotateDrawOperation=^{
         
-        esRotate(&_mvpMatrix, self.angle, 0, 0, 1.0);
+        _mvpMatrix=CATransform3DRotate(_mvpMatrix, self.angle, 0, 0, 1.0);
+        
         
     };
     
@@ -897,7 +896,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_block_t rotateDrawOperation=^{
         
-        esRotate(&_mvpMatrix, angle, 0.0, 1.0, 0.0);
+        _mvpMatrix=CATransform3DRotate(_mvpMatrix, angle, 0.0, 1.0, 0.0);
         
     };
     

@@ -16,6 +16,7 @@
 
 @import QuartzCore;
 
+#import "YDGLTransformUtil.h"
 
 @implementation YDGLOperationNodeView{
 
@@ -310,62 +311,50 @@
 
 }
 
-
-
--(ESMatrix)mvpMatrix4Cube{
-
-    ESMatrix perspective;
+-(CATransform3D)mvpMatrix4Cube{
+    
+    CATransform3D perspective=CATransform3DIdentity;
     
     // Compute the window aspect ratio
     float aspect = _sizeInPixel.width/_sizeInPixel.height;
     
-    // Generate a perspective matrix with a 60 degree FOV
-    esMatrixLoadIdentity ( &perspective );
-    esPerspective ( &perspective, 45.0f, aspect, 1.0f, 20.0f );
+    perspective=[YDGLTransformUtil Perspective:45.0f andAspect:aspect andNearZ:1.0f andFarZ:20.f];
     
-    ESMatrix modelview;
+    CATransform3D modelview=CATransform3DIdentity;
     
     // Compute a rotation angle based on time to rotate the cube
-    _angle += ( 1 * 5.0f );
+    _angle += ( 1 * 0.1f );
     
     if ( _angle >= 360.0f )
     {
         _angle -= 360.0f;
     }
     
-    // Generate a model view matrix to rotate/translate the cube
-    esMatrixLoadIdentity ( &modelview );
-    
     // Translate away from the viewer
-    esTranslate (&modelview, 0, 0,-3.0);
-    esTranslate(&modelview, -0.5, -0.5, 0);
     
-    esTranslate(&modelview, 0.5, 0.5, 0.5);
+    modelview=CATransform3DTranslate(modelview, 0.0, 0.0, -3.0);
+    
+    modelview=CATransform3DTranslate(modelview, -0.5, -0.5, 0);
+    
+    modelview=CATransform3DTranslate(modelview, 0.5, 0.5, 0.5);
+    
     // Rotate the cube
-    esRotate ( &modelview, _angle, 1.0, 1.0, 1.0 );
     
-    esTranslate(&modelview, -0.5, -0.5, -0.5);
-
-    ESMatrix mvpMatrix;
-    esMatrixMultiply ( &mvpMatrix, &modelview, &perspective);
+    modelview=CATransform3DRotate(modelview, _angle, 1.0, 1.0, 1.0);
+    
+    modelview=CATransform3DTranslate(modelview, -0.5, -0.5, -0.5);
+    
+    CATransform3D mvpMatrix=CATransform3DConcat(modelview, perspective);
     
     return mvpMatrix;
-
-}
-
--(ESMatrix)mvpMatrix4Square{
-    
-    ESMatrix modelview;
-
-    // Generate a model view matrix to rotate/translate the cube
-    esMatrixLoadIdentity ( &modelview );
-    
-    // Translate away from the viewer
-    //esTranslate (&modelview, 0, 0,-3.0);
- 
-    return modelview;
     
 }
+
+-(CATransform3D)mvpMatrix4Square{
+    
+    return CATransform3DIdentity;
+}
+
 
 -(void)render{
 
@@ -392,7 +381,7 @@
     
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
-    ESMatrix _mvpMatrix;
+    CATransform3D _mvpMatrix;
     
     if (self.cube) {
         
@@ -402,9 +391,21 @@
         _mvpMatrix=[self mvpMatrix4Square];
     }
     
-    ESMatrix matrix=_mvpMatrix;
+    CATransform3D matrix=_mvpMatrix;
     
-    glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&matrix);
+    CGFloat*mm=(CGFloat*)&matrix;
+    
+    GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
+    
+    for (int index=0; index<16; index++) {
+        
+        finalMatrix[index]=(GLfloat)mm[index];
+        
+    }
+    
+    glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
+    
+    free(finalMatrix);
     
     GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
     glActiveTexture(GL_TEXTURE0);
