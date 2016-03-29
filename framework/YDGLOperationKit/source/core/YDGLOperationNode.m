@@ -30,6 +30,10 @@
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *programOperations;//program 的操作
 
+@property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *beforePerformTraversalsOperations;//program 的操作
+
+@property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *beforePerformDrawOperations;//program 的操作
+
 @property(nonatomic,assign) int angle;//旋转的角度
 
 
@@ -99,6 +103,10 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     self.programOperations=[NSMutableArray array];
 
+    self.beforePerformDrawOperations=[NSMutableArray array];
+    
+    self.beforePerformTraversalsOperations=[NSMutableArray array];
+    
     self.needLayout=YES;
     
     [self activeGLContext:^{
@@ -193,18 +201,12 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)setupFrameBuffer{
     
-    if (self.needLayout==NO) {
+    [self cleanUpTexture];
+    
+    if (_frameBuffer==0) {
         
-        //self.size 没有发生改变的时候,是不需要重新设置framebuffer的
-        
-        return ;
+        glGenFramebuffers(1, &_frameBuffer);
     }
-    
-    glDeleteFramebuffers(1, &_frameBuffer);
-    
-    glDeleteTextures(1, &_renderTexture_out);
-    
-    glGenFramebuffers(1, &_frameBuffer);
     
     //TODO:glGenTextures(1, &_renderTexture_out);
     //上面那种方式创建的纹理会导致美艳算法在iOS8.4以下的机器上无效
@@ -233,8 +235,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     glBindTexture(GL_TEXTURE_2D, 0);
-    
-    self.needLayout=NO;
     
 }
 
@@ -348,11 +348,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
  *
  *  @since 1.0.0
  */
--(BOOL)allDependencyDoneWithMaxSize:(CGSize*)maxSize{
+-(BOOL)allDependencyDone{
     
     __block BOOL done=YES;
-    
-    __block CGSize size=CGSizeZero;
     
     [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -362,6 +360,24 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
             
             done=NO;
             *stop=YES;
+            
+        }
+    }];
+    
+    
+    return done;
+    
+}
+
+-(CGSize)getRenderSize{
+    
+    __block CGSize size=CGSizeZero;
+    
+    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        YDGLOperationNodeOutput *output=[obj getOutput];
+        
+        if (output==nil) {
             
         }else{
             
@@ -375,29 +391,17 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     }];
     
-    if (CGSizeEqualToSize(size, CGSizeZero)==NO&&done) {
-        
-        *maxSize=size;
-    }
-    
-    return done;
+    return size;
     
 }
 
 
 -(void)innerSetInputSize:(CGSize)newSize{
     
-    CGSize fixedSize=[self calculateSizeByRotatedAngle:newSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
+    self.size=newSize;
     
-    if (CGSizeEqualToSize(fixedSize, _size)==false) {
-        
-        self.size=[self calculateSizeByRotatedAngle:newSize];
-        
-        [self setNeedLayout:YES];
-        
-        [self didSetInputSize:self.size];
-        
-    }
+    [self didSetInputSize:self.size];
+    
 }
 
 
@@ -442,6 +446,66 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     
 }
+
+-(void)beforePerformTraversals{
+
+    for (dispatch_block_t layoutOperation in self.beforePerformTraversalsOperations) {
+        
+        layoutOperation();
+        
+    }
+    
+    
+    [self.beforePerformTraversalsOperations removeAllObjects];//线程同步问题
+
+}
+
+-(void)performTraversals{
+    
+    CGSize renderSize=[self getRenderSize];
+    
+    if (CGSizeEqualToSize(CGSizeZero, renderSize)) {
+        
+        renderSize=_size;
+    }
+    
+    CGSize fixedRenderSize=[self calculateSizeByRotatedAngle:renderSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
+    
+    if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, _size)==false) {
+        
+        [self setNeedLayout:YES];
+        
+    }
+    
+    [self activeGLContext:^{
+        
+        if(self.needLayout){
+            
+            [self innerSetInputSize:fixedRenderSize];
+            
+            [self performLayout];
+            
+            [self setNeedLayout:NO];
+            
+        }
+        
+        [self beforePerformDraw];
+        
+        [self performDraw];
+        
+    }];
+    
+    
+}
+
+-(void)performLayout{
+    
+    //NSAssert(self.needLayout==YES, @"不需要调用 performLayout");
+    
+    [self setupFrameBuffer];
+
+}
+
 
 #pragma -mark 支持子类重载的接口
 
@@ -519,7 +583,19 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(void)renderAndNotify{
+-(void)beforePerformDraw{
+
+    for (dispatch_block_t drawOperation in self.beforePerformDrawOperations) {
+        
+        drawOperation();
+        
+    }
+    
+    [self.beforePerformDrawOperations removeAllObjects];//线程同步问题
+    
+}
+
+-(void)performDraw{
     
     [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
     
@@ -648,35 +724,19 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 -(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
     if (_locked){
-    
+        
         return ;
-    
+        
     }
     
-    //TODO:注意,以下2句代码会导致 innerSetInputSize 一直被调用,即size!=_size,allDependencyDoneWithMaxSize 逻辑有问题,需要排查
-    CGSize size=CGSizeMake(self.size.width, self.size.height);
-    
-    BOOL ready =[self allDependencyDoneWithMaxSize:&size];
+    BOOL ready =[self allDependencyDone];
     
     if (ready) {
         
-        RunInNodeProcessQueue(^{
-            
-            [self innerSetInputSize:size];
-            
-            [self activeGLContext:^{
-                
-                if(self.needLayout){
-                    
-                    [self setupFrameBuffer];
-                    
-                }
-                
-                [self renderAndNotify];
-                
-            }];
-
-        });
+        [self beforePerformTraversals];
+        
+        [self performTraversals];
+        
     }
     
 }
@@ -727,14 +787,36 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     NSLog(@"节点销毁了");
     
     [self cleanUpTexture];
+    
+    glDeleteFramebuffers(1, &_frameBuffer);
+    
+    _frameBuffer=0;
+    
+    [_beforePerformDrawOperations removeAllObjects];
+    
+    [_beforePerformTraversalsOperations removeAllObjects];
+    
+    [_programOperations removeAllObjects];
 
 }
 
 -(void)cleanUpTexture{
-
-    glDeleteBuffers(1, &_frameBuffer);
     
-    glDeleteTextures(1, &_renderTexture_out);
+    if (_cvTextureRef) {
+        
+        CVPixelBufferRelease(_cvTextureRef);
+        
+        _cvTextureRef=NULL;
+    }
+    
+    if (_pixelBuffer_out!=NULL) {
+        
+        CVPixelBufferRelease(_pixelBuffer_out);
+        
+        _pixelBuffer_out=NULL;
+    }
+    
+    _renderTexture_out=0;
     
 }
 
@@ -793,27 +875,33 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)rotateAtZ:(int)angle{
     
-    RunInNodeProcessQueue(^{
-        
-        CGSize currentSize=self.size;
+    dispatch_block_t rotateLayoutOperation=^{
         
         self.angle=angle;
         
+    };
+    
+    [self.beforePerformTraversalsOperations addObject:rotateLayoutOperation];
+    
+    dispatch_block_t rotateDrawOperation=^{
+        
         esRotate(&_mvpMatrix, self.angle, 0, 0, 1.0);
         
-        [self innerSetInputSize:currentSize];
-        
-    });
+    };
+    
+    [self.beforePerformDrawOperations addObject:rotateDrawOperation];
     
 }
 
 -(void)rotateAtY:(int)angle{
     
-    RunInNodeProcessQueue(^{
+    dispatch_block_t rotateDrawOperation=^{
         
         esRotate(&_mvpMatrix, angle, 0.0, 1.0, 0.0);
         
-    });
+    };
+    
+    [self.beforePerformDrawOperations addObject:rotateDrawOperation];
     
 }
 
