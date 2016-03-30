@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 
+@import  GLKit;
+
 @interface ydgloperationTestTests : XCTestCase
 
 @end
@@ -25,8 +27,22 @@
 }
 
 - (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    GLKMatrix4 project=GLKMatrix4MakePerspective(45.0, 1.0, 100, 200);
+    
+    GLKMatrix4 modelView=GLKMatrix4Identity;
+    
+    GLKMatrix4 mvp=GLKMatrix4Multiply(modelView, project);
+    
+    GLKVector4 position=GLKVector4Make(0, 100, 10, 1.0);
+
+    GLKVector4 result=GLKMatrix4MultiplyVector4(mvp, position);
+
+    NSLog(@"归一化前result:%f %f %f %f",result.x,result.y,result.z,result.w);
+
+    result=GLKVector4Normalize(result);
+    NSLog(@"归一化后result:%f %f %f %f",result.x,result.y,result.z,result.w);
+    
 }
 
 - (void)testPerformanceExample {
