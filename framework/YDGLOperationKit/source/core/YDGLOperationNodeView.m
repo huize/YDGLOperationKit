@@ -16,7 +16,7 @@
 
 @import QuartzCore;
 
-#import "YDGLTransformUtil.h"
+@import GLKit;
 
 @implementation YDGLOperationNodeView{
 
@@ -311,48 +311,55 @@
 
 }
 
--(CATransform3D)mvpMatrix4Cube{
+-(GLKMatrix4)mvpMatrix4Cube{
     
-    CATransform3D perspective=CATransform3DIdentity;
+    float aspect=_sizeInPixel.width/_sizeInPixel.height;
+    float nearZ=_sizeInPixel.height/2;
     
-    // Compute the window aspect ratio
-    float aspect = _sizeInPixel.width/_sizeInPixel.height;
+    nearZ=1.0;
     
-    perspective=[YDGLTransformUtil Perspective:45.0f andAspect:aspect andNearZ:1.0f andFarZ:20.f];
+    float farZ=nearZ+100;
     
-    CATransform3D modelview=CATransform3DIdentity;
+    GLKMatrix4 projection=GLKMatrix4MakePerspective(M_PI_2, aspect, nearZ, farZ);
     
-    // Compute a rotation angle based on time to rotate the cube
-    _angle += ( 1 * 0.1f );
+    GLKMatrix4 modelView=GLKMatrix4Identity;
+    
+    _angle += ( 1 * 5.f );
     
     if ( _angle >= 360.0f )
     {
         _angle -= 360.0f;
     }
+
+    modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ-1.5);//移动到视锥体内,原点是(0,0,-nearZ-2)
     
-    // Translate away from the viewer
+    //移动到屏幕中心
+    modelView=GLKMatrix4Translate(modelView, -0.5, -0.5, 0.0);
+    //自转
+    modelView=GLKMatrix4Translate(modelView, 0.5, 0.5, 0.5);
+    modelView=GLKMatrix4Rotate(modelView, GLKMathDegreesToRadians(_angle), 1.0, 1.0, 1.0);
+    modelView=GLKMatrix4Translate(modelView, -0.5, -0.5, -0.5);
     
-    modelview=CATransform3DTranslate(modelview, 0.0, 0.0, -3.0);
-    
-    modelview=CATransform3DTranslate(modelview, -0.5, -0.5, 0);
-    
-    modelview=CATransform3DTranslate(modelview, 0.5, 0.5, 0.5);
-    
-    // Rotate the cube
-    
-    modelview=CATransform3DRotate(modelview, _angle, 1.0, 1.0, 1.0);
-    
-    modelview=CATransform3DTranslate(modelview, -0.5, -0.5, -0.5);
-    
-    CATransform3D mvpMatrix=CATransform3DConcat(modelview, perspective);
-    
-    return mvpMatrix;
+    return GLKMatrix4Multiply(projection,modelView);
     
 }
 
--(CATransform3D)mvpMatrix4Square{
+-(GLKMatrix4)mvpMatrix4Square{
     
-    return CATransform3DIdentity;
+    float aspect=_sizeInPixel.width/_sizeInPixel.height;
+    float nearZ=_sizeInPixel.height/2;
+    
+    nearZ=1.0;
+    
+    float farZ=nearZ+100;
+    
+    GLKMatrix4 projection=GLKMatrix4MakePerspective(M_PI_2, aspect, nearZ, farZ);
+    
+    GLKMatrix4 modelView=GLKMatrix4Identity;
+
+    modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ);//移动到视锥体内,原点是(0,0,-nearZ-2)
+    
+    return GLKMatrix4Multiply(projection,modelView);
 }
 
 
@@ -381,7 +388,7 @@
     
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
-    CATransform3D _mvpMatrix;
+    GLKMatrix4 _mvpMatrix;
     
     if (self.cube) {
         
@@ -391,9 +398,7 @@
         _mvpMatrix=[self mvpMatrix4Square];
     }
     
-    CATransform3D matrix=_mvpMatrix;
-    
-    CGFloat*mm=(CGFloat*)&matrix;
+    float*mm=(float*)_mvpMatrix.m;
     
     GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
     
