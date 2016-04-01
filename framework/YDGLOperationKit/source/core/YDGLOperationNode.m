@@ -8,6 +8,8 @@
 
 #import "YDGLOperationNode.h"
 
+@import GLKit;
+
 @implementation YDGLOperationNodeOutput
 
 @end
@@ -904,7 +906,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_block_t rotateDrawOperation=^{
         
-        _mvpMatrix=CATransform3DRotate(_mvpMatrix, self.angle, 0, 0, 1.0);
+        _mvpMatrix=CATransform3DRotate(_mvpMatrix, GLKMathDegreesToRadians(self.angle), 0, 0, 1.0);
         
         
     };
@@ -917,7 +919,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_block_t rotateDrawOperation=^{
         
-        _mvpMatrix=CATransform3DRotate(_mvpMatrix, angle, 0.0, 1.0, 0.0);
+        _mvpMatrix=CATransform3DRotate(_mvpMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 1.0, 0.0);
         
     };
     
