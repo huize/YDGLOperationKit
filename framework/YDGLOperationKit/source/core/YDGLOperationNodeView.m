@@ -325,14 +325,14 @@
     
     GLKMatrix4 modelView=GLKMatrix4Identity;
     
-    _angle += ( 1 * 5.f );
+    _angle += ( 1 * 1.f );
     
     if ( _angle >= 360.0f )
     {
         _angle -= 360.0f;
     }
 
-    modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ-1.0);//移动到视锥体内,原点是(0,0,-nearZ-2)
+    modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ-1.5);//移动到视锥体内,原点是(0,0,-nearZ-2)
     
     //移动到屏幕中心
     modelView=GLKMatrix4Translate(modelView, -0.5, -0.5, 0.0);

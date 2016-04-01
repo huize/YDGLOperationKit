@@ -28,8 +28,6 @@
 		423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */; };
 		424D94B01C9BF183006DA52D /* YDGLOperationNodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D94AE1C9BF183006DA52D /* YDGLOperationNodeView.m */; };
 		424D94B11C9BF183006DA52D /* YDGLOperationNodeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 424D94AF1C9BF183006DA52D /* YDGLOperationNodeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		426AD5531CAD3E070023AC7E /* esTransform.c in Sources */ = {isa = PBXBuildFile; fileRef = 426AD54B1CAD3E070023AC7E /* esTransform.c */; };
-		426AD5541CAD3E070023AC7E /* esTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54C1CAD3E070023AC7E /* esTransform.h */; };
 		426AD5551CAD3E070023AC7E /* ShaderLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 426AD54D1CAD3E070023AC7E /* ShaderLoader.c */; };
 		426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54E1CAD3E070023AC7E /* ShaderLoader.h */; };
 		426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54F1CAD3E070023AC7E /* YDGLOperationColorConversion.h */; };
@@ -77,8 +75,6 @@
 		423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationTwoInputNode.m; sourceTree = "<group>"; };
 		424D94AE1C9BF183006DA52D /* YDGLOperationNodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationNodeView.m; sourceTree = "<group>"; };
 		424D94AF1C9BF183006DA52D /* YDGLOperationNodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationNodeView.h; sourceTree = "<group>"; };
-		426AD54B1CAD3E070023AC7E /* esTransform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esTransform.c; sourceTree = "<group>"; };
-		426AD54C1CAD3E070023AC7E /* esTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = esTransform.h; sourceTree = "<group>"; };
 		426AD54D1CAD3E070023AC7E /* ShaderLoader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ShaderLoader.c; sourceTree = "<group>"; };
 		426AD54E1CAD3E070023AC7E /* ShaderLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderLoader.h; sourceTree = "<group>"; };
 		426AD54F1CAD3E070023AC7E /* YDGLOperationColorConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationColorConversion.h; sourceTree = "<group>"; };
@@ -124,8 +120,6 @@
 		426AD54A1CAD3E070023AC7E /* common */ = {
 			isa = PBXGroup;
 			children = (
-				426AD54B1CAD3E070023AC7E /* esTransform.c */,
-				426AD54C1CAD3E070023AC7E /* esTransform.h */,
 				426AD54D1CAD3E070023AC7E /* ShaderLoader.c */,
 				426AD54E1CAD3E070023AC7E /* ShaderLoader.h */,
 				426AD54F1CAD3E070023AC7E /* YDGLOperationColorConversion.h */,
@@ -203,7 +197,6 @@
 				423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */,
 				423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */,
 				42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */,
-				426AD5541CAD3E070023AC7E /* esTransform.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,7 +297,6 @@
 				42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */,
 				423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */,
 				424D94B01C9BF183006DA52D /* YDGLOperationNodeView.m in Sources */,
-				426AD5531CAD3E070023AC7E /* esTransform.c in Sources */,
 				42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */,
 				426AD5551CAD3E070023AC7E /* ShaderLoader.c in Sources */,
 				423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */,
