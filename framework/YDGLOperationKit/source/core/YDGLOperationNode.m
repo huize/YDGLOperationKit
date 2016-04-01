@@ -34,6 +34,8 @@
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *beforePerformDrawOperations;//program 的操作
 
+@property(nonatomic,nullable,retain)dispatch_semaphore_t lockForNode;
+
 @property(nonatomic,assign) int angle;//旋转的角度
 
 
@@ -108,6 +110,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     self.beforePerformTraversalsOperations=[NSMutableArray array];
     
     self.needLayout=YES;
+    
+    self.lockForNode=dispatch_semaphore_create(1);
     
     [self activeGLContext:^{
         
@@ -431,11 +435,15 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     }
     
+    
+    dispatch_semaphore_wait(_lockForNode, DISPATCH_TIME_FOREVER);
+    
     [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         [obj renderIfCanWhenDependencyDone:self];
     }];
     
+    dispatch_semaphore_signal(_lockForNode);
     
 }
 
@@ -733,7 +741,10 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     }
     
+    dispatch_semaphore_wait(_lockForNode,DISPATCH_TIME_FOREVER);
     BOOL ready =[self allDependencyDone];
+    
+    dispatch_semaphore_signal(_lockForNode);
     
     if (ready) {
         
@@ -774,16 +785,18 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)destory{
 
+    dispatch_semaphore_wait(_lockForNode, DISPATCH_TIME_FOREVER);
+    
     [self.dependency removeAllObjects];
     
     [self.nextOperations removeAllObjects];
     
-    self.operationCompletionBlock=nil;
-    
     [self.programOperations removeAllObjects];
     
-    [self cleanUpTexture];
-
+    dispatch_semaphore_signal(_lockForNode);
+    
+    self.operationCompletionBlock=nil;
+    
 }
 
 -(void)dealloc{
