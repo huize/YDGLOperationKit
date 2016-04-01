@@ -36,8 +36,8 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
         
     }
     
-    yuv.y = texture2D(SamplerU, textureCoordinate).r - vec2(0.5, 0.5);
-    yuv.z = texture2D(SamplerV, textureCoordinate).r - vec2(0.5, 0.5);
+    yuv.y = texture2D(SamplerU, textureCoordinate).r - 0.5;
+    yuv.z = texture2D(SamplerV, textureCoordinate).r - 0.5;
     
     if(isBT709==1){
         
@@ -82,25 +82,20 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     self = [super initWithFragmentShader:kYDGLOperationI420ToLAFragmentShaderString];
     if (self) {
         
-        
+        //[self commonInitialization];
     }
     return self;
 }
 
--(void)commonInitialization{
-
-    
-    
-}
 
 -(void)uploadI420Data:(uint8_t *)baseAddress andDataSize:(size_t)dataSize andImageSize:(CGSize)imageSize{
-
+    
     self.baseAddress=baseAddress;
     
     self.dataSize=dataSize;
     
     self.imageSize=imageSize;
-
+    
 }
 
 -(void)setupTextureForProgram:(GLuint)program{
@@ -121,18 +116,18 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     
     glUniform1i(location_texture_U, 1);
     
-    GLint location_texture_V=glGetUniformLocation(program, [@"SamplerU" UTF8String]);
+    GLint location_texture_V=glGetUniformLocation(program, [@"SamplerV" UTF8String]);
     
-    glActiveTexture(GL_TEXTURE1);
+    glActiveTexture(GL_TEXTURE2);
     
     [YDGLOperationNode bindTexture:_textureV];
     
-    glUniform1i(location_texture_V, 1);
+    glUniform1i(location_texture_V, 2);
     
 }
 
 -(void)prepareForRender{
-
+    
     if (_textureY==0) {
         
         GLuint *tmp=malloc(sizeof(GLuint)*3);
@@ -153,25 +148,27 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     
     glBindTexture(GL_TEXTURE_2D, _textureY);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _imageSize.width, _imageSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width, _imageSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress);
     
     glActiveTexture(GL_TEXTURE1);
     
     glBindTexture(GL_TEXTURE_2D, _textureU);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height));
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height));
     
     
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE2);
     
     glBindTexture(GL_TEXTURE_2D, _textureV);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height*1.5));
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height*1.5));
+    
+    self.textureAvailable=YES;
     
 }
 
 -(void)dealloc{
-
+    
     glDeleteTextures(1, &_textureY);
     
     glDeleteTextures(1, &_textureU);

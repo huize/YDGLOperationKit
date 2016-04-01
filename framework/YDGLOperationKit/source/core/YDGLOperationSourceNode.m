@@ -77,9 +77,6 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 @property(nonatomic,assign) CVPixelBufferRef pixelBufferRef;//
 
-@property(nonatomic,assign) BOOL textureAvailable;//纹理是否可用
-
-
 @end
 
 @implementation YDGLOperationSourceNode

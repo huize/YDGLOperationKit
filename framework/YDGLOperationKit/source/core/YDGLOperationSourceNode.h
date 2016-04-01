@@ -18,6 +18,8 @@
  */
 @interface YDGLOperationSourceNode :YDGLOperationNode
 
+@property(nonatomic,assign) BOOL textureAvailable;//纹理是否可用
+
 -(instancetype _Nonnull)initWithUIImage:(UIImage*_Nonnull)image;
 
 -(void)uploadCVPixelBuffer:(CVPixelBufferRef _Nonnull)pixelBufferRef;
