@@ -8,8 +8,6 @@
 
 #import "YDGLOperationNode.h"
 
-@import GLKit;
-
 @implementation YDGLOperationNodeOutput
 
 @end
@@ -19,7 +17,7 @@
 @property(nonatomic,assign) GLuint frameBuffer;//
 @property(nonatomic,assign) GLuint renderTexture_out;//
 @property(nonatomic,assign) CVPixelBufferRef pixelBuffer_out;//
-@property(nonatomic,assign) CATransform3D mvpMatrix;
+@property(nonatomic,assign) GLKMatrix4 mvpMatrix;
 @property(nonatomic,assign) CGSize size;//
 
 @property(nonatomic,nullable,retain) YDDrawModel *drawModel;//
@@ -263,9 +261,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(CATransform3D)mvpMatrix4Square{
+-(GLKMatrix4)mvpMatrix4Square{
     
-    return CATransform3DIdentity;
+    return GLKMatrix4Identity;
     
 }
 
@@ -563,9 +561,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     //4.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
-    CATransform3D matrix=self.mvpMatrix;
+    GLKMatrix4 matrix=self.mvpMatrix;
     
-    CGFloat*mm=(CGFloat*)&matrix;
+    float*mm=(float*)matrix.m;
     
     GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
     
@@ -906,7 +904,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_block_t rotateDrawOperation=^{
         
-        _mvpMatrix=CATransform3DRotate(_mvpMatrix, GLKMathDegreesToRadians(self.angle), 0, 0, 1.0);
+        _mvpMatrix=GLKMatrix4Rotate(_mvpMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 0.0, 1.0);
         
         
     };
@@ -918,8 +916,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 -(void)rotateAtY:(int)angle{
     
     dispatch_block_t rotateDrawOperation=^{
-        
-        _mvpMatrix=CATransform3DRotate(_mvpMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 1.0, 0.0);
+                
+        _mvpMatrix=GLKMatrix4Rotate(_mvpMatrix, GLKMathDegreesToRadians(angle), 0.0, 1.0, 0.0);
         
     };
     

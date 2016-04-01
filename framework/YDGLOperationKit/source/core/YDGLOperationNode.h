@@ -6,6 +6,8 @@
 //  Copyright © 2016年 yifan. All rights reserved.
 //
 
+@import GLKit;
+
 @import OpenGLES.ES2;
 
 @import QuartzCore;
@@ -184,7 +186,7 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
     
     CGSize _size;
     
-    CATransform3D _mvpMatrix;
+    GLKMatrix4 _mvpMatrix;
     
     YDDrawModel *_drawModel;
     
