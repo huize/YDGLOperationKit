@@ -211,6 +211,7 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 +(dispatch_queue_t _Nonnull)getWorkQueue;
 
 +(CVOpenGLESTextureCacheRef _Nonnull)getTextureCache;
++(void)bindTexture:(GLuint)textureId;
 /**
  *  @author 许辉泽, 16-03-19 19:47:39
  *
@@ -285,16 +286,15 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 -(void)rotateAtY:(int)angle;
 
 /**
- *  @author 许辉泽, 16-03-18 18:00:28
+ *  @author 许辉泽, 16-04-01 15:15:11
  *
- *  根据angle 属性重新计算一次size
+ *  是否可以开始遍历节点了,默认实现是所有的dependency完成之后的情况下才返回YES
+ *
+ *  @return
  *
  *  @since 1.0.0
  */
-
-
-
-+(void)bindTexture:(GLuint)textureId;
+-(BOOL)canPerformTraversals;
 
 @end
 

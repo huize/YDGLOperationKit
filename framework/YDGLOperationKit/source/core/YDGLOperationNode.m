@@ -348,6 +348,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     __block BOOL done=YES;
     
+    if (self.dependency.count==0)return NO;
+    
     [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         YDGLOperationNodeOutput *output=[obj getOutput];
@@ -670,6 +672,12 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
+-(BOOL)canPerformTraversals{
+
+    return [self allDependencyDone];
+
+}
+
 #pragma -mark Node 协议的实现
 
 -(void)lock{
@@ -742,7 +750,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     }
     
     dispatch_semaphore_wait(_lockForNode,DISPATCH_TIME_FOREVER);
-    BOOL ready =[self allDependencyDone];
+    BOOL ready =[self canPerformTraversals];
     
     dispatch_semaphore_signal(_lockForNode);
     

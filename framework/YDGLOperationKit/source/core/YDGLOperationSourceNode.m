@@ -123,9 +123,6 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)innerUploadImageToTexture{
 
-    
-    self.textureAvailable=YES;
-    
     CGImageRef newImageSource=_image.CGImage;
     
     // TODO: Dispatch this whole thing asynchronously to move image loading off main thread
@@ -238,13 +235,13 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
             CFRelease(dataFromImageDataProvider);
         }
     }
+    
+    self.textureAvailable=YES;
    
 }
 
 -(void)innerUploadPixelBufferToTexture{
 
-    //self.textureAvailable=YES;
-    
     CVPixelBufferLockBaseAddress(_pixelBufferRef, 0);
     
     size_t width= CVPixelBufferGetWidth(_pixelBufferRef);
@@ -320,6 +317,8 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     
     CVPixelBufferUnlockBaseAddress(_pixelBufferRef, 0);
 
+    self.textureAvailable=YES;
+    
 }
 
 -(void)setupTextureForProgram:(GLuint)program{
@@ -368,6 +367,11 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
     });
     
+}
+
+-(BOOL)canPerformTraversals{
+
+    return self.textureAvailable;//纹理准备好之后才可以遍历
 }
 
 -(void)prepareForRender{
