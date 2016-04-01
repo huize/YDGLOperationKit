@@ -33,7 +33,7 @@
 		426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54F1CAD3E070023AC7E /* YDGLOperationColorConversion.h */; };
 		426AD5581CAD3E070023AC7E /* YDGLOperationColorConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5501CAD3E070023AC7E /* YDGLOperationColorConversion.m */; };
 		426AD55D1CAD52B70023AC7E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426AD55C1CAD52B70023AC7E /* GLKit.framework */; };
-		426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD5631CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h */; };
+		426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD5631CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		426AD5661CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5641CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m */; };
 		42BBE21F1C9962A60035BC01 /* YDGLOperationKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; };
 		42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */; };
