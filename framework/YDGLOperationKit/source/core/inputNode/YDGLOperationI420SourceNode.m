@@ -82,11 +82,14 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     self = [super initWithFragmentShader:kYDGLOperationI420ToLAFragmentShaderString];
     if (self) {
         
-        //[self commonInitialization];
+        [self commonInitialization];
     }
     return self;
 }
 
+-(void)commonInitialization{
+        
+}
 
 -(void)uploadI420Data:(uint8_t *)baseAddress andDataSize:(size_t)dataSize andImageSize:(CGSize)imageSize{
     
@@ -95,6 +98,73 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     self.dataSize=dataSize;
     
     self.imageSize=imageSize;
+    
+    [self activeGLContext:^{
+        
+        [self innerUpload];
+    }];
+    
+}
+
+-(void)innerUpload{
+    
+    if (_textureY==0) {
+        
+        GLuint *tmp=malloc(sizeof(GLuint)*3);
+        
+        glGenTextures(3, tmp);
+        
+        _textureY=tmp[0];
+        
+        _textureU=tmp[1];
+        
+        _textureV=tmp[2];
+        
+        free(tmp);
+        
+    }
+    
+    glActiveTexture(GL_TEXTURE0);
+    
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //TODO 一定要加上这2句话
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    
+    glBindTexture(GL_TEXTURE_2D, _textureY);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width, _imageSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress);
+    
+    
+    glActiveTexture(GL_TEXTURE1);
+    
+    glBindTexture(GL_TEXTURE_2D, _textureU);
+    
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //TODO 一定要加上这2句话
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height));
+    
+    glActiveTexture(GL_TEXTURE2);
+    
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //TODO 一定要加上这2句话
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    
+    glBindTexture(GL_TEXTURE_2D, _textureV);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height+_imageSize.width*_imageSize.height/4));
+    
+    _size=self.imageSize;
+    
+    self.textureAvailable=YES;
+    
     
 }
 
@@ -128,42 +198,6 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
 
 -(void)prepareForRender{
     
-    if (_textureY==0) {
-        
-        GLuint *tmp=malloc(sizeof(GLuint)*3);
-        
-        glGenTextures(3, tmp);
-        
-        _textureY=tmp[0];
-        
-        _textureU=tmp[1];
-        
-        _textureV=tmp[2];
-        
-        free(tmp);
-        
-    }
-    
-    glActiveTexture(GL_TEXTURE0);
-    
-    glBindTexture(GL_TEXTURE_2D, _textureY);
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width, _imageSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress);
-    
-    glActiveTexture(GL_TEXTURE1);
-    
-    glBindTexture(GL_TEXTURE_2D, _textureU);
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height));
-    
-    
-    glActiveTexture(GL_TEXTURE2);
-    
-    glBindTexture(GL_TEXTURE_2D, _textureV);
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height*1.5));
-    
-    self.textureAvailable=YES;
     
 }
 
