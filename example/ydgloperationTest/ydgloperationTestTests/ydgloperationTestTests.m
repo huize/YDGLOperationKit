@@ -79,6 +79,71 @@
     
 }
 
+
+- (void)testExample2 {
+    
+    CGSize sizeInPixel=CGSizeMake(2, 2);
+    
+    float aspect=fabsf(sizeInPixel.width/sizeInPixel.height);
+    float nearZ=sizeInPixel.height/2;
+    
+    float farZ=nearZ+100;
+    
+    GLKMatrix4 projection=GLKMatrix4MakePerspective(GLKMathDegreesToRadians(90.0), aspect, nearZ, farZ);
+    
+    GLKMatrix4 modelView=GLKMatrix4Identity;
+    
+    GLKMatrix4 mvp= GLKMatrix4Multiply(projection,modelView);//modelView*projection
+    
+    GLKVector3 position=GLKVector3Make(-1.0,1.0,-nearZ);
+    
+    GLKVector3 pposition= GLKMatrix4MultiplyVector3(GLKMatrix4Invert(mvp, NULL), position);
+    
+    NSLog(@"pposition:%f %f %f",pposition.x,pposition.y,pposition.z);
+    
+}
+
+-(void)testGLKMatrix4Multiply{
+
+    //得出结论是GLKMatrix4Multiply(A,B)==B*A
+
+    GLKMatrix4 left=GLKMatrix4Identity;
+    
+    left=GLKMatrix4Translate(left, 1, 2, 3);
+    
+    for (int index=0; index<4; index++) {
+        
+        NSLog(@"%f %f %f %f",left.m[index*4+0],left.m[index*4+1],left.m[index*4+2],left.m[index*4+3]);
+        
+    }
+    
+    NSLog(@"=======================");
+    
+    GLKMatrix4 right=GLKMatrix4Identity;
+    
+    right=GLKMatrix4Scale(right, 2.0, 3.0, 4.0);
+    
+    for (int index=0; index<4; index++) {
+        
+        NSLog(@"%f %f %f %f",right.m[index*4+0],right.m[index*4+1],right.m[index*4+2],right.m[index*4+3]);
+        
+    }
+
+    
+    NSLog(@"*****************************");
+    GLKMatrix4 lr=GLKMatrix4Multiply(left, right);
+
+
+    for (int index=0; index<4; index++) {
+        
+        NSLog(@"%f %f %f %f",lr.m[index*4+0],lr.m[index*4+1],lr.m[index*4+2],lr.m[index*4+3]);
+        
+    }
+
+    
+}
+
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{

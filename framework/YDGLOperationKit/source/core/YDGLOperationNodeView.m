@@ -313,10 +313,11 @@
 
 -(GLKMatrix4)mvpMatrix4Cube{
     
-    float aspect=_sizeInPixel.width/_sizeInPixel.height;
-    float nearZ=_sizeInPixel.height/2;
+    CGSize virtualSize=CGSizeMake(2.0, 2.0);//近平面的窗口和opengl的坐标系窗口重叠,因为顶点坐标的赋值方式导致需要设置这么一个virtualSize
+
     
-    nearZ=1.0;
+    float aspect=virtualSize.width/virtualSize.height;
+    float nearZ=virtualSize.height/2;
     
     float farZ=nearZ+100;
     
@@ -331,7 +332,7 @@
         _angle -= 360.0f;
     }
 
-    modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ-1.5);//移动到视锥体内,原点是(0,0,-nearZ-2)
+    modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ-1.0);//移动到视锥体内,原点是(0,0,-nearZ-2)
     
     //移动到屏幕中心
     modelView=GLKMatrix4Translate(modelView, -0.5, -0.5, 0.0);
@@ -340,18 +341,19 @@
     modelView=GLKMatrix4Rotate(modelView, GLKMathDegreesToRadians(_angle), 1.0, 1.0, 1.0);
     modelView=GLKMatrix4Translate(modelView, -0.5, -0.5, -0.5);
     
-    return GLKMatrix4Multiply(projection,modelView);
+    return GLKMatrix4Multiply(projection,modelView);//modelView*projection
     
 }
 
 -(GLKMatrix4)mvpMatrix4Square{
     
-    float aspect=_sizeInPixel.width/_sizeInPixel.height;
-    float nearZ=_sizeInPixel.height/2;
     
-    nearZ=1.0;
+    CGSize virtualSize=CGSizeMake(2.0, 2.0);//近平面的窗口和opengl的坐标系窗口重叠,因为顶点坐标的赋值方式导致需要设置这么一个virtualSize
     
-    float farZ=nearZ+100;
+    float aspect=virtualSize.width/virtualSize.height;
+    float nearZ=virtualSize.height/2;
+    
+    float farZ=nearZ+10;
     
     GLKMatrix4 projection=GLKMatrix4MakePerspective(M_PI_2, aspect, nearZ, farZ);
     
@@ -359,7 +361,8 @@
 
     modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ);//移动到视锥体内,原点是(0,0,-nearZ-2)
     
-    return GLKMatrix4Multiply(projection,modelView);
+    return GLKMatrix4Multiply(projection,modelView);//modelView*projection
+    
 }
 
 
