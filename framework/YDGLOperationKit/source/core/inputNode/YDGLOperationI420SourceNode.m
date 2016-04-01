@@ -88,7 +88,8 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
 }
 
 -(void)commonInitialization{
-        
+    
+    
 }
 
 -(void)uploadI420Data:(uint8_t *)baseAddress andDataSize:(size_t)dataSize andImageSize:(CGSize)imageSize{
@@ -98,11 +99,6 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     self.dataSize=dataSize;
     
     self.imageSize=imageSize;
-    
-    [self activeGLContext:^{
-        
-        [self innerUpload];
-    }];
     
 }
 
@@ -126,13 +122,13 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     
     glActiveTexture(GL_TEXTURE0);
     
+    glBindTexture(GL_TEXTURE_2D, _textureY);
+    
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     //TODO 一定要加上这2句话
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-    
-    glBindTexture(GL_TEXTURE_2D, _textureY);
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width, _imageSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress);
     
@@ -151,13 +147,13 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     
     glActiveTexture(GL_TEXTURE2);
     
+    glBindTexture(GL_TEXTURE_2D, _textureV);
+    
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     //TODO 一定要加上这2句话
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-    
-    glBindTexture(GL_TEXTURE_2D, _textureV);
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height+_imageSize.width*_imageSize.height/4));
     
@@ -198,7 +194,7 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
 
 -(void)prepareForRender{
     
-    
+    [self innerUpload];
 }
 
 -(void)dealloc{
