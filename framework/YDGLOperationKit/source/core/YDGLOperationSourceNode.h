@@ -24,6 +24,9 @@
 
 -(void)uploadImage:(UIImage *_Nonnull)image;
 
+-(void)prepareForRender;
+
 -(void)start;
+
 
 @end
