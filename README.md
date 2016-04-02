@@ -1,2 +1,2 @@
 # YDGLOperationKit
-类GPUImage的OpenGL ES 操作库
+iOS OpenGL ES 2D render kit,like GPUImage,but more succinct.
