@@ -21,3 +21,4 @@
 
 #import "YDGLOperationSourceNode.h"
 #import "YDGLOperationI420SourceNode.h"
+#import "YDGLOperationNV12SourceNode.h"

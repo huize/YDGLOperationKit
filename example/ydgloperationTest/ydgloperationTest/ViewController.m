@@ -24,7 +24,7 @@
     
     LVECatpureSessionHelper *_captureSessionHelper;
     
-    YDGLOperationSourceNode *_operationSource;
+    YDGLOperationNV12SourceNode *_operationSource;
     
     dispatch_queue_t _captureQueue;
 
@@ -61,6 +61,11 @@
     [_captureSessionHelper setSampleBufferDelegate:weakSelf queue:_captureQueue];
     
     //[_operationSecondSource start];
+    
+    
+    YDGLOperationNV12SourceNode *nvNode=[YDGLOperationNV12SourceNode new];
+    
+    NSLog(@"%@",nvNode);
     
 }
 
