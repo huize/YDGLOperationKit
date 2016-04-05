@@ -535,7 +535,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     }
     
-    //[_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
+    [_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
+    
+    
     //1.设置顶点坐标
     
     GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
