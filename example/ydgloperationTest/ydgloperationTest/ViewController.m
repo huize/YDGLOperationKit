@@ -24,7 +24,7 @@
     
     LVECatpureSessionHelper *_captureSessionHelper;
     
-    YDGLOperationNV12SourceNode *_operationSource;
+    YDGLOperationSourceNode *_operationSource;
     
     dispatch_queue_t _captureQueue;
 
