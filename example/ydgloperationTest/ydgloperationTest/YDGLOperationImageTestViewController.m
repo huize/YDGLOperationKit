@@ -174,21 +174,15 @@
 //        
 //    };
     
+
+    
 }
 
 -(void)startRun{
     
-   // [_operationSource start];
+    [_operationSource start];
     
-    if ([_operationSource isLocked]==NO) {
-        
-        [_operationSource start];
-        
-        [_operationSecondSource start];
-    }else{
-    
-       // NSLog(@"掉帧了");
-    }
+    [_operationSecondSource start];
     
 }
 

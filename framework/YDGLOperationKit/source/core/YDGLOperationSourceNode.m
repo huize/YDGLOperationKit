@@ -352,7 +352,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)start{
     
-    RunInNodeProcessQueue(^{
+    //RunInNodeProcessQueue(^{
         
         [self activeGLContext:^{
             
@@ -362,7 +362,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         [self renderIfCanWhenDependencyDone:self];
         
-    });
+    //});
     
 }
 
@@ -476,7 +476,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         return;
     }
     
-    RunInNodeProcessQueue(^{
+    //RunInNodeProcessQueue(^{
         
         self.image=image;
         
@@ -486,7 +486,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         self.textureAvailable=NO;
         
-    });
+    //});
     
 }
 
@@ -494,7 +494,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     
     CVPixelBufferRetain(pixelBufferRef);
     
-    RunInNodeProcessQueue(^{
+    //RunInNodeProcessQueue(^{
         
         CVPixelBufferRelease(_pixelBufferRef);
         
@@ -504,7 +504,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         self.textureAvailable=NO;
 
-    });
+    //});
     
 }
 

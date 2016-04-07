@@ -191,18 +191,20 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 +(void)runInWorkQueueImmediately:(dispatch_block_t)block{
 
-    if (dispatch_get_specific(@"YDGLOperationKit")) {
-        
-        if (block) {
-            
-            block();
-        }
-        
-    }else{
+//    if (dispatch_get_specific(@"YDGLOperationKit")) {
+//        
+//        if (block) {
+//            
+//            block();
+//        }
+//        
+//    }else{
+//    
+//        dispatch_barrier_async([YDGLOperationNode getWorkQueue],block);
+//    
+//    }
     
-        dispatch_barrier_async([YDGLOperationNode getWorkQueue],block);
-    
-    }
+    block();
 
 }
 
