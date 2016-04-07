@@ -32,8 +32,11 @@
     
     UIButton *_button;
 
-    
     BOOL _stoped;
+    
+    dispatch_queue_t _workQueue;
+    
+    BOOL _invalidate;
 }
 
 - (void)viewDidLoad {
@@ -76,6 +79,8 @@
     
     [self.view addSubview:_button];
     
+    _workQueue=dispatch_queue_create([@"node 工作线程" UTF8String], DISPATCH_QUEUE_SERIAL);
+    
 }
 
 -(void)stopGPUQueue:(id)sender{
@@ -115,7 +120,23 @@
     
     _displayLink=nil;
     
+    _invalidate=YES;
     
+    dispatch_barrier_async(_workQueue, ^{
+        
+        [_operationSource destory];
+        
+        [_operationSecondSource destory];
+        
+        [_thirdNode destory];
+        
+        [_secondNode destory];
+        
+    });
+    
+    
+    [_customView removeFromSuperview];
+
 }
 
 
@@ -130,7 +151,6 @@
     NSString *path2=[[NSBundle mainBundle] pathForResource:@"rgb" ofType:@".png"];
     
     UIImage *image2=[UIImage imageWithContentsOfFile:path2];
-    
     
     _operationSecondSource =[[YDGLOperationSourceNode alloc]initWithUIImage:image2];
     
@@ -180,9 +200,19 @@
 
 -(void)startRun{
     
-    [_operationSource start];
+    dispatch_barrier_sync(_workQueue, ^{
+        
+        if (_invalidate) {
+            
+            return ;
+        }
+        
+        [_operationSource start];
+        
+        [_operationSecondSource start];
     
-    [_operationSecondSource start];
+    });
+    
     
 }
 
@@ -191,17 +221,7 @@
     [_displayLink invalidate];
     
     NSLog(@"图片测试页面已经销毁了");
-    
-    [_operationSource destory];
-    
-    [_operationSecondSource destory];
-    
-    [_thirdNode destory];
-    
-    [_secondNode destory];
-        
-    [_customView removeFromSuperview];
-    
+
 }
 
 @end
