@@ -446,10 +446,16 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_semaphore_wait(_lockForNode, DISPATCH_TIME_FOREVER);
     
-    [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//    [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        
+//        [obj renderIfCanWhenDependencyDone:self];
+//    }];
+    
+    for (id<YDGLOperationNode>  nextOperation in self.nextOperations) {
         
-        [obj renderIfCanWhenDependencyDone:self];
-    }];
+        [nextOperation renderIfCanWhenDependencyDone:self];
+        
+    }
     
     dispatch_semaphore_signal(_lockForNode);
     
@@ -821,7 +827,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)dealloc{
 
-    NSLog(@"节点销毁了");
+    NSLog(@"节点销毁了:%@",self);
     
     [self cleanUpTexture];
     
