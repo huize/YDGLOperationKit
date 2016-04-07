@@ -173,7 +173,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        workQueue=dispatch_queue_create([@"GLOperationKit工作线程" UTF8String],DISPATCH_QUEUE_SERIAL);
+        workQueue=dispatch_queue_create([@"GLOperationKit工作线程" UTF8String],DISPATCH_QUEUE_CONCURRENT);
         NSString * contextProxy=@"YDGLOperationKitQueueContext";
         
         dispatch_queue_set_specific(workQueue, @"YDGLOperationKit",(__bridge void *)(contextProxy), NULL);
@@ -200,7 +200,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         
     }else{
     
-        dispatch_async([YDGLOperationNode getWorkQueue],block);
+        dispatch_barrier_async([YDGLOperationNode getWorkQueue],block);
     
     }
 
