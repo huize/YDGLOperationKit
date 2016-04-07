@@ -39,7 +39,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
     return self;
 }
 
--(NSString *)textureCoordUniformNameAtIndex:(NSInteger)index{
+-(NSString *)textureCoordAttributeNameAtIndex:(NSInteger)index{
 
     NSString *name=nil;
     
@@ -62,6 +62,5 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
     return  name;
 
 }
-
 
 @end

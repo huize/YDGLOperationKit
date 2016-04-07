@@ -78,7 +78,7 @@ static  NSString *_Nonnull const fTwoInputShaderStr=SHADER_STRING(
 
 }
 
--(NSString *)textureCoordUniformNameAtIndex:(NSInteger)index{
+-(NSString *)textureCoordAttributeNameAtIndex:(NSInteger)index{
 
 
     return [NSString stringWithFormat:@"inputTextureCoordinate_%i",index];
@@ -89,6 +89,5 @@ static  NSString *_Nonnull const fTwoInputShaderStr=SHADER_STRING(
     return [NSString stringWithFormat:@"inputImageTexture_%i",index];
 
 }
-
 
 @end
