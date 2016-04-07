@@ -36,6 +36,8 @@
 
 @property(nonatomic,nullable,retain)dispatch_semaphore_t lockForNode;
 
+@property(nonatomic,nullable,retain)dispatch_semaphore_t lockForTraversals;//TODO:后续看看能不能和lockForNode合并成一个锁
+
 @property(nonatomic,assign) int angle;//旋转的角度
 
 
@@ -112,6 +114,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     self.needLayout=YES;
     
     self.lockForNode=dispatch_semaphore_create(1);
+    
+    self.lockForTraversals=dispatch_semaphore_create(1);
     
     [self activeGLContext:^{
         
@@ -753,14 +757,18 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_semaphore_wait(_lockForNode,DISPATCH_TIME_FOREVER);
     BOOL ready =[self canPerformTraversals];
-    
     dispatch_semaphore_signal(_lockForNode);
     
     if (ready) {
         
-        [self beforePerformTraversals];
-        
-        [self performTraversals];
+        if(dispatch_semaphore_wait(_lockForTraversals, DISPATCH_TIME_NOW)==0){
+            
+            [self beforePerformTraversals];
+            
+            [self performTraversals];
+            
+            dispatch_semaphore_signal(_lockForTraversals);
+        }
         
     }
     
