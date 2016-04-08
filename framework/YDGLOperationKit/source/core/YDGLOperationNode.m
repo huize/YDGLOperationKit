@@ -325,7 +325,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
  *
  *  @since 1.0.0
  */
--(CGSize)calculateSizeByRotatedAngle:(CGSize)size{
+-(CGSize)fixedRenderSizeByRotatedAngle:(CGSize)size{
     
     CGSize result;
     
@@ -383,32 +383,22 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
--(CGSize)getRenderSize{
+/**
+ *  @author 许辉泽, 16-04-08 18:06:52
+ *
+ *  根据依赖的node计算该节点的尺寸,目前的策略是 size of first dependency node
+ *
+ *  @return node size
+ *
+ *  @since
+ */
+-(CGSize)calculateRenderSize{
     
-    __block CGSize size=CGSizeZero;
-    
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        YDGLOperationNodeOutput *output=[obj getOutput];
-        
-        if (output==nil) {
-            
-        }else{
-            
-            //使用最大的size
-            if (output.size.width>size.width&&output.size.height>size.height) {
-                
-                size=output.size;
-            }
-            
-        }
-        
-    }];
-    
-    return size;
+    YDGLOperationNodeOutput *firstNodeOutput= [[self.dependency firstObject] getOutput];
+
+    return firstNodeOutput.size;
     
 }
-
 
 -(void)innerSetInputSize:(CGSize)newSize{
     
@@ -446,13 +436,11 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
  */
 -(void)notifyNextOperation{
     
-    
-    if (self.operationCompletionBlock) {
+    if (self.completionBlock) {
         
-        self.operationCompletionBlock([self getOutput]);
+        self.completionBlock([self getOutput]);
         
     }
-    
     
     dispatch_semaphore_wait(_lockForNode, DISPATCH_TIME_FOREVER);
     
@@ -486,14 +474,14 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)performTraversals{
     
-    CGSize renderSize=[self getRenderSize];
+    CGSize renderSize=[self calculateRenderSize];
     
     if (CGSizeEqualToSize(CGSizeZero, renderSize)) {
         
         renderSize=_size;
     }
     
-    CGSize fixedRenderSize=[self calculateSizeByRotatedAngle:renderSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
+    CGSize fixedRenderSize=[self fixedRenderSizeByRotatedAngle:renderSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
     
     if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, _size)==false) {
         
@@ -820,8 +808,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     dispatch_semaphore_signal(_lockForNode);
     
-    self.operationCompletionBlock=nil;
-    
+    self.completionBlock=nil;
 }
 
 -(void)dealloc{

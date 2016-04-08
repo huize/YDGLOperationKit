@@ -167,6 +167,9 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 
 @end
 
+
+typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
+
 /**
  *  @author 许辉泽, 16-03-11 17:10:21
  *
@@ -196,10 +199,9 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
     EAGLContext *_glContext;
 }
 
-@property(nonatomic,nullable,copy) void(^operationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);//
+@property(nonatomic,nullable,copy)OperationCompletionBlock completionBlock;
+
 @property(nonatomic,readonly,getter=isLocked) BOOL locked;
-
-
 
 -(instancetype _Nullable)initWithVertexShader:(NSString*_Nonnull)vertexShaderString andFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 
