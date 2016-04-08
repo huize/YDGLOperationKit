@@ -350,9 +350,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
  */
 -(BOOL)allDependencyDone{
     
-    __block BOOL done=YES;
-    
     if (self.dependency.count==0)return NO;
+    
+    __block BOOL done=YES;
     
     [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -923,8 +923,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     dispatch_block_t rotateDrawOperation=^{
         
         _mvpMatrix=GLKMatrix4Rotate(_mvpMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 0.0, 1.0);
-        
-        
+    
     };
     
     [self.beforePerformDrawOperations addObject:rotateDrawOperation];
