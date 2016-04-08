@@ -207,7 +207,6 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 
 +(EAGLContext*_Nonnull)getGLContext;
 
-+(CVOpenGLESTextureCacheRef _Nonnull)getTextureCache;
 +(void)bindTexture:(GLuint)textureId;
 
 //-------------------------
