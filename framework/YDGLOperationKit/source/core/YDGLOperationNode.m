@@ -99,8 +99,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     self.nextOperations=[NSMutableArray array];
     
-    self.mvpMatrix=[self mvpMatrix4Square];
-    
     self.dependency=[NSMutableArray array];
     
     _glContext=[[self class] getGLContext];
@@ -552,6 +550,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     //1.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
+    self.mvpMatrix=[self mvpMatrix4Square];
+    
     GLKMatrix4 matrix=self.mvpMatrix;
     
     float*mm=(float*)matrix.m;
@@ -608,7 +608,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
     
 }
 
