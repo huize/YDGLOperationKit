@@ -81,19 +81,6 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 @implementation YDGLOperationSourceNode
 
--(instancetype)initWithUIImage:(UIImage *)image{
-
-    if (self=[self init]) {
-        
-        _image=image;
-        
-        return  self;
-    }
-    
-    return nil;
-
-}
-
 - (instancetype)init
 {
     self = [super init];

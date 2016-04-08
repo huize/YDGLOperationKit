@@ -145,14 +145,18 @@
     NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".jpg"];
     
     UIImage *image=[UIImage imageWithContentsOfFile:path];
+        
+    _operationSource=[YDGLOperationSourceNode new];
     
-    _operationSource=[[YDGLOperationSourceNode alloc]initWithUIImage:image];
+    [_operationSource uploadImage:image];
     
     NSString *path2=[[NSBundle mainBundle] pathForResource:@"rgb" ofType:@".png"];
     
     UIImage *image2=[UIImage imageWithContentsOfFile:path2];
     
-    _operationSecondSource =[[YDGLOperationSourceNode alloc]initWithUIImage:image2];
+    _operationSecondSource =[YDGLOperationSourceNode new];
+    
+    [_operationSecondSource uploadImage:image2];
     
     _secondNode=[YDGLOperationTwoInputNode new];
     
