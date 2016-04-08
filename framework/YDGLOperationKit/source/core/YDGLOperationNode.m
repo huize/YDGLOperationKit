@@ -206,6 +206,21 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 }
 
++(void)initTextureCache{
+    
+    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &coreVideoTextureCache);
+    
+    NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
+    
+}
+
++(void)bindTexture:(GLuint)textureId{
+    
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    
+}
+
+#pragma -mark 内部接口
 
 -(void)setupFrameBuffer{
     
@@ -216,7 +231,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         glGenFramebuffers(1, &_frameBuffer);
     }
     
-    //TODO:glGenTextures(1, &_renderTexture_out);
+    //注意:glGenTextures(1, &_renderTexture_out);
     //上面那种方式创建的纹理会导致美艳算法在iOS8.4以下的机器上无效
     
     [self createCVPixelBufferRef:&_pixelBuffer_out andTextureRef:&_cvTextureRef withSize:_size];
@@ -245,9 +260,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     glBindTexture(GL_TEXTURE_2D, 0);
     
 }
-
-
-#pragma -mark 内部接口
 
 -(void)activeProgram:(void(^_Nullable)(GLuint))block{
     
@@ -517,7 +529,28 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     [self setupFrameBuffer];
 
 }
+-(void)beforePerformDraw{
+    
+    for (dispatch_block_t drawOperation in self.beforePerformDrawOperations) {
+        
+        drawOperation();
+        
+    }
+    
+    [self.beforePerformDrawOperations removeAllObjects];//线程同步问题
+    
+}
 
+-(void)performDraw{
+    
+    
+    assert(_frameBuffer!=0);
+    
+    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
+    
+    [self notifyNextOperation];
+    
+}
 
 #pragma -mark 支持子类重载的接口
 
@@ -608,29 +641,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-}
-
--(void)beforePerformDraw{
-
-    for (dispatch_block_t drawOperation in self.beforePerformDrawOperations) {
-        
-        drawOperation();
-        
-    }
-    
-    [self.beforePerformDrawOperations removeAllObjects];//线程同步问题
-    
-}
-
--(void)performDraw{
-    
-    
-    assert(_frameBuffer!=0);
-    
-    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
-    
-    [self notifyNextOperation];
     
 }
 
@@ -796,17 +806,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 }
 
-#pragma -mark 创建纹理缓存池
-
-
-+(void)initTextureCache{
-
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &coreVideoTextureCache);
-    
-    NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
-    
-}
-
 #pragma  -mark 清理资源
 
 -(void)destory{
@@ -940,12 +939,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     [self.beforePerformDrawOperations addObject:rotateDrawOperation];
     
-}
-
-+(void)bindTexture:(GLuint)textureId{
-
-    glBindTexture(GL_TEXTURE_2D, textureId);
-
 }
 
 @end
