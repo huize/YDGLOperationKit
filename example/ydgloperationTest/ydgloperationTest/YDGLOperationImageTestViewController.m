@@ -79,7 +79,7 @@
     
     [self.view addSubview:_button];
     
-    _workQueue=dispatch_queue_create([@"node 工作线程" UTF8String], DISPATCH_QUEUE_SERIAL);
+    _workQueue=dispatch_queue_create([@"node 工作线程" UTF8String], DISPATCH_QUEUE_CONCURRENT);
     
 }
 
@@ -199,7 +199,7 @@
 
 -(void)startRun{
     
-    dispatch_barrier_sync(_workQueue, ^{
+    dispatch_barrier_async(_workQueue, ^{
         
         if (_invalidate) {
             
