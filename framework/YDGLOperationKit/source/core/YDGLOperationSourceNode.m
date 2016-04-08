@@ -189,14 +189,14 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     
     [YDGLOperationNode bindTexture:_renderTexture_input];
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)pixelSizeToUseForTexture.width, (int)pixelSizeToUseForTexture.height, 0, format, GL_UNSIGNED_BYTE, imageData);
-    
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     //TODO 一定要加上这2句话
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-        
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)pixelSizeToUseForTexture.width, (int)pixelSizeToUseForTexture.height, 0, format, GL_UNSIGNED_BYTE, imageData);
+    
     _size=pixelSizeToUseForTexture;
     
     if (_pixelFormatType!=DEFAULT_IMAGE_PIXEL_FORMAT_TYPE) {
@@ -340,15 +340,17 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 -(void)start{
     
     //RunInNodeProcessQueue(^{
+    
+    [self activeGLContext:^{
         
-        [self activeGLContext:^{
-            
-            [self prepareForRender];
+        [self prepareForRender];
         
-        }];
-        
-        [self renderIfCanWhenDependencyDone:self];
-        
+    }];
+    
+    [self renderIfCanWhenDependencyDone:self];
+    
+    self.textureAvailable=NO;
+    
     //});
     
 }

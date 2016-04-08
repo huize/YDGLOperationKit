@@ -625,6 +625,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)performDraw{
     
+    
+    assert(_frameBuffer!=0);
+    
     [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
     
     [self notifyNextOperation];
@@ -827,7 +830,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)dealloc{
 
-    NSLog(@"节点销毁了:%@",self);
+    //NSLog(@"节点销毁了:%@",self);
     
     [self cleanUpTexture];
     

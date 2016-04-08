@@ -207,8 +207,6 @@
 
 -(void)dealloc{
 
-    NSLog(@"drawModel 已经销毁了");
-    
     glDeleteBuffers(1, &_vertices_buffer_obj);
     glDeleteBuffers(1, &_texture_vertices_buffer_obj);
     glDeleteBuffers(1, &_indices_buffer_obj);

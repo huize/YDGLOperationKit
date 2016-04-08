@@ -122,20 +122,15 @@
     
     _invalidate=YES;
     
-    dispatch_barrier_async(_workQueue, ^{
-        
-        [_operationSource destory];
-        
-        [_operationSecondSource destory];
-        
-        [_thirdNode destory];
-        
-        [_secondNode destory];
-        
-    });
+    [_operationSource destory];
     
+    [_operationSecondSource destory];
     
-    [_customView removeFromSuperview];
+    [_thirdNode destory];
+    
+    [_secondNode destory];
+    
+    //[_customView removeFromSuperview];
 
 }
 

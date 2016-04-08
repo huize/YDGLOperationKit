@@ -24,7 +24,7 @@
     
     EAGLContext *_context;
 
-    GLuint _renderBuffer,_frameBuffer;//最终的缓冲区对象
+    GLuint _renderBuffer,_frameBuffer,_depthBuffer;//最终的缓冲区对象
     
     GLuint _resolveRenderBuffer,_resolveFrameBuffer,_resolveDepthBuffer;//用于多重采样缓冲区对象
     
@@ -155,6 +155,18 @@
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_RENDERBUFFER, _renderBuffer);
     
+    
+    glGenRenderbuffers(1, &_depthBuffer);
+    
+    glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
+    
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, backingWidth, backingHeight);
+    
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,_depthBuffer);
+
+    GLenum status= glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    
+    assert(status==GL_FRAMEBUFFER_COMPLETE);
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
@@ -372,6 +384,10 @@
     
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
     
+    GLenum status= glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    
+    assert(status==GL_FRAMEBUFFER_COMPLETE);
+    
     //glBindRenderbuffer(GL_RENDERBUFFER, _resolveRenderBuffer);
     
     //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -486,6 +502,8 @@
 
 -(void)innerRender{
     
+    assert(_frameBuffer!=0);
+    
     [self render];
     
 }
@@ -590,12 +608,16 @@
     
     _context=nil;
     
+    NSLog(@"nodeView 销毁了:%@",self);
+    
 }
 -(void)cleanup{
     
     glDeleteBuffers(1, &_renderBuffer);
     
     glDeleteBuffers(1, &_frameBuffer);
+    
+    glDeleteBuffers(1, &_depthBuffer);
     
     glDeleteBuffers(1, &_resolveRenderBuffer);
     
@@ -605,6 +627,12 @@
     
     glDeleteTextures(1, &_textureId);
     
+    _frameBuffer=0;
+    _renderBuffer=0;
+    _resolveFrameBuffer=0;
+    _resolveRenderBuffer=0;
+    _resolveDepthBuffer=0;
+    _depthBuffer=0;
 }
 
 
