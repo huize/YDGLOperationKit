@@ -24,7 +24,7 @@
     
     EAGLContext *_context;
 
-    GLuint _renderBuffer,_frameBuffer,_depthBuffer;//最终的缓冲区对象
+    GLuint _renderBuffer,_frameBuffer;//最终的缓冲区对象
     
     GLuint _resolveRenderBuffer,_resolveFrameBuffer,_resolveDepthBuffer;//用于多重采样缓冲区对象
     
@@ -155,15 +155,6 @@
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_RENDERBUFFER, _renderBuffer);
     
-    
-    glGenRenderbuffers(1, &_depthBuffer);
-    
-    glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
-    
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, backingWidth, backingHeight);
-    
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,_depthBuffer);
-
     GLenum status= glCheckFramebufferStatus(GL_FRAMEBUFFER);
     
     assert(status==GL_FRAMEBUFFER_COMPLETE);
@@ -617,8 +608,6 @@
     
     glDeleteBuffers(1, &_frameBuffer);
     
-    glDeleteBuffers(1, &_depthBuffer);
-    
     glDeleteBuffers(1, &_resolveRenderBuffer);
     
     glDeleteBuffers(1, &_resolveFrameBuffer);
@@ -632,7 +621,6 @@
     _resolveFrameBuffer=0;
     _resolveRenderBuffer=0;
     _resolveDepthBuffer=0;
-    _depthBuffer=0;
 }
 
 
