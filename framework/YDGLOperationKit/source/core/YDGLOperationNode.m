@@ -549,30 +549,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
     [_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
     
-    
-    //1.设置顶点坐标
-    
-    GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
-    
-    glEnableVertexAttribArray(location_position);//顶点坐标
-    
-    glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,0);
-    
-    //2.设置纹理坐标
-    
-    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
-    
-    [self setTextureCoord];
-    
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    //3.设置纹理
-    
-    [self setupTextureForProgram:_drawModel.program];
-    
-    //4.设置变换矩阵
+    //1.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
     GLKMatrix4 matrix=self.mvpMatrix;
@@ -586,17 +563,41 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         finalMatrix[index]=(GLfloat)mm[index];
         
     }
-
+    
     glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
     
     free(finalMatrix);
+    
+    //2.设置顶点坐标
+    
+    GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
+    
+    glEnableVertexAttribArray(location_position);//顶点坐标
+    
+    glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,0);
+    
+    //3.设置纹理坐标
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
+    
+    [self setTextureCoord];
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    //4.设置纹理
+    
+    [self setupTextureForProgram:_drawModel.program];
+    
+    
+    //5. draw
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
     
     GLsizei count=_drawModel.count_indices;
     
     count=count/4;
-    
     
     for (int index=0; index<count; index++) {
         
@@ -634,6 +635,15 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     
 }
 
+/**
+ *  @author 许辉泽, 16-04-08 17:36:00
+ *
+ *  设置纹理坐标
+ *  注意:绘制图元的时候,是从左下角开始,按照GL_TRIANGLE_FAN方式,逆时针绘制的
+ *
+ *
+ *  @since 1.0.0
+ */
 -(void)setTextureCoord{
 
     for (int index=0; index<_dependency.count; index++) {
@@ -643,7 +653,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [name UTF8String]);
         
         glEnableVertexAttribArray(location_texturecoord);
-        
+    
         glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
         
     }
