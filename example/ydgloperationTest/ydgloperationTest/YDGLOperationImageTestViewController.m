@@ -19,9 +19,9 @@
     
     YDGLOperationNodeView *_customView;
     
-    YDGLOperationSourceNode *_operationSource;
+    YDGLOperationUIImageSourceNode *_operationSource;
     
-    YDGLOperationSourceNode *_operationSecondSource;
+    YDGLOperationUIImageSourceNode *_operationSecondSource;
     
     YDGLOperationNode *_thirdNode;
 
@@ -141,7 +141,7 @@
     
     UIImage *image=[UIImage imageWithContentsOfFile:path];
         
-    _operationSource=[YDGLOperationSourceNode new];
+    _operationSource=[YDGLOperationUIImageSourceNode new];
     
     [_operationSource uploadImage:image];
     
@@ -149,7 +149,7 @@
     
     UIImage *image2=[UIImage imageWithContentsOfFile:path2];
     
-    _operationSecondSource =[YDGLOperationSourceNode new];
+    _operationSecondSource =[YDGLOperationUIImageSourceNode new];
     
     [_operationSecondSource uploadImage:image2];
     

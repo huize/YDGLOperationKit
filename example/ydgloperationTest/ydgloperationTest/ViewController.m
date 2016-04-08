@@ -24,7 +24,7 @@
     
     LVECatpureSessionHelper *_captureSessionHelper;
     
-    YDGLOperationSourceNode *_operationSource;
+    YDGLOperationCVPixelBufferSourceNode *_operationSource;
     
     dispatch_queue_t _captureQueue;
 
@@ -79,7 +79,7 @@
 
 -(void)buildBeautyGroupLayer{
     
-    _operationSource=[YDGLOperationSourceNode new];
+    _operationSource=[YDGLOperationCVPixelBufferSourceNode new];
     
 }
 

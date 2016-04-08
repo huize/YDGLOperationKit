@@ -12,10 +12,6 @@
 
 @property(nonatomic,assign) BOOL textureAvailable;//纹理是否可用
 
--(void)uploadCVPixelBuffer:(CVPixelBufferRef _Nonnull)pixelBufferRef;
-
--(void)uploadImage:(UIImage *_Nonnull)image;
-
 -(void)prepareForRender;
 
 -(void)start;

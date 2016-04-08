@@ -22,3 +22,5 @@
 #import "YDGLOperationSourceNode.h"
 #import "YDGLOperationI420SourceNode.h"
 #import "YDGLOperationNV12SourceNode.h"
+#import "YDGLOperationUIImageSourceNode.h"
+#import "YDGLOperationCVPixelBufferSourceNode.h"
