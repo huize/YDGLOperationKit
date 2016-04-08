@@ -90,7 +90,7 @@
     
     [self setupBuffer];
     
-    [self setupMSAABuffer];
+    //[self setupMSAABuffer];
     
     _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
     
