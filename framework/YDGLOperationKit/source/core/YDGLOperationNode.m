@@ -636,28 +636,16 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)setTextureCoord{
 
-    if (self.dependency.count==0) {
+    for (int index=0; index<_dependency.count; index++) {
         
-        GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_TEXTURE_COORDINATE UTF8String]);
+        NSString *name=[_textureLoaderDelegate textureCoordAttributeNameAtIndex:index];
+        
+        GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [name UTF8String]);
         
         glEnableVertexAttribArray(location_texturecoord);
         
         glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
         
-    }else{
-    
-        for (int index=0; index<_dependency.count; index++) {
-            
-            NSString *name=[_textureLoaderDelegate textureCoordAttributeNameAtIndex:index];
-            
-            GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [name UTF8String]);
-            
-            glEnableVertexAttribArray(location_texturecoord);
-            
-            glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
-            
-        }
-    
     }
     
 }
