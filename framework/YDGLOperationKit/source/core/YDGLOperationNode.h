@@ -167,9 +167,6 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 
 @end
 
-
-#define RunInNodeProcessQueue(block) [[YDGLOperationNode class] runInWorkQueueImmediately:block]
-
 /**
  *  @author 许辉泽, 16-03-11 17:10:21
  *
@@ -210,20 +207,8 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 
 +(EAGLContext*_Nonnull)getGLContext;
 
-+(dispatch_queue_t _Nonnull)getWorkQueue;
-
 +(CVOpenGLESTextureCacheRef _Nonnull)getTextureCache;
 +(void)bindTexture:(GLuint)textureId;
-/**
- *  @author 许辉泽, 16-03-19 19:47:39
- *
- *  立即运行在workQueue,如果可以的话
- *
- *  @param block
- *
- *  @since 1.0.0
- */
-+(void)runInWorkQueueImmediately:(dispatch_block_t _Nonnull)block;
 
 //-------------------------
 /**

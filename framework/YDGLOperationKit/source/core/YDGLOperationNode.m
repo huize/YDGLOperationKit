@@ -830,7 +830,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 -(void)dealloc{
 
-    //NSLog(@"节点销毁了:%@",self);
+    NSLog(@"节点销毁了:%@",self);
     
     [self cleanUpTexture];
     

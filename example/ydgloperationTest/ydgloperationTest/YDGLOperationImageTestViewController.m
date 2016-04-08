@@ -87,19 +87,18 @@
    
     if (_stoped) {
         
-        dispatch_resume([YDGLOperationSourceNode getWorkQueue]);
+        dispatch_resume(_workQueue);
         _stoped=NO;
         
         
     }else{
     
-        dispatch_suspend([YDGLOperationSourceNode getWorkQueue]);
+        dispatch_suspend(_workQueue);
         
         _stoped=YES;
     }
 
 }
-
 
 -(void)viewDidAppear:(BOOL)animated{
     

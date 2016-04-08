@@ -54,9 +54,7 @@
     
     __weak typeof(self) weakSelf=self;
     
-    //_captureQueue=dispatch_queue_create([@"拍摄线程" UTF8String], DISPATCH_QUEUE_SERIAL);
-    
-    _captureQueue=[YDGLOperationNode getWorkQueue];
+    _captureQueue=dispatch_queue_create([@"拍摄线程" UTF8String], DISPATCH_QUEUE_SERIAL);
     
     [_captureSessionHelper setSampleBufferDelegate:weakSelf queue:_captureQueue];
     
