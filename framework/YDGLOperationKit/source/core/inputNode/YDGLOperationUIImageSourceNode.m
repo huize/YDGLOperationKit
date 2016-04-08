@@ -28,6 +28,23 @@
 
 @implementation YDGLOperationUIImageSourceNode
 
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+        [self commonInitialization];
+        
+    }
+    return self;
+}
+
+-(void)commonInitialization{
+    
+    
+}
+
 -(void)uploadImage:(UIImage *)image{
     
     if (self.image==image) {
@@ -47,6 +64,12 @@
 
 -(void)prepareForRender{
 
+    
+    if (_renderTexture_input==0) {
+        
+        glGenTextures(1, &_renderTexture_input);
+    }
+    
     if (self.textureAvailable==NO) {
         
         [self innerUploadImageToTexture];
@@ -188,6 +211,10 @@
     
 }
 
+-(void)dealloc{
 
+     glDeleteTextures(1, &_renderTexture_input);
+
+}
 
 @end
