@@ -41,6 +41,8 @@
 @property(nonatomic,assign) int angle;//旋转的角度
 
 
+@property(nonatomic,assign) CVOpenGLESTextureCacheRef coreVideoTextureCache;
+
 @end
 
 @implementation YDGLOperationNode{
@@ -62,14 +64,6 @@
 @synthesize nextOperations=_nextOperations;
 
 @synthesize dependency=_dependency;
-
-static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
-
-+(void)load{
-
-    [[self class] initTextureCache];
-
-}
 
 - (instancetype)init
 {
@@ -114,6 +108,8 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     self.lockForNode=dispatch_semaphore_create(1);
     
     self.lockForTraversals=dispatch_semaphore_create(1);
+    
+    [self initTextureCache];
     
     [self activeGLContext:^{
         
@@ -182,11 +178,6 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 }
 
-+(CVOpenGLESTextureCacheRef)getTextureCache{
-
-    return coreVideoTextureCache;
-}
-
 +(void)runInWorkQueueImmediately:(dispatch_block_t)block{
 
 //    if (dispatch_get_specific(@"YDGLOperationKit")) {
@@ -206,9 +197,9 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
 
 }
 
-+(void)initTextureCache{
+-(void)initTextureCache{
     
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &coreVideoTextureCache);
+    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_coreVideoTextureCache);
     
     NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
     
@@ -298,7 +289,7 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
         NSAssert(NO, @"Error at CVPixelBufferCreate %d", err);
     }
     
-    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, _pixelBuffer_out,
+    err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, _coreVideoTextureCache, _pixelBuffer_out,
                                                         NULL, // texture attributes
                                                         GL_TEXTURE_2D,
                                                         GL_RGBA, // opengl format
@@ -826,6 +817,13 @@ static CVOpenGLESTextureCacheRef coreVideoTextureCache;//纹理缓存池
     [_beforePerformTraversalsOperations removeAllObjects];
     
     [_programOperations removeAllObjects];
+    
+    CVOpenGLESTextureCacheFlush(_coreVideoTextureCache, 0);
+    
+    CFRelease(_coreVideoTextureCache);
+    
+    _coreVideoTextureCache=NULL;
+    
 
 }
 
