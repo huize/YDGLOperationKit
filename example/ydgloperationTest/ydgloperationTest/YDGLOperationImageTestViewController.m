@@ -49,14 +49,11 @@
     
     //_customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     
-    _customView.cube=YES;
-    
     [self.view addSubview:_customView];
     
     [self initLayer];
     
     [_customView addDependency:_thirdNode];
-    
     
     __weak typeof (self) weakSelf=self;
     
@@ -65,7 +62,6 @@
     _displayLink.paused=YES;
     
     [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    
     
     _button=[[UIButton alloc]initWithFrame:CGRectMake(0, screenSize.height-100, 50, 40)];
     
@@ -216,7 +212,6 @@
         [_operationSecondSource setNeedDisplay];
     
     });
-    
     
 }
 

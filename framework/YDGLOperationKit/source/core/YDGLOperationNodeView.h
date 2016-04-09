@@ -28,8 +28,6 @@ typedef enum { kYDGLOperationImageNoRotation, kYDGLOperationImageRotateLeft, kYD
  */
 @interface YDGLOperationNodeView : UIView<YDGLOperationNode>
 
-@property(nonatomic,assign) BOOL cube;//
-
 @property(nonatomic,assign) YDGLOperationImageFillModeType fillMode;//
 
 @end

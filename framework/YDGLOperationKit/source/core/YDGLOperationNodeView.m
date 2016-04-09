@@ -94,13 +94,7 @@
     
     _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
     
-    if (self.cube) {
-        
-        [self loadCubeVex];
-    }else{
-        
-        [self loadSquareVex];
-    }
+    [self loadSquareVex];
     
     [EAGLContext setCurrentContext:nil];
     
@@ -128,7 +122,6 @@
         NSLog(@"Failed to set current OpenGL context");
         exit(1);
     }
-
     
 }
 
@@ -398,15 +391,7 @@
     
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
-    GLKMatrix4 _mvpMatrix;
-    
-    if (self.cube) {
-        
-        _mvpMatrix=[self mvpMatrix4Cube];
-    }else{
-    
-        _mvpMatrix=[self mvpMatrix4Square];
-    }
+    GLKMatrix4 _mvpMatrix=[self mvpMatrix4Square];;
     
     float*mm=(float*)_mvpMatrix.m;
     
@@ -655,7 +640,7 @@
     
     _textureId=outData.texture;
     
-    if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO&&self.cube==NO) {
+    if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO) {
         
         _inputImageSize=outData.size;
         
@@ -678,37 +663,6 @@
 
     [operation addNextOperation:self];
 
-}
-
-
-#pragma -mark 外部接口
-
--(void)setCube:(BOOL)cube{
-
-    _cube=cube;
-    
-    if (cube) {
-        
-        [self loadCubeVex];
-    }else{
-    
-        [self loadSquareVex];
-    }
-    
-
-}
-
--(void)setFillModeType:(YDGLOperationImageFillModeType)fillModeType{
-    
-    if (self.cube) {
-        
-        return;
-    }else{
-        
-        _fillMode=fillModeType;
-        
-    }
-    
 }
 
 #pragma -mark 测试代码
