@@ -589,15 +589,13 @@
 }
 -(void)cleanup{
     
-    glDeleteBuffers(1, &_renderBuffer);
+    GLuint renderBuffers[3]={_renderBuffer,_resolveRenderBuffer,_resolveDepthBuffer};
     
-    glDeleteBuffers(1, &_frameBuffer);
+    glDeleteRenderbuffers(3, renderBuffers);
     
-    glDeleteBuffers(1, &_resolveRenderBuffer);
+    GLuint frameBuffers[2]={_frameBuffer,_resolveFrameBuffer};
     
-    glDeleteBuffers(1, &_resolveFrameBuffer);
-    
-    glDeleteBuffers(1, &_resolveDepthBuffer);
+    glDeleteFramebuffers(2,frameBuffers);
     
     glDeleteTextures(1, &_textureId);
     
