@@ -198,7 +198,9 @@
 
 -(void)startRun{
     
-    dispatch_barrier_async(_workQueue, ^{
+    //dispatch_barrier_async will crash
+    
+    dispatch_barrier_sync(_workQueue, ^{
         
         if (_invalidate) {
             
@@ -218,7 +220,7 @@
     
     [_displayLink invalidate];
     
-    NSLog(@"图片测试页面已经销毁了");
+    NSLog(@"图片测试页面已经销毁了:%@",self);
 
 }
 
