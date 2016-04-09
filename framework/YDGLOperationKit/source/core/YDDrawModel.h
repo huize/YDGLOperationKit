@@ -10,6 +10,8 @@
 
 @import OpenGLES.ES2;
 
+@class YDGLProgram;
+
 /**
  *  @author 许辉泽, 16-01-14 20:18:22
  *
@@ -37,7 +39,7 @@ struct ArrayWrapper {
  */
 @interface YDDrawModel : NSObject
 
-@property(nonatomic,readonly,assign) GLuint program;//
+@property(nonatomic,readonly,assign,getter=getRealProgram) GLuint program;//
 
 @property(nonatomic,assign,readonly) GLuint vertices_buffer_obj;//顶点数组缓存对象
 
@@ -128,3 +130,17 @@ struct ArrayWrapper {
 //-(GLint)locationOfUniform:(NSString*_Nonnull)uniformName;
 
 @end
+
+
+@interface YDGLProgram : NSObject
+
+@property(nonatomic,assign,readonly)GLuint program;
+
+@property(nonatomic,assign,readonly)GLuint vShader;
+
+@property(nonatomic,assign,readonly)GLuint fShader;
+
+-(instancetype)initWithVertexString:(const char *)vSharderSource andFragmentString:(const char *)fShaderSource;
+
+@end
+

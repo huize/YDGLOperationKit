@@ -11,6 +11,8 @@
 
 @interface YDDrawModel()
 
+@property(nonatomic,retain)YDGLProgram *glProgram;
+
 @end
 
 @implementation YDDrawModel
@@ -42,11 +44,7 @@
 
 -(void)setvShaderSource:(const char *)vSource andfShaderSource:(const char *)fSource{
 
-    GLint program=LinkPorgram(vSource, fSource);
-    
-    glDeleteProgram(_program);
-    //TODO:不需要delete shader?
-    _program=program;
+    self.glProgram=[[YDGLProgram alloc]initWithVertexString:vSource andFragmentString:fSource];
     
     [self loadProgram];
     
@@ -210,9 +208,7 @@
     glDeleteBuffers(1, &_vertices_buffer_obj);
     glDeleteBuffers(1, &_texture_vertices_buffer_obj);
     glDeleteBuffers(1, &_indices_buffer_obj);
-    
-    glDeleteProgram(_program);
-    
+
     [_uniformDictionary removeAllObjects];
     
     [_attributeDictionary removeAllObjects];
@@ -232,15 +228,15 @@
     
     [_attributeDictionary removeAllObjects];
     
-    glUseProgram(_program);
+    glUseProgram([self getRealProgram]);
     
     //查询统一变量
     
     GLint maxUniformLen;
     GLint numUniforms;
     char *uniformName;
-    glGetProgramiv ( _program, GL_ACTIVE_UNIFORMS, &numUniforms );
-    glGetProgramiv ( _program, GL_ACTIVE_UNIFORM_MAX_LENGTH,
+    glGetProgramiv ( [self getRealProgram], GL_ACTIVE_UNIFORMS, &numUniforms );
+    glGetProgramiv ( [self getRealProgram], GL_ACTIVE_UNIFORM_MAX_LENGTH,
                     &maxUniformLen);
     
     uniformName = malloc ( sizeof ( char ) * maxUniformLen );
@@ -251,9 +247,9 @@
         GLenum type;
         GLint location;
         
-        glGetActiveUniform(_program, index, maxUniformLen, NULL, &size, &type, uniformName);
+        glGetActiveUniform([self getRealProgram], index, maxUniformLen, NULL, &size, &type, uniformName);
         
-        location=glGetUniformLocation(_program, uniformName);
+        location=glGetUniformLocation([self getRealProgram], uniformName);
         
         NSString *name=[NSString stringWithUTF8String:uniformName];
         
@@ -271,8 +267,8 @@
 //    GLint numAttributes;
 //    char *attributeName;
 //    
-//    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
-//    glGetProgramiv(_program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeLen);
+//    glGetProgramiv([self getRealProgram], GL_ACTIVE_ATTRIBUTES, &numAttributes);
+//    glGetProgramiv([self getRealProgram], GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeLen);
 //    
 //    attributeName=malloc(sizeof(char)*100);
 //    
@@ -282,9 +278,9 @@
 //        GLenum type;
 //        GLint location;
 //        
-//        glGetActiveAttrib(_program, index, maxAttributeLen, NULL, &size, &type, attributeName);
+//        glGetActiveAttrib([self getRealProgram], index, maxAttributeLen, NULL, &size, &type, attributeName);
 //        
-//        location=glGetAttribLocation(_program, attributeName);
+//        location=glGetAttribLocation([self getRealProgram], attributeName);
 //        
 //        NSString *name=[NSString stringWithUTF8String:attributeName];
 //        
@@ -323,6 +319,42 @@
 
 }
 
+-(GLuint)getRealProgram{
+
+    return self.glProgram.program;
+
+}
+
+
+@end
+
+
+@implementation YDGLProgram
+
+-(instancetype)initWithVertexString:(const char *)vShaderSource andFragmentString:(const char *)fShaderSource{
+
+    if (self=[super init]) {
+        
+        _vShader=LoadShader(GL_VERTEX_SHADER,vShaderSource);
+        
+        _fShader=LoadShader(GL_FRAGMENT_SHADER,fShaderSource);
+        
+        _program=LinkPorgramWithShader(_vShader,_fShader);
+        
+        return  self;
+    }
+
+    return nil;
+}
+
+- (void)dealloc
+{
+    glDeleteShader(_vShader);
+    
+    glDeleteShader(_fShader);
+    
+    glDeleteProgram(_program);
+}
 
 
 @end

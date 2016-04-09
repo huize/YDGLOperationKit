@@ -47,6 +47,8 @@ GLuint LoadShader(GLenum type,const char *shaderSrc);
  */
 GLuint LinkPorgram(const char* const vShaderSource,const char * const fShaderSource);
 
+GLuint LinkPorgramWithShader(GLuint vShader,GLuint fShader);
+
 #endif /* ShaderLoader_h */
 
 

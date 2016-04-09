@@ -60,6 +60,12 @@ GLuint LinkPorgram(const char* const vShaderSource,const char * const fShaderSou
     
     GLuint fragmentShader=LoadShader(GL_FRAGMENT_SHADER,fShaderSource);
     
+    return LinkPorgramWithShader(vertexShader, fragmentShader);
+    
+}
+
+GLuint LinkPorgramWithShader(GLuint vertexShader,GLuint fragmentShader){
+
     GLuint programObject;
     
     programObject=glCreateProgram();
@@ -105,7 +111,5 @@ GLuint LinkPorgram(const char* const vShaderSource,const char * const fShaderSou
     return programObject;
     
 }
-
-
 
 
