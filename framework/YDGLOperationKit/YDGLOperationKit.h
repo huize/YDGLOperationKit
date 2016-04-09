@@ -14,7 +14,7 @@
 
 #import "YDGLOperationThreeInputNode.h"
 
-#import "YDGLOperationNodeView.h"
+#import "YDGLOperationNodeDisplayView.h"
 
 
 //=========sourceNode

@@ -17,7 +17,7 @@
 
     UIImage *_image;
     
-    YDGLOperationNodeView *_customView;
+    YDGLOperationNodeDisplayView *_customView;
     
     YDGLOperationUIImageSourceNode *_operationSource;
     
@@ -45,7 +45,7 @@
     
     CGSize screenSize=[UIScreen mainScreen].bounds.size;
     
-    _customView=[[YDGLOperationNodeView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height-100)];
+    _customView=[[YDGLOperationNodeDisplayView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height-100)];
     
     //_customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     

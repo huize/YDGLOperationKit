@@ -20,7 +20,7 @@
 
     UIImage *_image;
     
-    YDGLOperationNodeView *_customView;
+    YDGLOperationNodeDisplayView *_customView;
     
     LVECatpureSessionHelper *_captureSessionHelper;
     
@@ -42,7 +42,7 @@
     
     CGSize screenSize=[UIScreen mainScreen].bounds.size;
     
-    _customView=[[YDGLOperationNodeView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
+    _customView=[[YDGLOperationNodeDisplayView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
     
     _customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     

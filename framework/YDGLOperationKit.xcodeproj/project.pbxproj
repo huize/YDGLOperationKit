@@ -26,8 +26,8 @@
 		423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */; };
 		423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */; };
-		424D94B01C9BF183006DA52D /* YDGLOperationNodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D94AE1C9BF183006DA52D /* YDGLOperationNodeView.m */; };
-		424D94B11C9BF183006DA52D /* YDGLOperationNodeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 424D94AF1C9BF183006DA52D /* YDGLOperationNodeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		424D94B01C9BF183006DA52D /* YDGLOperationNodeDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D94AE1C9BF183006DA52D /* YDGLOperationNodeDisplayView.m */; };
+		424D94B11C9BF183006DA52D /* YDGLOperationNodeDisplayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 424D94AF1C9BF183006DA52D /* YDGLOperationNodeDisplayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		424EFFA21CB7912500396D2B /* YDGLOperationUIImageSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 424EFFA01CB7912500396D2B /* YDGLOperationUIImageSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		424EFFA31CB7912500396D2B /* YDGLOperationUIImageSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 424EFFA11CB7912500396D2B /* YDGLOperationUIImageSourceNode.m */; };
 		424EFFA61CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 424EFFA41CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -81,8 +81,8 @@
 		423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationThreeInputNode.m; sourceTree = "<group>"; };
 		423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationTwoInputNode.h; sourceTree = "<group>"; };
 		423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationTwoInputNode.m; sourceTree = "<group>"; };
-		424D94AE1C9BF183006DA52D /* YDGLOperationNodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationNodeView.m; sourceTree = "<group>"; };
-		424D94AF1C9BF183006DA52D /* YDGLOperationNodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationNodeView.h; sourceTree = "<group>"; };
+		424D94AE1C9BF183006DA52D /* YDGLOperationNodeDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationNodeDisplayView.m; sourceTree = "<group>"; };
+		424D94AF1C9BF183006DA52D /* YDGLOperationNodeDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationNodeDisplayView.h; sourceTree = "<group>"; };
 		424EFFA01CB7912500396D2B /* YDGLOperationUIImageSourceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationUIImageSourceNode.h; sourceTree = "<group>"; };
 		424EFFA11CB7912500396D2B /* YDGLOperationUIImageSourceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationUIImageSourceNode.m; sourceTree = "<group>"; };
 		424EFFA41CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationCVPixelBufferSourceNode.h; sourceTree = "<group>"; };
@@ -201,8 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				426AD5621CAE68560023AC7E /* inputNode */,
-				424D94AE1C9BF183006DA52D /* YDGLOperationNodeView.m */,
-				424D94AF1C9BF183006DA52D /* YDGLOperationNodeView.h */,
+				424D94AE1C9BF183006DA52D /* YDGLOperationNodeDisplayView.m */,
+				424D94AF1C9BF183006DA52D /* YDGLOperationNodeDisplayView.h */,
 				42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */,
 				42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */,
 				42BBE22B1C99630E0035BC01 /* YDDrawModel.h */,
@@ -222,7 +222,7 @@
 			files = (
 				42BBE2401C99657F0035BC01 /* YDGLOperationKit.h in Headers */,
 				42DF41FD1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h in Headers */,
-				424D94B11C9BF183006DA52D /* YDGLOperationNodeView.h in Headers */,
+				424D94B11C9BF183006DA52D /* YDGLOperationNodeDisplayView.h in Headers */,
 				42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */,
 				42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */,
 				426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */,
@@ -335,7 +335,7 @@
 				42DF41FE1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m in Sources */,
 				423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */,
 				424EFFA31CB7912500396D2B /* YDGLOperationUIImageSourceNode.m in Sources */,
-				424D94B01C9BF183006DA52D /* YDGLOperationNodeView.m in Sources */,
+				424D94B01C9BF183006DA52D /* YDGLOperationNodeDisplayView.m in Sources */,
 				42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */,
 				426AD5551CAD3E070023AC7E /* ShaderLoader.c in Sources */,
 				423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */,
