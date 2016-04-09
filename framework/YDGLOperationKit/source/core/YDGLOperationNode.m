@@ -43,6 +43,8 @@
 
 @property(nonatomic,assign) CVOpenGLESTextureCacheRef coreVideoTextureCache;
 
+@property(nonatomic,retain)YDGLOperationNodeOutput *outputData;//this Node output;
+
 @end
 
 @implementation YDGLOperationNode{
@@ -64,6 +66,8 @@
 @synthesize nextOperations=_nextOperations;
 
 @synthesize dependency=_dependency;
+
+@synthesize outputData=_outputData;
 
 - (instancetype)init
 {
@@ -524,7 +528,25 @@
     
     [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
     
+    [self buildOutputData];
+    
     [self notifyNextOperation];
+    
+}
+
+-(void)buildOutputData{
+
+    YDGLOperationNodeOutput* output=[YDGLOperationNodeOutput new];
+    
+    output.texture=_renderTexture_out;
+    
+    output.size=_size;
+    
+    output.frameBuffer=_frameBuffer;
+    
+    output.pixelBuffer=_pixelBuffer_out;
+    
+    self.outputData=output;
     
 }
 
@@ -742,22 +764,7 @@
 
 -(YDGLOperationNodeOutput*)getOutput{
 
-    if (_renderTexture_out==0) {
-        
-        return nil;
-    }
-    
-    YDGLOperationNodeOutput* output=[YDGLOperationNodeOutput new];
-    
-    output.texture=_renderTexture_out;
-    
-    output.size=_size;
-    
-    output.frameBuffer=_frameBuffer;
-    
-    output.pixelBuffer=_pixelBuffer_out;
-    
-    return output;
+    return self.outputData;
 
 }
 
@@ -823,9 +830,12 @@
 
     NSLog(@"节点销毁了:%@",self);
     
-    [self cleanUpTexture];
-    
-    glDeleteFramebuffers(1, &_frameBuffer);
+    [self activeGLContext:^{
+       
+        [self cleanUpTexture];
+        
+        glDeleteFramebuffers(1, &_frameBuffer);
+    }];
     
     _frameBuffer=0;
     

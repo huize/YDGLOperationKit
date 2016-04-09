@@ -200,7 +200,7 @@
     
     //dispatch_barrier_async will crash
     
-    dispatch_barrier_sync(_workQueue, ^{
+    dispatch_barrier_async(_workQueue, ^{
         
         if (_invalidate) {
             
@@ -210,6 +210,10 @@
         [_operationSource start];
         
         [_operationSecondSource start];
+        
+        [_operationSource setNeedDisplay];
+        
+        [_operationSecondSource setNeedDisplay];
     
     });
     

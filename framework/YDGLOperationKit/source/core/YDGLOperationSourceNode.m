@@ -22,7 +22,6 @@
     
     [self renderIfCanWhenDependencyDone:self];
     
-    self.textureAvailable=NO;
     
     //});
     
@@ -52,6 +51,15 @@
 
     NSAssert(NO, @"YDGLOperationSourceNode must be as root Node");
 
+}
+
+-(void)setNeedDisplay{
+
+    self.textureAvailable=NO;
+    
+    _outputData=nil;
+
+    
 }
 
 

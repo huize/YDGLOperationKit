@@ -197,6 +197,8 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
     __weak id<YDGLOperationTextureLoaderDelegate> _Nonnull _textureLoaderDelegate;
     
     EAGLContext *_glContext;
+    
+    YDGLOperationNodeOutput *_outputData;
 }
 
 @property(nonatomic,nullable,copy)OperationCompletionBlock completionBlock;

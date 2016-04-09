@@ -15,5 +15,13 @@
 -(void)prepareForRender;
 
 -(void)start;
+/**
+ *  @author 许辉泽, 16-04-09 16:26:54
+ *
+ *  mark the node content invalidate
+ *
+ *  @since 1.0.0
+ */
+-(void)setNeedDisplay;
 
 @end
