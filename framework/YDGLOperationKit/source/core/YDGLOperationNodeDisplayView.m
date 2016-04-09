@@ -301,7 +301,7 @@
     imageVertices[10] = heightScaling;
     imageVertices[11]=0.0;
     
-    [_drawModel loadSquareVex:imageVertices andTextureCoord:[YDGLOperationNodeView textureCoordinatesForRotation:_inputRotationMode]];
+    [_drawModel loadSquareVex:imageVertices andTextureCoord:[YDGLOperationNodeDisplayView textureCoordinatesForRotation:_inputRotationMode]];
     
     free(imageVertices);
 
