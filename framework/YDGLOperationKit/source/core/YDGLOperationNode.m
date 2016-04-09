@@ -34,7 +34,7 @@
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *beforePerformDrawOperations;//program 的操作
 
-@property(nonatomic,nullable,retain)dispatch_semaphore_t lockForNode;
+@property(nonatomic,nullable,retain)dispatch_semaphore_t lockForNodeStatus;
 
 @property(nonatomic,nullable,retain)dispatch_semaphore_t lockForTraversals;//TODO:后续看看能不能和lockForNode合并成一个锁
 
@@ -105,7 +105,7 @@
     
     self.needLayout=YES;
     
-    self.lockForNode=dispatch_semaphore_create(1);
+    self.lockForNodeStatus=dispatch_semaphore_create(1);
     
     self.lockForTraversals=dispatch_semaphore_create(1);
     
@@ -433,20 +433,17 @@
         
     }
     
-    dispatch_semaphore_wait(_lockForNode, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
     
-//    [self.nextOperations enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//        
-//        [obj renderIfCanWhenDependencyDone:self];
-//    }];
+    NSArray<id<YDGLOperationNode>> *nextoperations= [self.nextOperations copy];
     
-    for (id<YDGLOperationNode>  nextOperation in self.nextOperations) {
+    dispatch_semaphore_signal(_lockForNodeStatus);
+    
+    for (id<YDGLOperationNode>  nextOperation in nextoperations) {
         
         [nextOperation renderIfCanWhenDependencyDone:self];
         
     }
-    
-    dispatch_semaphore_signal(_lockForNode);
     
 }
 
@@ -530,6 +527,26 @@
     [self notifyNextOperation];
     
 }
+
+/**
+ *  @author 许辉泽, 16-04-09 15:24:14
+ *
+ *  if the block will change the node status,shoule use this api to run the block
+ *
+ *  @param block block will change the node status
+ *
+ *  @since 1.0.0
+ */
+-(void)lockNodeFor:(dispatch_block_t)block{
+
+    dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
+    
+    block();
+    
+    dispatch_semaphore_signal(_lockForNodeStatus);
+    
+}
+
 
 #pragma -mark 支持子类重载的接口
 
@@ -752,9 +769,9 @@
         
     }
     
-    dispatch_semaphore_wait(_lockForNode,DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(_lockForNodeStatus,DISPATCH_TIME_FOREVER);
     BOOL ready =[self canPerformTraversals];
-    dispatch_semaphore_signal(_lockForNode);
+    dispatch_semaphore_signal(_lockForNodeStatus);
     
     if (ready) {
         
@@ -789,7 +806,7 @@
 
 -(void)destory{
 
-    dispatch_semaphore_wait(_lockForNode, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
     
     [self.dependency removeAllObjects];
     
@@ -797,7 +814,7 @@
     
     [self.programOperations removeAllObjects];
     
-    dispatch_semaphore_signal(_lockForNode);
+    dispatch_semaphore_signal(_lockForNodeStatus);
     
     self.completionBlock=nil;
 }
@@ -859,8 +876,11 @@
         
     };
     
-    [self.programOperations addObject:operation];
     
+    [self lockNodeFor:^{
+        
+        [self.programOperations addObject:operation];
+    }];
     
 }
 
@@ -874,7 +894,13 @@
         
     };
     
-    [self.programOperations addObject:operation];
+    
+    [self lockNodeFor:^{
+        
+        [self.programOperations addObject:operation];
+        
+    }];
+    
 
 }
 
@@ -888,7 +914,11 @@
         
     };
     
-    [self.programOperations addObject:operation];
+    [self lockNodeFor:^{
+        
+        [self.programOperations addObject:operation];
+        
+    }];
 
 }
 
@@ -910,7 +940,11 @@
     
     };
     
-    [self.beforePerformDrawOperations addObject:rotateDrawOperation];
+    [self lockNodeFor:^{
+    
+        [self.beforePerformDrawOperations addObject:rotateDrawOperation];
+        
+    }];
     
 }
 
@@ -922,8 +956,12 @@
         
     };
     
-    [self.beforePerformDrawOperations addObject:rotateDrawOperation];
-    
+    [self lockNodeFor:^{
+        
+        [self.beforePerformDrawOperations addObject:rotateDrawOperation];
+        
+    }];
+
 }
 
 @end
