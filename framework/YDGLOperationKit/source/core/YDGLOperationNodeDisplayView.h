@@ -26,8 +26,9 @@ typedef enum { kYDGLOperationImageNoRotation, kYDGLOperationImageRotateLeft, kYD
  *
  *  @since 1.0.0
  */
-@interface YDGLOperationNodeDisplayView : UIView<YDGLOperationNode>
-
+@interface YDGLOperationNodeDisplayView : UIView
 @property(nonatomic,assign) YDGLOperationImageFillModeType fillMode;//
+
+-(void)setContentProviderNode:(id<YDGLOperationNode>)contentNode;
 
 @end

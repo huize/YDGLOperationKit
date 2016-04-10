@@ -50,7 +50,7 @@
     
     [self buildBeautyGroupLayer];
     
-    [_customView addDependency:_operationSource];
+    [_customView setContentProviderNode:_operationSource];
     
     __weak typeof(self) weakSelf=self;
     

@@ -53,7 +53,7 @@
     
     [self initLayer];
     
-    [_customView addDependency:_thirdNode];
+    [_customView setContentProviderNode:_thirdNode];
     
     __weak typeof (self) weakSelf=self;
     

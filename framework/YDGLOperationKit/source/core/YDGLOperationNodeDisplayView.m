@@ -18,6 +18,10 @@
 
 @import GLKit;
 
+@interface YDGLOperationNodeDisplayView()<YDGLOperationNode>
+
+@end
+
 @implementation YDGLOperationNodeDisplayView{
 
     CAEAGLLayer *_egallayer;
@@ -660,6 +664,27 @@
 -(void)addDependency:(id<YDGLOperationNode>)operation{
 
     [operation addNextOperation:self];
+
+}
+
+-(void)addNextOperation:(id<YDGLOperationNode>)nextOperation{
+
+
+    NSAssert(NO, @"display node can not as dependency node");
+    
+}
+
+-(YDGLOperationNodeOutput *)getOutput{
+
+    return nil;
+
+}
+
+#pragma -mark public api
+
+-(void)setContentProviderNode:(id<YDGLOperationNode>)contentNode{
+
+    [self addDependency:contentNode];
 
 }
 
