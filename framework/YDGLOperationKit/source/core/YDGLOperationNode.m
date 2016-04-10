@@ -445,7 +445,7 @@
     
     for (id<YDGLOperationNode>  nextOperation in nextoperations) {
         
-        [nextOperation renderIfCanWhenDependencyDone:self];
+        [nextOperation performTraversalsIfCanWhenDependencyDone:self];
         
     }
     
@@ -768,7 +768,7 @@
 
 }
 
--(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
+-(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
     if (_locked){
         

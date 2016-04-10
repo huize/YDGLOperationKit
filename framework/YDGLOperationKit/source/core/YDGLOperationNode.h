@@ -100,7 +100,7 @@
  *  @since 1.0.0
  */
 
--(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
+-(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
 
 /**
  *  @author 许辉泽, 16-03-18 13:53:26

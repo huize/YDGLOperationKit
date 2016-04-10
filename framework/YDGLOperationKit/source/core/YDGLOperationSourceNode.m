@@ -20,7 +20,7 @@
         
     }];
     
-    [self renderIfCanWhenDependencyDone:self];
+    [self performTraversalsIfCanWhenDependencyDone:self];
     
     
     //});
