@@ -90,7 +90,7 @@
     
     [self setupProgram];
     
-    [self destoryRenderAndFrameBuffer];
+    [self cleanup];
     
     [self setupBuffer];
     
@@ -610,33 +610,10 @@
     _resolveDepthBuffer=0;
 }
 
-
--(void)destoryRenderAndFrameBuffer{
-    
-    glDeleteBuffers(1, &_frameBuffer);
-    
-    _frameBuffer=0;
-    
-    glDeleteBuffers(1, &_renderBuffer);
-    
-    _renderBuffer=0;
-    
-    
-    glDeleteBuffers(1, &_resolveFrameBuffer);
-    
-    _resolveFrameBuffer=0;
-    
-    glDeleteBuffers(1, &_resolveRenderBuffer);
-    
-    _resolveRenderBuffer=0;
-    
-    
-}
-
 #pragma -mark  GLOperationNode 协议实现
 
 
--(void)renderIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
+-(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
     YDGLOperationNodeOutput* outData=[doneOperation getOutput];
     
@@ -663,8 +640,8 @@
 
 -(void)addDependency:(id<YDGLOperationNode>)operation{
 
-    [operation addNextOperation:self];
 
+    
 }
 
 -(void)addNextOperation:(id<YDGLOperationNode>)nextOperation{
@@ -682,10 +659,10 @@
 
 #pragma -mark public api
 
--(void)setContentProviderNode:(id<YDGLOperationNode>)contentNode{
+-(void)setContentProviderNode:(YDGLOperationNode*_Nonnull)contentNode{
 
-    [self addDependency:contentNode];
-
+    [contentNode addNextOperation:self];
+    
 }
 
 #pragma -mark 测试代码

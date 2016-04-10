@@ -177,7 +177,7 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
  *
  *  @since 1.0.0
  */
-@interface YDGLOperationNode : NSObject<YDGLOperationNode,YDGLOperationTextureLoaderDelegate>
+@interface YDGLOperationNode : NSObject<YDGLOperationTextureLoaderDelegate>
 {
     
 @protected
@@ -285,6 +285,12 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
  *  @since 1.0.0
  */
 -(BOOL)canPerformTraversals;
+
+-(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
+
+-(void)addDependency:(id<YDGLOperationNode>_Nonnull)operation;
+-(void)addNextOperation:(id<YDGLOperationNode>_Nonnull)nextOperation;
+-(void)destory;
 
 @end
 
