@@ -477,7 +477,7 @@
     glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
-    
+        
 }
 
 -(void)innerRender{
@@ -577,8 +577,11 @@
 
 -(void)dealloc{
     
-    
-    [self cleanup];
+    [self activeGLContext:^{
+        
+        [self cleanup];
+        
+    }];
     
     if ([EAGLContext currentContext]==_context) {
         
