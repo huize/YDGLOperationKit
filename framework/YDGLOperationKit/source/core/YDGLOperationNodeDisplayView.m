@@ -30,8 +30,6 @@
 
     GLuint _renderBuffer,_frameBuffer;//最终的缓冲区对象
     
-    GLuint _resolveRenderBuffer,_resolveFrameBuffer,_resolveDepthBuffer;//用于多重采样缓冲区对象
-    
     GLint _framebufferWidth;
     
     GLint _framebufferHeight;
@@ -167,42 +165,42 @@
  *
  *  @since 1.0.2
  */
-- (void)setupMSAABuffer {
-    
-    glGenFramebuffers(1, &_resolveFrameBuffer);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, _resolveFrameBuffer);
-    
-    glGenRenderbuffers(1, &_resolveRenderBuffer);
-    
-    glBindRenderbuffer(GL_RENDERBUFFER, _resolveRenderBuffer);
-    
-    GLint max_samples;
-    
-    glGetIntegerv(GL_MAX_SAMPLES_APPLE, &max_samples);
-    
-    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER,max_samples,GL_RGBA8_OES, _sizeInPixel.width, _sizeInPixel.height);
-    
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _resolveRenderBuffer);
-    
-    
-    glGenRenderbuffers(1, &_resolveDepthBuffer);
-    
-    glBindRenderbuffer(GL_RENDERBUFFER, _resolveDepthBuffer);
-    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT16, _sizeInPixel.width , _sizeInPixel.height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _resolveDepthBuffer);
-    
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
-    
-        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-
-    }
-    
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-}
+//- (void)setupMSAABuffer {
+//    
+//    glGenFramebuffers(1, &_resolveFrameBuffer);
+//    
+//    glBindFramebuffer(GL_FRAMEBUFFER, _resolveFrameBuffer);
+//    
+//    glGenRenderbuffers(1, &_resolveRenderBuffer);
+//    
+//    glBindRenderbuffer(GL_RENDERBUFFER, _resolveRenderBuffer);
+//    
+//    GLint max_samples;
+//    
+//    glGetIntegerv(GL_MAX_SAMPLES_APPLE, &max_samples);
+//    
+//    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER,max_samples,GL_RGBA8_OES, _sizeInPixel.width, _sizeInPixel.height);
+//    
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _resolveRenderBuffer);
+//    
+//    
+//    glGenRenderbuffers(1, &_resolveDepthBuffer);
+//    
+//    glBindRenderbuffer(GL_RENDERBUFFER, _resolveDepthBuffer);
+//    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT16, _sizeInPixel.width , _sizeInPixel.height);
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _resolveDepthBuffer);
+//    
+//    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+//    
+//        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+//
+//    }
+//    
+//    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+//    
+//    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//    
+//}
 
 -(void)setupProgram{
     
@@ -596,21 +594,18 @@
 }
 -(void)cleanup{
     
-    GLuint renderBuffers[3]={_renderBuffer,_resolveRenderBuffer,_resolveDepthBuffer};
+    GLuint renderBuffers[1]={_renderBuffer};
     
-    glDeleteRenderbuffers(3, renderBuffers);
+    glDeleteRenderbuffers(1, renderBuffers);
     
-    GLuint frameBuffers[2]={_frameBuffer,_resolveFrameBuffer};
+    GLuint frameBuffers[1]={_frameBuffer};
     
-    glDeleteFramebuffers(2,frameBuffers);
+    glDeleteFramebuffers(1,frameBuffers);
     
     glDeleteTextures(1, &_textureId);
     
     _frameBuffer=0;
     _renderBuffer=0;
-    _resolveFrameBuffer=0;
-    _resolveRenderBuffer=0;
-    _resolveDepthBuffer=0;
 }
 
 #pragma -mark  GLOperationNode 协议实现
