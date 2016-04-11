@@ -18,7 +18,6 @@
 @property(nonatomic,assign) GLuint renderTexture_out;//
 @property(nonatomic,assign) CVPixelBufferRef pixelBuffer_out;//
 @property(nonatomic,assign) GLKMatrix4 mvpMatrix;
-@property(nonatomic,assign) CGSize size;//
 
 @property(nonatomic,nullable,retain) YDDrawModel *drawModel;//
 
@@ -397,9 +396,9 @@
 
 -(void)innerSetInputSize:(CGSize)newSize{
     
-    self.size=newSize;
+    _size=newSize;
     
-    [self didSetInputSize:self.size];
+    [self didSetInputSize:_size];
     
 }
 
@@ -523,10 +522,16 @@
 
 -(void)performDraw{
     
-    
     assert(_frameBuffer!=0);
     
-    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
+    if (self.drawDelegate&&[self.drawDelegate respondsToSelector:@selector(drawFrameBuffer:inRect:)]) {
+        
+        [self.drawDelegate drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
+    }else{
+    
+        [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
+
+    }
     
     [self buildOutputData];
     

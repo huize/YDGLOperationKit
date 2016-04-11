@@ -168,6 +168,22 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 @end
 
 
+@protocol YDGLOperationNodeDrawDelegate <NSObject>
+
+/**
+ *  @author 许辉泽, 16-03-24 15:28:13
+ *
+ *  该节点的渲染过程
+ *
+ *  @param frameBuffer 渲染缓冲区
+ *  @param CGRect      区域
+ *
+ *  @since 1.0.0
+ */
+-(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect;
+
+@end
+
 typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
 
 /**
@@ -177,7 +193,7 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
  *
  *  @since 1.0.0
  */
-@interface YDGLOperationNode : NSObject<YDGLOperationTextureLoaderDelegate>
+@interface YDGLOperationNode : NSObject<YDGLOperationNodeDrawDelegate,YDGLOperationTextureLoaderDelegate>
 {
     
 @protected
@@ -205,6 +221,10 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
 
 @property(nonatomic,readonly,getter=isLocked) BOOL locked;
 
+@property(nonatomic,weak,nullable)id<YDGLOperationNodeDrawDelegate> drawDelegate;
+
+@property(nonatomic,assign,readonly)CGSize size;
+
 -(instancetype _Nullable)initWithVertexShader:(NSString*_Nonnull)vertexShaderString andFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 
 -(instancetype _Nullable)initWithFragmentShader:(NSString*_Nonnull)fragmentShaderString;
@@ -222,17 +242,6 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
  *  @since 1.0.0
  */
 -(void)setupTextureForProgram:(GLuint)program;
-/**
- *  @author 许辉泽, 16-03-24 15:28:13
- *
- *  该节点的渲染过程
- *
- *  @param frameBuffer 渲染缓冲区
- *  @param CGRect      区域
- *
- *  @since 1.0.0
- */
--(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect;
 
 -(void)activeGLContext:(void(^_Nonnull)(void))block;
 
