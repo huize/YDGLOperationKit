@@ -213,7 +213,14 @@
 
 -(void)dealloc{
 
-     glDeleteTextures(1, &_renderTexture_input);
+    [self activeGLContext:^{
+        
+        glDeleteTextures(1, &_renderTexture_input);
+        
+        _renderTexture_input=0;
+    }];
+    
+    
 
 }
 

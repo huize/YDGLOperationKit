@@ -199,11 +199,20 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
 
 -(void)dealloc{
     
-    glDeleteTextures(1, &_textureY);
-    
-    glDeleteTextures(1, &_textureU);
-    
-    glDeleteTextures(1, &_textureV);
+    [self activeGLContext:^{
+        
+        glDeleteTextures(1, &_textureY);
+        
+        _textureY=0;
+        
+        glDeleteTextures(1, &_textureU);
+        
+        _textureU=0;
+        
+        glDeleteTextures(1, &_textureV);
+        
+        _textureV=0;
+    }];
     
 }
 

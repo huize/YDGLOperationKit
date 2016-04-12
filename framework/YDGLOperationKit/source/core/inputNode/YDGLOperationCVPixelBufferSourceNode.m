@@ -272,12 +272,20 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 }
 
 -(void)dealloc{
+    
+    [self activeGLContext:^{
+        
+        glDeleteTextures(1, &_renderTexture_input);
+        
+        [self cleanUpTextures];
 
-    glDeleteTextures(1, &_renderTexture_input);
-    
-    [self cleanUpTextures];
-    
+    }];
+
     CVOpenGLESTextureCacheFlush(_textureCache, 0);
+    
+    CFRelease(_textureCache);
+    
+    _textureCache=NULL;
 
 }
 

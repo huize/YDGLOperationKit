@@ -171,9 +171,17 @@ NSString *const kYDGLOperationNV12ToLAFragmentShaderString = SHADER_STRING
 
 -(void)dealloc{
     
-    glDeleteTextures(1, &_textureY);
-    
-    glDeleteTextures(1, &_textureUV);
+    [self activeGLContext:^{
+        
+        glDeleteTextures(1, &_textureY);
+        
+        _textureY=0;
+        
+        glDeleteTextures(1, &_textureUV);
+        
+        _textureUV=0;
+        
+    }];
     
 }
 
