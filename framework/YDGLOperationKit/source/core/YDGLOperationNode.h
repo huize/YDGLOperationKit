@@ -295,10 +295,10 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
  */
 -(BOOL)canPerformTraversals;
 
--(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
+-(void)performTraversalsIfCanWhenDependencyDone:(YDGLOperationNode*_Nonnull)doneOperation;
 
--(void)addDependency:(id<YDGLOperationNode>_Nonnull)operation;
--(void)addNextOperation:(id<YDGLOperationNode>_Nonnull)nextOperation;
+-(void)addDependency:(YDGLOperationNode*_Nonnull)operation;
+-(void)addNextOperation:(YDGLOperationNode*_Nonnull)nextOperation;
 -(void)destory;
 
 @end
