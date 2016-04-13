@@ -621,7 +621,11 @@
         
         _inputImageSize=outData.size;
         
-        [self loadSquareByFillModeType];
+        [self activeGLContext:^{
+
+            [self loadSquareByFillModeType];
+
+        }];
     }
     
     [doneOperation lock];

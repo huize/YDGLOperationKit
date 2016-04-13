@@ -181,25 +181,6 @@
 
 }
 
-+(void)runInWorkQueueImmediately:(dispatch_block_t)block{
-
-//    if (dispatch_get_specific(@"YDGLOperationKit")) {
-//        
-//        if (block) {
-//            
-//            block();
-//        }
-//        
-//    }else{
-//    
-//        dispatch_barrier_async([YDGLOperationNode getWorkQueue],block);
-//    
-//    }
-    
-    block();
-
-}
-
 -(void)initTextureCache{
     
     CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_coreVideoTextureCache);
@@ -458,7 +439,6 @@
         
     }
     
-    
     [self.beforePerformTraversalsOperations removeAllObjects];//线程同步问题
 
 }
@@ -499,6 +479,12 @@
     }];
     
     
+    [self buildOutputData];
+    
+    [self notifyNextOperation];
+
+    
+    
 }
 
 -(void)performLayout{
@@ -532,10 +518,6 @@
         [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
 
     }
-    
-    [self buildOutputData];
-    
-    [self notifyNextOperation];
     
 }
 
