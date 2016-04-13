@@ -11,6 +11,10 @@
 
 @interface YDGLOperationBlendNode()
 
+@property(nonatomic,assign)GLKMatrix4 projection;//
+
+@property(nonatomic,assign)GLKMatrix4 modelview;//
+
 @end
 
 @implementation YDGLOperationBlendNode
@@ -29,6 +33,29 @@
 -(void)commonInitialization{
 
     
+
+}
+
+-(void)didSetInputSize:(CGSize)newInputSize{
+
+    CGSize sizeInPixel=CGSizeMake(newInputSize.width,newInputSize.height);
+    
+    float aspect=sizeInPixel.width/sizeInPixel.height;
+    float nearZ=sizeInPixel.height/2;
+    
+    float farZ=nearZ+100;
+    
+    GLKMatrix4 projection=GLKMatrix4MakePerspective(M_PI_2, aspect, nearZ, farZ);
+
+    self.projection=projection;
+    
+    GLKMatrix4 modelview=GLKMatrix4Identity;
+    
+    modelview=GLKMatrix4Translate(modelview, 0.0, 0.0, -nearZ);
+    
+    modelview=GLKMatrix4Translate(modelview, -sizeInPixel.width/2, -sizeInPixel.height/2, 0.0);
+    
+    self.modelview=modelview;
 
 }
 
@@ -58,12 +85,16 @@
     
     for (int index=0; index<_dependency.count; index++) {
         
+        YDGLOperationNodeOutput *output=[_dependency[index] getOutput];
+
         //1.设置变换矩阵
         GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
         
-        GLKMatrix4 matrix=GLKMatrix4Identity;
+        GLKMatrix4 matrix=self.modelview;
         
-        matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0+0.01*index);//set z index
+        matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0-0.01*index);//set z index
+        
+        matrix=GLKMatrix4Multiply(self.projection, matrix);
         
         float*mm=(float*)matrix.m;
         
@@ -83,11 +114,19 @@
         
         GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
         
-        glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
+        CGSize size=output.size;
+        
+        GLfloat vex[12]={
+            
+            0.0,0.0,0.0,//left bottom
+            size.width,0.0,0.0,//right bottom
+            size.width,size.height,0.0,//right top
+            0.0,size.height,0.0,//left top
+        };
         
         glEnableVertexAttribArray(location_position);//顶点坐标
         
-        glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,0);
+        glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,vex);
         
         //3.设置纹理坐标
         
@@ -106,8 +145,6 @@
         GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
         
         glActiveTexture(GL_TEXTURE0+index);
-        
-        YDGLOperationNodeOutput *output=[_dependency[index] getOutput];
         
         [YDGLOperationNode bindTexture:output.texture];
         
