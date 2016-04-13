@@ -119,6 +119,12 @@
         
         CGRect frame=[subNode getFrame];
         
+        if (CGRectIsEmpty(frame)) {
+            
+            frame=CGRectMake(0, 0, output.size.width, output.size.height);
+            
+        }
+        
         CGSize size=frame.size;
         
         GLfloat vex[12]={
