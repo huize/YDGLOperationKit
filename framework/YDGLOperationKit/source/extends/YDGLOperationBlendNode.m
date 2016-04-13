@@ -50,6 +50,10 @@
     
     glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
     
+    glEnable(GL_BLEND);
+    
+    glDisable(GL_DEPTH_TEST);
+    
     glUseProgram(_drawModel.program);
     
     for (int index=0; index<_dependency.count; index++) {
@@ -58,6 +62,8 @@
         GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
         
         GLKMatrix4 matrix=GLKMatrix4Identity;
+        
+        matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0+0.01*index);//set z index
         
         float*mm=(float*)matrix.m;
         
@@ -107,7 +113,8 @@
         
         glUniform1i ( location_s_texture,index);
         //5. draw
-        
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
         
         GLsizei count=_drawModel.count_indices;
@@ -124,10 +131,13 @@
         
     }
     
+    glDisable(GL_BLEND);
+    
+    glEnable(GL_DEPTH_TEST);
+    
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
 }
-
 
 
 @end
