@@ -11,6 +11,7 @@
 		423E042E1C99873300972691 /* rgb.png in Resources */ = {isa = PBXBuildFile; fileRef = 423E04291C99873300972691 /* rgb.png */; };
 		423E04801C9A714200972691 /* LVECatpureSessionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */; };
 		424D92C31C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */; };
+		429A97291CBE257100259908 /* YDGLAlphaNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97281CBE257100259908 /* YDGLAlphaNode.m */; };
 		42BBE29A1C9969E70035BC01 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2991C9969E70035BC01 /* main.m */; };
 		42BBE29D1C9969E70035BC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE29C1C9969E70035BC01 /* AppDelegate.m */; };
 		42BBE2A01C9969E70035BC01 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE29F1C9969E70035BC01 /* ViewController.m */; };
@@ -52,6 +53,8 @@
 		423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVECatpureSessionHelper.m; sourceTree = "<group>"; };
 		424D92C11C9A9EFA006DA52D /* YDGLOperationImageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationImageTestViewController.h; sourceTree = "<group>"; };
 		424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationImageTestViewController.m; sourceTree = "<group>"; };
+		429A97271CBE257100259908 /* YDGLAlphaNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLAlphaNode.h; sourceTree = "<group>"; };
+		429A97281CBE257100259908 /* YDGLAlphaNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLAlphaNode.m; sourceTree = "<group>"; };
 		42BBE2951C9969E70035BC01 /* ydgloperationTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ydgloperationTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BBE2991C9969E70035BC01 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		42BBE29B1C9969E70035BC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 				42BBE2A61C9969E70035BC01 /* LaunchScreen.storyboard */,
 				42BBE2A91C9969E70035BC01 /* Info.plist */,
 				42BBE2981C9969E70035BC01 /* Supporting Files */,
+				429A97271CBE257100259908 /* YDGLAlphaNode.h */,
+				429A97281CBE257100259908 /* YDGLAlphaNode.m */,
 			);
 			path = ydgloperationTest;
 			sourceTree = "<group>";
@@ -285,6 +290,7 @@
 				42BBE2A01C9969E70035BC01 /* ViewController.m in Sources */,
 				42BBE29D1C9969E70035BC01 /* AppDelegate.m in Sources */,
 				423E04801C9A714200972691 /* LVECatpureSessionHelper.m in Sources */,
+				429A97291CBE257100259908 /* YDGLAlphaNode.m in Sources */,
 				42BBE29A1C9969E70035BC01 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,6 +12,8 @@
 
 #import <YDGLOperationKit/YDGLOperationKit.h>
 
+#import "YDGLAlphaNode.h"
+
 @implementation YDGLOperationImageTestViewController
 {
 
@@ -25,10 +27,11 @@
     
     YDGLOperationNode *_thirdNode;
 
-    YDGLOperationTwoInputNode *_secondNode;
+    YDGLOperationBlendNode *_secondNode;
     
     CADisplayLink *_displayLink;
     
+    YDGLAlphaNode *_alphaNode;
     
     UIButton *_button;
 
@@ -148,13 +151,15 @@
     
     [_operationSecondSource uploadImage:image2];
     
-    _secondNode=[YDGLOperationTwoInputNode new];
+    _alphaNode=[YDGLAlphaNode new];
     
-    [_secondNode setMix:0.5f];
+    [_alphaNode addDependency:_operationSecondSource];
     
-    [_secondNode addDependency:_operationSource];
+    _secondNode=[YDGLOperationBlendNode new];
     
-    [_secondNode addDependency:_operationSecondSource];
+    [_secondNode addDependency:_operationSource atFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
+    
+    [_secondNode addDependency:_alphaNode atFrame:CGRectMake(50.0, 50.0, image2.size.width,image2.size.height)];
 
     _thirdNode=_secondNode;
     
