@@ -10,11 +10,12 @@
 
 #import "YDGLOperationNode.h"
 
+//=========extend
 #import "YDGLOperationTwoInputNode.h"
-
 #import "YDGLOperationThreeInputNode.h"
-
 #import "YDGLOperationNodeDisplayView.h"
+#import "YDGLOperationBlendNode.h"
+
 
 
 //=========sourceNode
