@@ -85,6 +85,8 @@
     
     for (int index=0; index<_dependency.count; index++) {
         
+        YDGLOperationNode *subNode=_dependency[index];
+        
         YDGLOperationNodeOutput *output=[_dependency[index] getOutput];
 
         //1.设置变换矩阵
@@ -114,14 +116,17 @@
         
         GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
         
-        CGSize size=output.size;
+        
+        CGRect frame=[subNode getFrame];
+        
+        CGSize size=frame.size;
         
         GLfloat vex[12]={
             
-            0.0,0.0,0.0,//left bottom
-            size.width,0.0,0.0,//right bottom
-            size.width,size.height,0.0,//right top
-            0.0,size.height,0.0,//left top
+            frame.origin.x,frame.origin.y,0.0,//left bottom
+            frame.origin.x+size.width,frame.origin.y,0.0,//right bottom
+            frame.origin.x+size.width,frame.origin.y+size.height,0.0,//right top
+            frame.origin.x,frame.origin.y+size.height,0.0,//left top
         };
         
         glEnableVertexAttribArray(location_position);//顶点坐标

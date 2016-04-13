@@ -17,7 +17,15 @@
 @interface YDGLOperationNode(FrameSupport)
 
 -(CGRect)getFrame;
-
+/**
+ *  @author 许辉泽, 16-04-13 17:06:27
+ *
+ *  注意:frame 是以左下角为原点,origin 表示的是矩形的左下角
+ *
+ *  @param frame frame description
+ *
+ *  @since 1.0.0
+ */
 -(void)setFrame:(CGRect)frame;
 
 @end
