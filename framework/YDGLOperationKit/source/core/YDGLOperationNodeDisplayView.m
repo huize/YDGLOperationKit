@@ -82,23 +82,23 @@
     
     _inputRotationMode=kYDGLOperationImageNoRotation;
     
+    _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
+
     [self setupLayer];
     
-    [self setupContext];
-    
-    [self setupProgram];
-    
-    [self cleanup];
-    
-    [self setupBuffer];
-    
-    //[self setupMSAABuffer];
-    
-    _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
-    
-    [self loadSquareVex];
-    
-    [EAGLContext setCurrentContext:nil];
+    _context=[YDGLOperationNode getGLContext];
+
+    [self activeGLContext:^{
+        
+        [self setupProgram];
+        
+        [self cleanup];
+        
+        [self setupBuffer];
+        
+        [self loadSquareVex];
+        
+    }];
     
 }
 
@@ -113,18 +113,6 @@
     
     _egallayer.drawableProperties = @{kEAGLDrawablePropertyRetainedBacking:@NO, kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8};
 
-}
-
-- (void)setupContext {
-    
-    _context=[YDGLOperationNode getGLContext];
-    
-    // 设置为当前上下文
-    if (![EAGLContext setCurrentContext:_context]) {
-        NSLog(@"Failed to set current OpenGL context");
-        exit(1);
-    }
-    
 }
 
 - (void)setupBuffer {
