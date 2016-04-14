@@ -88,6 +88,8 @@
     
     _context=[YDGLOperationContext currentGLContext];
 
+     NSAssert(_context!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
+    
     [self activeGLContext:^{
         
         [self setupProgram];

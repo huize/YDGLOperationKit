@@ -101,6 +101,8 @@
     self.dependency=[NSMutableArray array];
     
     _glContext=[YDGLOperationContext currentGLContext];
+    
+    NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
         
     self.programOperations=[NSMutableArray array];
 
