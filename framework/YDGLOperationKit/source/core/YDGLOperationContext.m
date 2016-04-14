@@ -42,6 +42,8 @@ static dispatch_semaphore_t s_lock;
     
     [contexts addObject:instance];
     
+    [EAGLContext setCurrentContext:instance];
+    
     dispatch_semaphore_signal(s_lock);
     
     
@@ -53,8 +55,11 @@ static dispatch_semaphore_t s_lock;
     
     [contexts removeObjectAtIndex:contexts.count-1];
     
-    dispatch_semaphore_signal(s_lock);
+    EAGLContext *instance=[contexts lastObject];
     
+    [EAGLContext setCurrentContext:instance];
+    
+    dispatch_semaphore_signal(s_lock);
     
 }
 
