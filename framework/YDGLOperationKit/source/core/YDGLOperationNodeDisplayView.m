@@ -571,12 +571,6 @@
         
     }];
     
-    if ([EAGLContext currentContext]==_context) {
-        
-        [EAGLContext setCurrentContext:nil];
-        
-    }
-    
     _context=nil;
     
     NSLog(@"nodeView 销毁了:%@",self);
