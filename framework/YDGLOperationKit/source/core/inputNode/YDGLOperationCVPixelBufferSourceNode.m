@@ -89,7 +89,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)commonInitialization{
     
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_textureCache);
+    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL,_glContext, NULL, &_textureCache);
     
     NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
     
