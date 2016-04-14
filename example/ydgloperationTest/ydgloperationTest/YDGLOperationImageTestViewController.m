@@ -157,9 +157,9 @@
     
     _secondNode=[YDGLOperationBlendNode new];
     
-    [_secondNode addDependency:_operationSource atFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
+    [_secondNode addSubNode:_operationSource atFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
     
-    [_secondNode addDependency:_alphaNode atFrame:CGRectMake(50.0, 50.0, image2.size.width,image2.size.height)];
+    [_secondNode addSubNode:_alphaNode atFrame:CGRectMake(50.0, 50.0, image2.size.width,image2.size.height)];
 
     _thirdNode=_secondNode;
     

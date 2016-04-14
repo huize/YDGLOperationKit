@@ -10,7 +10,7 @@
 
 @interface YDGLOperationBlendNode : YDGLOperationNode
 
--(void)addDependency:(YDGLOperationNode*_Nonnull)operation atFrame:(CGRect)frame;
+-(void)addSubNode:(YDGLOperationNode*_Nonnull)node atFrame:(CGRect)frame;
 
 @end
 
