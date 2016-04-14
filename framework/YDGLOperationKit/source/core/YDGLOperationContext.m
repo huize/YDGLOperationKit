@@ -16,6 +16,7 @@ static NSMutableOrderedSet<EAGLContext*>* contexts;
 
 static dispatch_semaphore_t s_lock;
 
+static EAGLContext *appEAGLContext;//
 
 +(void)initialize{
     
@@ -25,6 +26,8 @@ static dispatch_semaphore_t s_lock;
         contexts=[NSMutableOrderedSet orderedSet];
         
         s_lock=dispatch_semaphore_create(1);
+        
+        appEAGLContext=[[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
         
     });
     
@@ -36,7 +39,7 @@ static dispatch_semaphore_t s_lock;
     
     EAGLContext *instance;
     
-    instance=[[EAGLContext alloc]initWithAPI:api];
+    instance=[[EAGLContext alloc]initWithAPI:api sharegroup:appEAGLContext.sharegroup];
     
     dispatch_semaphore_wait(s_lock,DISPATCH_TIME_FOREVER);
     
