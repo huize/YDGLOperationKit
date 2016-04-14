@@ -229,8 +229,6 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
 
 -(instancetype _Nullable)initWithFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 
-+(EAGLContext*_Nonnull)getGLContext;
-
 +(void)bindTexture:(GLuint)textureId;
 
 //-------------------------

@@ -21,15 +21,29 @@ NSMutableOrderedSet<EAGLContext*>* contexts;
         
         contexts=[NSMutableOrderedSet orderedSet];
         
-        
-        
     });
 
 }
 
 +(void)pushContext{
     
-    EAGLContext *instance=[[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES2;
+    static dispatch_semaphore_t locker;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        locker=dispatch_semaphore_create(1);
+        
+    });
+    
+    EAGLContext *instance;
+    
+    dispatch_semaphore_wait(locker,DISPATCH_TIME_FOREVER);
+    
+    instance=[[EAGLContext alloc]initWithAPI:api];
+    
+    dispatch_semaphore_signal(locker);
+    
     
     [contexts addObject:instance];
     
@@ -43,8 +57,8 @@ NSMutableOrderedSet<EAGLContext*>* contexts;
 
 +(EAGLContext *)currentGLContext{
 
-    return [YDGLOperationNode getGLContext];
-
+    return [contexts lastObject];//使用instance的话,需要调用glFlush()
+    
 }
 
 @end

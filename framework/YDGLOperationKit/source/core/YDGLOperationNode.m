@@ -131,33 +131,6 @@
 
 #pragma -mark 类方法
 
-+(EAGLContext *)getGLContext{
-    
-    EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES2;
-    static  EAGLContext *context;
-    static dispatch_semaphore_t locker;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        context= [[EAGLContext alloc] initWithAPI:api];
-        //context.multiThreaded=YES;
-        
-        locker=dispatch_semaphore_create(1);
-        
-    });
-    
-//    EAGLContext *instance;
-//    
-//    dispatch_semaphore_wait(locker,DISPATCH_TIME_FOREVER);
-//    
-//    instance=[[EAGLContext alloc]initWithAPI:context.API sharegroup:context.sharegroup];
-//    
-//    dispatch_semaphore_signal(locker);
-    
-    return context;//使用instance的话,需要调用glFlush()
-}
-
 +(dispatch_queue_t)getWorkQueue{
 
     static dispatch_queue_t workQueue;
