@@ -8,6 +8,8 @@
 
 #import "YDGLOperationContext.h"
 
+#import "YDGLOperationNode.h"
+
 @implementation YDGLOperationContext
 
 NSMutableOrderedSet<EAGLContext*>* contexts;
@@ -41,7 +43,7 @@ NSMutableOrderedSet<EAGLContext*>* contexts;
 
 +(EAGLContext *)currentGLContext{
 
-    return [contexts lastObject];
+    return [YDGLOperationNode getGLContext];
 
 }
 

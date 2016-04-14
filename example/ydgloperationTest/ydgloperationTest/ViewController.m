@@ -42,6 +42,8 @@
     
     CGSize screenSize=[UIScreen mainScreen].bounds.size;
     
+    [YDGLOperationContext pushContext];
+    
     _customView=[[YDGLOperationNodeDisplayView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
     
     _customView.center=[_customView convertPoint:self.view.center fromView:self.view];
@@ -124,6 +126,8 @@
     [_operationSource destory];
        
     [_customView removeFromSuperview];
+    
+    [YDGLOperationContext popContext];
 
 }
 

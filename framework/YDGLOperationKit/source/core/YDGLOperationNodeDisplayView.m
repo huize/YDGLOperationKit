@@ -8,7 +8,7 @@
 
 #import "YDGLOperationNodeDisplayView.h"
 
-#include <OpenGLES/ES2/glext.h>
+#import "YDGLOperationContext.h"
 
 @import AVFoundation;
 
@@ -86,7 +86,7 @@
 
     [self setupLayer];
     
-    _context=[YDGLOperationNode getGLContext];
+    _context=[YDGLOperationContext currentGLContext];
 
     [self activeGLContext:^{
         

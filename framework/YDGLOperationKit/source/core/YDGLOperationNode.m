@@ -100,7 +100,7 @@
     
     self.dependency=[NSMutableArray array];
     
-    _glContext=[[self class] getGLContext];
+    _glContext=[YDGLOperationContext currentGLContext];
         
     self.programOperations=[NSMutableArray array];
 
@@ -178,7 +178,7 @@
 
 -(void)initTextureCache{
     
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [[self class] getGLContext], NULL, &_coreVideoTextureCache);
+    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL,_glContext, NULL, &_coreVideoTextureCache);
     
     NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
     
