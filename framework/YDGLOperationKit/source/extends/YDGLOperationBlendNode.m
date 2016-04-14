@@ -59,7 +59,7 @@
 
 }
 
--(void)addDependency:(YDGLOperationNode*_Nonnull)operation atFrame:(CGRect)frame{
+-(void)addSubNode:(YDGLOperationNode*_Nonnull)operation atFrame:(CGRect)frame{
 
     [operation setFrame:frame];
     
