@@ -8,6 +8,8 @@
 
 #import "YDGLOperationNode.h"
 
+#import "YDGLOperationContext.h"
+
 @implementation YDGLOperationNodeOutput
 
 @end
@@ -145,22 +147,15 @@
         
     });
     
-    /*
-    EAGLContext *instance;
+//    EAGLContext *instance;
+//    
+//    dispatch_semaphore_wait(locker,DISPATCH_TIME_FOREVER);
+//    
+//    instance=[[EAGLContext alloc]initWithAPI:context.API sharegroup:context.sharegroup];
+//    
+//    dispatch_semaphore_signal(locker);
     
-    long success=dispatch_semaphore_wait(locker, dispatch_time(DISPATCH_TIME_NOW, 3*NSEC_PER_SEC));
-    
-    if (success!=0) {
-        
-        NSLog(@"超时了");
-    }
-    
-    instance=[[EAGLContext alloc]initWithAPI:context.API sharegroup:context.sharegroup];
-    
-    dispatch_semaphore_signal(locker);*/
-    
-        
-    return context;//使用instance的话7.1.2的真机会有问题
+    return context;//使用instance的话,需要调用glFlush()
 }
 
 +(dispatch_queue_t)getWorkQueue{

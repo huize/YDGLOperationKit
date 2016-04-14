@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 #import "YDGLOperationNode.h"
+#import "YDGLOperationContext.h"
+
 
 //=========extend
 #import "YDGLOperationTwoInputNode.h"
