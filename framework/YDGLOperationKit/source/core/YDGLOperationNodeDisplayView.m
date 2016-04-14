@@ -434,10 +434,10 @@
 
     for (int index=0; index<count; index++) {
         
-        glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(GLvoid*)(index*4));
+        glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(const GLvoid*)(0+index*4*sizeof(GLubyte)));
         
     }
-
+    
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     //glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices_position)/sizeof(GLfloat));
