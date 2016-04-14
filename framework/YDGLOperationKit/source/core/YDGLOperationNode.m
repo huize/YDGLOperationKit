@@ -679,32 +679,6 @@
 
 #pragma -mark Node 协议的实现
 
--(void)lock{
-    
-    _locked=YES;
-    
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        [obj lock];
-        
-    }];
-    
-}
-
--(void)unlock{
-    
-    _locked=NO;
-    
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        [obj unlock];
-        
-    }];
-    
-    
-}
-
-
 -(void)addNextOperation:(id<YDGLOperationNode>)nextOperation{
     
     [self.nextOperations addObject:nextOperation];
@@ -727,11 +701,6 @@
 
 -(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
     
-    if (_locked){
-        
-        return ;
-        
-    }
     
     dispatch_semaphore_wait(_lockForNodeStatus,DISPATCH_TIME_FOREVER);
     BOOL ready =[self canPerformTraversals];

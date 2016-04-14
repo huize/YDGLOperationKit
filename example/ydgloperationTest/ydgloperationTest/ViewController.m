@@ -85,15 +85,6 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
 
-    
-    if ([_operationSource isLocked]) {
-        
-        NSLog(@"_operationSource 节点被锁");
-        
-        return;
-        
-    }
-    
     CVImageBufferRef imageBufferRef=CMSampleBufferGetImageBuffer(sampleBuffer);
     
     CVPixelBufferLockBaseAddress(imageBufferRef, 0);

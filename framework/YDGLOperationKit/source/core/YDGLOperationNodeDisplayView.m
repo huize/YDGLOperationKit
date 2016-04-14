@@ -612,16 +612,12 @@
         }];
     }
     
-    [doneOperation lock];
-    
     [self activeGLContext:^{
        
         [self innerRender];
         
     }];
-    
-    [doneOperation unlock];
-    
+        
 }
 
 -(void)addDependency:(id<YDGLOperationNode>)operation{
