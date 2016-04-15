@@ -61,7 +61,7 @@
 
 }
 
--(void)addSubNode:(YDGLOperationNode*_Nonnull)subNode atFrame:(CGRect)frame{
+-(void)addSubNode:(id<YDGLOperationNode>_Nonnull)subNode atFrame:(CGRect)frame{
     
     [self addDependency:subNode];
     
@@ -71,7 +71,7 @@
     
 }
 
--(void)updateFrame:(CGRect)frame forSubNode:(YDGLOperationNode *)subNode{
+-(void)updateFrame:(CGRect)frame forSubNode:(id<YDGLOperationNode>_Nonnull)subNode{
 
     NSUInteger index=[_dependency indexOfObject:subNode];
     
