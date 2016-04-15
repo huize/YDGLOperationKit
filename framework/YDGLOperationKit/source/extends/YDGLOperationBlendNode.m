@@ -15,6 +15,8 @@
 
 @property(nonatomic,assign)GLKMatrix4 modelview;//
 
+@property(nonatomic,retain)NSMutableDictionary<NSString*,NSValue*> *frames;
+
 @end
 
 @implementation YDGLOperationBlendNode
@@ -32,7 +34,7 @@
 
 -(void)commonInitialization{
 
-    
+    _frames=[NSMutableDictionary dictionary];
 
 }
 
@@ -59,11 +61,24 @@
 
 }
 
--(void)addSubNode:(YDGLOperationNode*_Nonnull)operation atFrame:(CGRect)frame{
-
-    [operation setFrame:frame];
+-(void)addSubNode:(YDGLOperationNode*_Nonnull)subNode atFrame:(CGRect)frame{
     
-    [self addDependency:operation];
+    [self addDependency:subNode];
+    
+    NSUInteger index=[_dependency indexOfObject:subNode];
+    
+    [_frames setObject:[NSValue valueWithCGRect:frame] forKey:[NSString stringWithFormat:@"%lu",(unsigned long)index]];
+    
+}
+
+-(void)updateFrame:(CGRect)frame forSubNode:(YDGLOperationNode *)subNode{
+
+    NSUInteger index=[_dependency indexOfObject:subNode];
+    
+    if (NSNotFound!=index) {
+        
+        [_frames setObject:[NSValue valueWithCGRect:frame] forKey:[NSString stringWithFormat:@"%lu",(unsigned long)index]];
+    }
     
 }
 
@@ -83,9 +98,7 @@
     
     glUseProgram(_drawModel.program);
     
-    for (int index=0; index<_dependency.count; index++) {
-        
-        YDGLOperationNode *subNode=_dependency[index];
+    for (NSUInteger index=0; index<_dependency.count; index++) {
         
         YDGLOperationNodeOutput *output=[_dependency[index] getOutput];
 
@@ -116,8 +129,7 @@
         
         GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
         
-        
-        CGRect frame=[subNode getFrame];
+        CGRect frame=_frames[[NSString stringWithFormat:@"%lu",(unsigned long)index]].CGRectValue;
         
         if (CGRectIsEmpty(frame)) {
             
@@ -155,11 +167,11 @@
         
         GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
         
-        glActiveTexture(GL_TEXTURE0+index);
+        glActiveTexture(GL_TEXTURE0+(int)index);
         
         [YDGLOperationNode bindTexture:output.texture];
         
-        glUniform1i ( location_s_texture,index);
+        glUniform1i ( location_s_texture,(int)index);
         //5. draw
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
@@ -187,23 +199,9 @@
     
 }
 
+-(void)dealloc{
 
-@end
-
-
-@implementation YDGLOperationNode(FrameSupport)
-
--(void)setFrame:(CGRect)frame{
-
-    objc_setAssociatedObject(self, [@"frame" UTF8String],[NSValue valueWithCGRect:frame], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-
--(CGRect)getFrame{
-
-    NSValue *frame= objc_getAssociatedObject(self, [@"frame" UTF8String]);
-    
-    return frame.CGRectValue;
+    [_frames removeAllObjects];
 
 }
 
