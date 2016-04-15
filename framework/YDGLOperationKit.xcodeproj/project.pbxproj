@@ -47,7 +47,6 @@
 		42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */; };
 		42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22C1C99630E0035BC01 /* YDDrawModel.m */; };
 		42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */; };
-		42BBE2401C99657F0035BC01 /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22B1C99630E0035BC01 /* YDDrawModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -55,6 +54,7 @@
 		42BBE2EB1C996F280035BC01 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BBE2EA1C996F280035BC01 /* UIKit.framework */; };
 		42DF41FD1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DF41FB1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42DF41FE1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DF41FC1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m */; };
+		42E50C361CC0DF770066EC40 /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,7 +232,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42BBE2401C99657F0035BC01 /* YDGLOperationKit.h in Headers */,
 				42DF41FD1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h in Headers */,
 				424D94B11C9BF183006DA52D /* YDGLOperationNodeDisplayView.h in Headers */,
 				42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */,
@@ -245,6 +244,7 @@
 				426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */,
 				429A97371CBF693C00259908 /* YDGLOperationContext.h in Headers */,
 				423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */,
+				42E50C361CC0DF770066EC40 /* YDGLOperationKit.h in Headers */,
 				423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */,
 				42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */,
 			);
