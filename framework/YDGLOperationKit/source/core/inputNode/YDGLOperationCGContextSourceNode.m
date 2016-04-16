@@ -92,6 +92,7 @@
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)_size.width, (int)_size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     
+    self.textureAvailable=YES;
     
 }
 
