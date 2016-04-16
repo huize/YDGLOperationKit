@@ -349,8 +349,6 @@
     
     _size=newSize;
     
-    [self didSetInputSize:_size];
-    
 }
 
 
@@ -424,6 +422,8 @@
     
     CGSize fixedRenderSize=[self fixedRenderSizeByRotatedAngle:renderSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
     
+    [self willSetNodeSize:&fixedRenderSize];
+
     if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, _size)==false) {
         
         [self setNeedLayout:YES];
@@ -665,7 +665,7 @@
     
 }
 
--(void)didSetInputSize:(CGSize)newInputSize{
+-(void)willSetNodeSize:(CGSize*_Nonnull)newInputSize{
     
     
     

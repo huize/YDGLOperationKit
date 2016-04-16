@@ -231,15 +231,15 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
 - (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName;
 
 /**
- *  @author 许辉泽, 16-03-19 16:14:32
+ *  @author 9527, 16-04-16 18:04:18
  *
- *  该node的size 发生改变了
+ *  do something when the size had determated
  *
- *  @param newInputSize node 最新的size
+ *  @param newInputSize the new size will set 
+ * you can determin this size by youself;
  *
- *  @since 1.0.0
  */
--(void)didSetInputSize:(CGSize)newInputSize;
+-(void)willSetNodeSize:(CGSize*_Nonnull)newInputSize;
 
 /**
  *  @author 许辉泽, 16-03-18 17:56:56
