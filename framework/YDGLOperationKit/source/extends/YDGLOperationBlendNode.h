@@ -7,7 +7,13 @@
 //
 
 #import "YDGLOperationNode.h"
-
+/**
+ *  @author 9527, 16-04-16 14:37:00
+ *
+ *  use glBlend to blend the dependency node content
+ *
+ *  @since 1.0.0
+ */
 @interface YDGLOperationBlendNode : YDGLOperationNode
 
 -(void)addSubNode:(id<YDGLOperationNode>_Nonnull)node atFrame:(CGRect)frame;

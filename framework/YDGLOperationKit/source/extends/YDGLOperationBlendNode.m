@@ -100,104 +100,112 @@
     
     for (NSUInteger index=0; index<_dependency.count; index++) {
         
-        YDGLOperationNodeOutput *output=[_dependency[index] getOutput];
-
-        //1.设置变换矩阵
-        GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
+        id<YDGLOperationNode> subNode=_dependency[index];
         
-        GLKMatrix4 matrix=self.modelview;
-        
-        matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0-0.01*index);//set z index
-        
-        matrix=GLKMatrix4Multiply(self.projection, matrix);
-        
-        float*mm=(float*)matrix.m;
-        
-        GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
-        
-        for (int index=0; index<16; index++) {
-            
-            finalMatrix[index]=(GLfloat)mm[index];
-            
-        }
-        
-        glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
-        
-        free(finalMatrix);
-        
-        //2.设置顶点坐标
-        
-        GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
-        
-        CGRect frame=_frames[[NSString stringWithFormat:@"%lu",(unsigned long)index]].CGRectValue;
-        
-        if (CGRectIsEmpty(frame)) {
-            
-            frame=CGRectMake(0, 0, output.size.width, output.size.height);
-            
-        }
-        
-        CGSize size=frame.size;
-        
-        GLfloat vex[12]={
-            
-            frame.origin.x,frame.origin.y,0.0,//left bottom
-            frame.origin.x+size.width,frame.origin.y,0.0,//right bottom
-            frame.origin.x+size.width,frame.origin.y+size.height,0.0,//right top
-            frame.origin.x,frame.origin.y+size.height,0.0,//left top
-        };
-        
-        glEnableVertexAttribArray(location_position);//顶点坐标
-        
-        glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,vex);
-        
-        //3.设置纹理坐标
-        
-        glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
-        
-        GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_TEXTURE_COORDINATE UTF8String]);
-        
-        glEnableVertexAttribArray(location_texturecoord);
-        
-        glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
-        
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        
-        //4.设置纹理
-        
-        GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
-        
-        glActiveTexture(GL_TEXTURE0+(int)index);
-        
-        [YDGLOperationNode bindTexture:output.texture];
-        
-        glUniform1i ( location_s_texture,(int)index);
-        //5. draw
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
-        
-        GLsizei count=_drawModel.count_indices;
-        
-        count=count/4;
-        
-        for (int index=0; index<count; index++) {
-            
-            glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(const GLvoid*)(index*4*sizeof(GLubyte)));
-            
-        }
-        
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        [self drawSubNode:subNode widthIndex:index];
         
     }
     
     glDisable(GL_BLEND);
-    
-    //glEnable(GL_DEPTH_TEST);
-    
+        
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
 }
+
+-(void)drawSubNode:(id<YDGLOperationNode>)subNode widthIndex:(int)index{
+    
+    YDGLOperationNodeOutput *output=[subNode getOutput];
+    
+    //1.设置变换矩阵
+    GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
+    
+    GLKMatrix4 matrix=self.modelview;
+    
+    matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0-0.01*index);//set z index
+    
+    matrix=GLKMatrix4Multiply(self.projection, matrix);
+    
+    float*mm=(float*)matrix.m;
+    
+    GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
+    
+    for (int index=0; index<16; index++) {
+        
+        finalMatrix[index]=(GLfloat)mm[index];
+        
+    }
+    
+    glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
+    
+    free(finalMatrix);
+    
+    //2.设置顶点坐标
+    
+    GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
+    
+    CGRect frame=_frames[[NSString stringWithFormat:@"%lu",(unsigned long)index]].CGRectValue;
+    
+    if (CGRectIsEmpty(frame)) {
+        
+        frame=CGRectMake(0, 0, output.size.width, output.size.height);
+        
+    }
+    
+    CGSize size=frame.size;
+    
+    GLfloat vex[12]={
+        
+        frame.origin.x,frame.origin.y,0.0,//left bottom
+        frame.origin.x+size.width,frame.origin.y,0.0,//right bottom
+        frame.origin.x+size.width,frame.origin.y+size.height,0.0,//right top
+        frame.origin.x,frame.origin.y+size.height,0.0,//left top
+    };
+    
+    glEnableVertexAttribArray(location_position);//顶点坐标
+    
+    glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,vex);
+    
+    //3.设置纹理坐标
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
+    
+    GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_TEXTURE_COORDINATE UTF8String]);
+    
+    glEnableVertexAttribArray(location_texturecoord);
+    
+    glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    //4.设置纹理
+    
+    GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
+    
+    glActiveTexture(GL_TEXTURE0+(int)index);
+    
+    [YDGLOperationNode bindTexture:output.texture];
+    
+    glUniform1i ( location_s_texture,(int)index);
+    //5. draw
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
+    
+    GLsizei count=_drawModel.count_indices;
+    
+    count=count/4;
+    
+    for (int index=0; index<count; index++) {
+        
+        glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(const GLvoid*)(index*4*sizeof(GLubyte)));
+        
+    }
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    
+}
+
 
 -(void)dealloc{
 
