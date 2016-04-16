@@ -27,3 +27,4 @@
 #import "YDGLOperationNV12SourceNode.h"
 #import "YDGLOperationUIImageSourceNode.h"
 #import "YDGLOperationCVPixelBufferSourceNode.h"
+#import "YDGLOperationCGContextSourceNode.h"
