@@ -110,5 +110,11 @@
     
 }
 
+-(void)willSetNodeSize:(CGSize *)newInputSize{
+
+    *newInputSize=_size;
+
+}
+
 
 @end
