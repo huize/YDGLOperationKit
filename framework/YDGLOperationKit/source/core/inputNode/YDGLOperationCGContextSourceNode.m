@@ -47,43 +47,41 @@
     
     //init CGContext config
     
-    CGContextSetRGBStrokeColor(_context, 0.0, 1.0, 0.0, 1.0);//draw with green color;
+    CGContextSetStrokeColorWithColor(_context, [UIColor greenColor].CGColor);
+    
+    CGContextSetFillColorWithColor(_context, [UIColor greenColor].CGColor);
+    
     
     CGContextSetLineWidth(_context, 1.0);
 
 
 }
 
--(void)drawCGPoint:(CGPoint)point{
-    
-    CGContextAddArc(_context, point.x, point.y, 2, 0, M_PI*2, 1);
-    
-    CGContextDrawPath(_context, kCGPathStroke);
-    
-}
 
--(void)drawCGRect:(CGRect)rect{
-    
-    CGContextAddRect(_context, rect);
-    
-    CGContextDrawPath(_context, kCGPathStroke);
-    
-}
-
-
--(void)clearContent{
+-(void)commitCGContextTransaction:(void (^)(CGContextRef))drawBlock{
     
     [self setNeedDisplay];
     
-    CGContextClearRect(_context, CGRectMake(0, 0, _size.width, _size.height));
-
+    [self clearContext];
+    
+    if (drawBlock) {
+        
+        drawBlock(_context);
+    }
+    
 }
 
--(void)commit{
+/**
+ *  @author 9527, 16-04-18 17:32:24
+ *
+ *  clear the CGContextRef
+ *
+ *  @since 1.0.0
+ */
+-(void)clearContext{
     
-    //CGContextFlush(_context);
-
-        
+    CGContextClearRect(_context, CGRectMake(0, 0, _size.width, _size.height));
+    
 }
 
 /**

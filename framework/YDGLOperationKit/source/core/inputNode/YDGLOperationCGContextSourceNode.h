@@ -14,18 +14,16 @@
  */
 @interface YDGLOperationCGContextSourceNode : YDGLOperationSourceNode
 
--(instancetype)initWithSize:(CGSize)size;
-
--(void)clearContent;
-
--(void)drawCGPoint:(CGPoint)point;
-
--(void)drawCGRect:(CGRect)rect;
+-(instancetype _Nonnull)initWithSize:(CGSize)size;
 /**
- *  @author 9527, 16-04-16 18:04:15
+ *  @author 9527, 16-04-18 17:28:41
  *
- *  upload the context content to the node
+ *  get the CGContextRef to draw you content
+ *
+ *  @param drawBlock drawBlock description
+ *
+ *  @since 1.0.0
  */
--(void)commit;
+-(void)commitCGContextTransaction:(void(^_Nullable)(CGContextRef _Nonnull))drawBlock;
 
 @end
