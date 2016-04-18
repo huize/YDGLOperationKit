@@ -38,9 +38,11 @@
 
 }
 
--(void)didSetInputSize:(CGSize)newInputSize{
+-(void)willSetNodeSize:(CGSize *)newInputSize{
 
-    CGSize sizeInPixel=CGSizeMake(newInputSize.width,newInputSize.height);
+    CGSize sizeWillSet=*newInputSize;
+    
+    CGSize sizeInPixel=CGSizeMake(sizeWillSet.width,sizeWillSet.height);
     
     float aspect=sizeInPixel.width/sizeInPixel.height;
     float nearZ=sizeInPixel.height/2;
@@ -112,7 +114,7 @@
     
 }
 
--(void)drawSubNode:(id<YDGLOperationNode>)subNode widthIndex:(int)index{
+-(void)drawSubNode:(id<YDGLOperationNode>)subNode widthIndex:(int)indexOfSubNode{
     
     YDGLOperationNodeOutput *output=[subNode getOutput];
     
@@ -121,7 +123,7 @@
     
     GLKMatrix4 matrix=self.modelview;
     
-    matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0-0.01*index);//set z index
+    matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0-0.01*indexOfSubNode);//set z index
     
     matrix=GLKMatrix4Multiply(self.projection, matrix);
     
@@ -143,7 +145,7 @@
     
     GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
     
-    CGRect frame=_frames[[NSString stringWithFormat:@"%lu",(unsigned long)index]].CGRectValue;
+    CGRect frame=_frames[[NSString stringWithFormat:@"%i",indexOfSubNode]].CGRectValue;
     
     if (CGRectIsEmpty(frame)) {
         
@@ -181,11 +183,11 @@
     
     GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
     
-    glActiveTexture(GL_TEXTURE0+(int)index);
+    glActiveTexture(GL_TEXTURE0);
     
     [YDGLOperationNode bindTexture:output.texture];
     
-    glUniform1i ( location_s_texture,(int)index);
+    glUniform1i ( location_s_texture,0);
     //5. draw
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     
