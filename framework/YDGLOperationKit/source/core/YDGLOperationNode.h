@@ -184,7 +184,7 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
     
     CGSize _size;
     
-    GLKMatrix4 _mvpMatrix;
+    GLKMatrix4 _modelViewMatrix;//modelview matrix
     
     YDDrawModel *_drawModel;
     

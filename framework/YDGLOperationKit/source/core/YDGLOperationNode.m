@@ -19,7 +19,8 @@
 @property(nonatomic,assign) GLuint frameBuffer;//
 @property(nonatomic,assign) GLuint renderTexture_out;//
 @property(nonatomic,assign) CVPixelBufferRef pixelBuffer_out;//
-@property(nonatomic,assign) GLKMatrix4 mvpMatrix;
+@property(nonatomic,assign) GLKMatrix4 projectionMatrix;
+@property(nonatomic,assign) GLKMatrix4  modelViewMatrix;
 
 @property(nonatomic,nullable,retain) YDDrawModel *drawModel;//
 
@@ -60,7 +61,7 @@
 
 @synthesize frameBuffer=_frameBuffer;
 
-@synthesize mvpMatrix=_mvpMatrix;
+@synthesize modelViewMatrix=_modelViewMatrix;
 
 @synthesize drawModel=_drawModel;
 
@@ -128,6 +129,8 @@
     }];
 
     _textureLoaderDelegate=self;
+    
+    [self loadProjectionMatrix];
     
 }
 
@@ -222,10 +225,34 @@
     
 }
 
--(GLKMatrix4)mvpMatrix4Square{
+/**
+ *  @author 9527, 16-04-18 20:44:05
+ *
+ *  set projection matrix
+ *
+ *  @return
+ *
+ *  @since 
+ */
+-(void)loadProjectionMatrix{
     
-    return GLKMatrix4Identity;
+    CGSize virtualSize=CGSizeMake(2.0, 2.0);//近平面的窗口和opengl的坐标系窗口重叠,因为顶点坐标的赋值方式导致需要设置这么一个virtualSize
     
+    float aspect=virtualSize.width/virtualSize.height;
+    float nearZ=virtualSize.height/2;
+    
+    float farZ=nearZ+10;
+    
+    GLKMatrix4 projection=GLKMatrix4MakePerspective(M_PI_2, aspect, nearZ, farZ);
+    
+    _projectionMatrix=projection;
+
+    GLKMatrix4 modelView=GLKMatrix4Identity;
+    
+    modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ);//移动到视锥体内,原点是(0,0,-nearZ-2)
+    
+    _modelViewMatrix=modelView;
+   
 }
 
 -(void)createCVPixelBufferRef:(CVPixelBufferRef*)pixelBuffer andTextureRef:(CVOpenGLESTextureRef*)textureRef withSize:(CGSize)size{
@@ -558,9 +585,7 @@
     //1.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
-    self.mvpMatrix=[self mvpMatrix4Square];
-    
-    GLKMatrix4 matrix=self.mvpMatrix;
+    GLKMatrix4 matrix=GLKMatrix4Multiply(_projectionMatrix, _modelViewMatrix);
     
     float*mm=(float*)matrix.m;
     
@@ -872,7 +897,7 @@
     
     dispatch_block_t rotateDrawOperation=^{
         
-        _mvpMatrix=GLKMatrix4Rotate(_mvpMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 0.0, 1.0);
+        _modelViewMatrix=GLKMatrix4Rotate(_modelViewMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 0.0, 1.0);
     
     };
     
@@ -888,7 +913,7 @@
     
     dispatch_block_t rotateDrawOperation=^{
                 
-        _mvpMatrix=GLKMatrix4Rotate(_mvpMatrix, GLKMathDegreesToRadians(angle), 0.0, 1.0, 0.0);
+        _modelViewMatrix=GLKMatrix4Rotate(_modelViewMatrix, GLKMathDegreesToRadians(angle), 0.0, 1.0, 0.0);
         
     };
     
