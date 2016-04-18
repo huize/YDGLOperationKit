@@ -37,6 +37,12 @@
     
 }
 
+-(void)setupTextureForProgram:(GLuint)program{
+
+    NSAssert(NO, @"subclass of sourceNode should override 'setupTextureForProgram'");
+
+}
+
 -(void)setTextureCoord{
     
     GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_TEXTURE_COORDINATE UTF8String]);
