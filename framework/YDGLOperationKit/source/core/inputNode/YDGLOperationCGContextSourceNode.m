@@ -14,6 +14,8 @@
 
 @property(nonatomic,assign) GLuint renderTexture_input;//
 
+@property(nonatomic,assign)GLubyte *baseAddress;
+
 
 @end
 
@@ -37,21 +39,34 @@
     
     CGColorSpaceRef genericRGBColorspace = CGColorSpaceCreateDeviceRGB();
     
-    _context = CGBitmapContextCreate(NULL, _size.width,_size.height, 8, _size.width * 4, genericRGBColorspace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    _baseAddress=(GLubyte*)calloc(1,sizeof(GLubyte)*_size.width*_size.height*4);
+    
+    _context = CGBitmapContextCreate(_baseAddress, (int)_size.width,(int)_size.height, 8,(int)_size.width * 4, genericRGBColorspace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+
+    
+    
+    //init CGContext config
     
     CGContextSetRGBStrokeColor(_context, 0.0, 1.0, 0.0, 1.0);//draw with green color;
+    
+    CGContextSetLineWidth(_context, 1.0);
+
 
 }
 
 -(void)drawCGPoint:(CGPoint)point{
     
-    CGContextAddArc(_context, point.x, point.y, 2, 0, M_PI, 1);
+    CGContextAddArc(_context, point.x, point.y, 2, 0, M_PI*2, 1);
+    
+    CGContextDrawPath(_context, kCGPathStroke);
     
 }
 
 -(void)drawCGRect:(CGRect)rect{
     
     CGContextAddRect(_context, rect);
+    
+    CGContextDrawPath(_context, kCGPathStroke);
     
 }
 
@@ -61,15 +76,14 @@
     [self setNeedDisplay];
     
     CGContextClearRect(_context, CGRectMake(0, 0, _size.width, _size.height));
-    
+
 }
 
 -(void)commit{
     
-    CGContextFlush(_context);
-    
-    [self start];
-    
+    //CGContextFlush(_context);
+
+        
 }
 
 /**
@@ -87,12 +101,21 @@
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)_size.width, (int)_size.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, _baseAddress);
     
-    uint8_t *data= CGBitmapContextGetData(_context);
+   self.textureAvailable=YES;
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)_size.width, (int)_size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+}
+
+-(void)setupTextureForProgram:(GLuint)program{
     
-    self.textureAvailable=YES;
+    GLint location_s_texture=glGetUniformLocation(program, [UNIFORM_INPUTTEXTURE UTF8String]);
+    
+    glActiveTexture(GL_TEXTURE0);
+    
+    [YDGLOperationNode bindTexture:_renderTexture_input];
+    
+    glUniform1i ( location_s_texture,0);
     
 }
 
@@ -113,7 +136,7 @@
 
 -(void)willSetNodeSize:(CGSize *)newInputSize{
 
-    *newInputSize=_size;
+    *newInputSize=CGSizeMake(_size.width, _size.height);
 
 }
 
