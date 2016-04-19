@@ -20,6 +20,8 @@
 
 @property(nonatomic,assign)CGRect frame;
 
+@property(nonatomic,assign)CGAffineTransform transform;
+
 @property(nonatomic,assign,nullable)YDGLOperationBlendNode* superNode;
 
 -(void)addSubNode:(YDGLOperationBlendNode*_Nonnull)subNode;

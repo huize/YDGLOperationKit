@@ -12,8 +12,8 @@
 @interface YDGLOperationBlendNode()
 
 @property(nonatomic,assign)GLKMatrix4 projection;//
-
-@property(nonatomic,assign)GLKMatrix4 modelview;//
+@property(nonatomic,assign)GLKMatrix4 view;//
+@property(nonatomic,assign)GLKMatrix4 model; //subNode
 
 @property(nonatomic,retain)NSMutableArray<YDGLOperationBlendNode*> *subNodes;
 
@@ -36,7 +36,8 @@
 -(void)commonInitialization{
 
     _subNodes=[NSMutableArray array];
-
+    
+    _transform=CGAffineTransformIdentity;
 }
 
 -(void)willSetNodeSize:(CGSize *)newInputSize{
@@ -54,13 +55,16 @@
 
     self.projection=projection;
     
-    GLKMatrix4 modelview=GLKMatrix4Identity;
+    GLKMatrix4 view=GLKMatrix4Identity;
     
-    modelview=GLKMatrix4Translate(modelview, 0.0, 0.0, -nearZ);
+    view=GLKMatrix4Translate(view, 0.0, 0.0, -nearZ);
     
-    modelview=GLKMatrix4Translate(modelview, -sizeInPixel.width/2, -sizeInPixel.height/2, 0.0);
+    view=GLKMatrix4Translate(view, -sizeInPixel.width/2, -sizeInPixel.height/2, 0.0);
     
-    self.modelview=modelview;
+    self.view=view;
+    
+    self.model=GLKMatrix4Identity;
+    
 
 }
 -(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect{
@@ -112,13 +116,24 @@
     //1.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
-    GLKMatrix4 matrix=self.modelview;
+    GLKMatrix4 modelMatrix=self.model;
     
-    matrix=GLKMatrix4Translate(matrix, 0.0, 0.0, 0.0-0.01*indexOfSubNode);//set z index
+    /*
+    //modelMatrix=GLKMatrix4Translate(modelMatrix, frame.origin.x, frame.origin.y, 0);//local left bottom as (0,0,0)
     
-    matrix=GLKMatrix4Multiply(self.projection, matrix);
+    modelMatrix=GLKMatrix4Translate(modelMatrix, CGRectGetMidX(frame), CGRectGetMidY(frame), 0);//subnode center as (0,0,0)
     
-    float*mm=(float*)matrix.m;
+    modelMatrix=GLKMatrix4Translate(modelMatrix, 0.0, 0.0, 0.0-0.01*indexOfSubNode);//set z index
+
+    modelMatrix=GLKMatrix4Rotate(modelMatrix, M_PI_4, 0.0, 0.0, 1.0);
+    
+    modelMatrix=GLKMatrix4Translate(modelMatrix, -CGRectGetMidX(frame), -CGRectGetMidY(frame), 0);
+    */
+    
+    GLKMatrix4 mvpMatrix=GLKMatrix4Multiply(self.view, modelMatrix);
+    mvpMatrix=GLKMatrix4Multiply(self.projection, mvpMatrix);
+    
+    float*mm=(float*)mvpMatrix.m;
     
     GLfloat* const finalMatrix=malloc(sizeof(GLfloat)*16);
     
