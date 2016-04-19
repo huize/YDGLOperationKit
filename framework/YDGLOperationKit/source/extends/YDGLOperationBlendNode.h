@@ -20,7 +20,7 @@
 
 @property(nonatomic,assign)CGRect frame;
 
-@property(nonatomic,assign)CGAffineTransform transform;
+@property(nonatomic,assign)GLKMatrix4 transform;//frame center as (0,0,0)
 
 @property(nonatomic,assign,nullable)YDGLOperationBlendNode* superNode;
 

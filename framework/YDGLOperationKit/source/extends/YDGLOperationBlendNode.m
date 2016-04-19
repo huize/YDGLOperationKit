@@ -35,9 +35,15 @@
 
 -(void)commonInitialization{
 
+    
     _subNodes=[NSMutableArray array];
     
-    _transform=CGAffineTransformIdentity;
+    _transform=GLKMatrix4Identity;
+    
+    //_transform=GLKMatrix4MakeScale(0.5, 0.5, 1.0);
+    
+    //_transform=GLKMatrix4Rotate(_transform, M_PI_4, 0.0, 0.0, 1.0);
+    
 }
 
 -(void)willSetNodeSize:(CGSize *)newInputSize{
@@ -118,17 +124,13 @@
     
     GLKMatrix4 modelMatrix=self.model;
     
-    /*
-    //modelMatrix=GLKMatrix4Translate(modelMatrix, frame.origin.x, frame.origin.y, 0);//local left bottom as (0,0,0)
-    
     modelMatrix=GLKMatrix4Translate(modelMatrix, CGRectGetMidX(frame), CGRectGetMidY(frame), 0);//subnode center as (0,0,0)
     
+    modelMatrix=GLKMatrix4Multiply(modelMatrix,_transform);//multipy transform
+    
     modelMatrix=GLKMatrix4Translate(modelMatrix, 0.0, 0.0, 0.0-0.01*indexOfSubNode);//set z index
-
-    modelMatrix=GLKMatrix4Rotate(modelMatrix, M_PI_4, 0.0, 0.0, 1.0);
     
     modelMatrix=GLKMatrix4Translate(modelMatrix, -CGRectGetMidX(frame), -CGRectGetMidY(frame), 0);
-    */
     
     GLKMatrix4 mvpMatrix=GLKMatrix4Multiply(self.view, modelMatrix);
     mvpMatrix=GLKMatrix4Multiply(self.projection, mvpMatrix);
