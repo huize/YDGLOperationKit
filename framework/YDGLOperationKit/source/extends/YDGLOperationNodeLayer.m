@@ -32,7 +32,15 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
                                                              
                                                              vec4 color=texture2D(inputImageTexture, textureCoordinate.xy);
                                                              
-                                                             gl_FragColor =vec4(color.rgb,opaticy);
+                                                             if(color.a>0.0){
+                                                             
+                                                                 gl_FragColor =vec4(color.rgb,opaticy);
+
+                                                             }else{
+                                                             
+                                                                 gl_FragColor=color;
+                                                             }
+                                                             
                                                              
                                                          }
                                                          );
