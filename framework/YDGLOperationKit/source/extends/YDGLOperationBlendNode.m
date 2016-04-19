@@ -9,6 +9,34 @@
 #import "YDGLOperationBlendNode.h"
 #import <objc/runtime.h>
 
+/**
+ *  @author 9527, 16-04-19 16:56:38
+ *
+ *  fragment shader use for draw subNode
+ *
+ *  @return
+ *
+ *  @since <#1.0.0#>
+ */
+static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
+                                                         precision mediump float;
+                                                         
+                                                         varying highp vec2 textureCoordinate;
+                                                         
+                                                         uniform sampler2D inputImageTexture;
+                                                              
+                                                         uniform float opaticy;//opaticy,0.0~1.0
+                                                         
+                                                         void main()
+                                                         {
+                                                             
+                                                             vec4 color=texture2D(inputImageTexture, textureCoordinate.xy);
+                                                             
+                                                             gl_FragColor =vec4(color.rgb,opaticy);
+                                                             
+                                                         }
+                                                         );
+
 @interface YDGLOperationBlendNode()
 
 @property(nonatomic,assign)GLKMatrix4 projection;//
@@ -23,7 +51,7 @@
 
 -(instancetype)initWithVertexShader:(NSString *)vertexShaderString andFragmentShader:(NSString *)fragmentShaderString{
 
-    if (self=[super initWithVertexShader:vShaderStr andFragmentShader:fShaderStr]) {
+    if (self=[super initWithVertexShader:vShaderStr andFragmentShader:fBlendShaderStr]) {
         
         [self commonInitialization];
         
@@ -35,10 +63,11 @@
 
 -(void)commonInitialization{
 
-    
     _subNodes=[NSMutableArray array];
     
     _transform=GLKMatrix4Identity;
+    
+    [self setOpaticy:1.0f];
     
     //_transform=GLKMatrix4MakeScale(0.5, 0.5, 1.0);
     
@@ -111,6 +140,12 @@
     
     YDGLOperationNodeOutput *output=[subNode getOutput];
     
+    float opaticy=subNode.opaticy;
+    
+    GLint location_opaticy= glGetUniformLocation(_drawModel.program, [@"opaticy" UTF8String]);
+
+    glUniform1f(location_opaticy, opaticy);
+    
     GLKMatrix4 subTransform=subNode.transform;
     
     CGRect frame=subNode.frame;
@@ -120,7 +155,6 @@
         frame=CGRectMake(0, 0, output.size.width, output.size.height);
         
     }
-
     //1.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
@@ -255,6 +289,14 @@
 
 
 #pragma -mark public api
+
+-(void)setOpaticy:(float)opaticy{
+
+    _opaticy=opaticy;
+    
+    [self setFloat:_opaticy forUniformName:@"opaticy"];
+
+}
 
 -(void)addSubNode:(YDGLOperationBlendNode *)subNode{
 
