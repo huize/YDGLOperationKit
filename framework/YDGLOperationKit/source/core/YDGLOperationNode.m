@@ -885,11 +885,13 @@
 
 
 
--(void)rotateAtZ:(int)angle{
+-(void)rotateAtZ:(RotateOption)option{
     
+    int localAngle=[self calculateAngleFromRotateOption:option];
+
     dispatch_block_t rotateLayoutOperation=^{
         
-        self.angle=angle;
+        self.angle=localAngle;
         
     };
     
@@ -909,11 +911,13 @@
     
 }
 
--(void)rotateAtY:(int)angle{
+-(void)rotateAtY:(RotateOption)option{
     
+    int localAngle=[self calculateAngleFromRotateOption:option];
+
     dispatch_block_t rotateDrawOperation=^{
                 
-        _modelViewMatrix=GLKMatrix4Rotate(_modelViewMatrix, GLKMathDegreesToRadians(angle), 0.0, 1.0, 0.0);
+        _modelViewMatrix=GLKMatrix4Rotate(_modelViewMatrix, GLKMathDegreesToRadians(localAngle), 0.0, 1.0, 0.0);
         
     };
     
@@ -923,6 +927,32 @@
         
     }];
 
+}
+
+-(int)calculateAngleFromRotateOption:(RotateOption)option{
+    
+    int localOption=option%4;
+    
+    switch (localOption) {
+        case RotateOption_DEFAULT:
+        case RotateOption_TWO_M_PI:
+            return 0;
+            break;
+        case RotateOption_HALF_M_PI:
+            return 90;
+            break;
+        case RotateOption_ONE_M_PI:
+            return 180;
+            break;
+        case RotateOption_ONE_HALF_M_PI:
+            return 270;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
+    
 }
 
 @end

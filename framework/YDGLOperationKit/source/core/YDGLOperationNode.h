@@ -169,6 +169,19 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
 
 /**
+ node content just can rotate zero,M_PI_2,M_PI,1.5*M_PI,2*M_PI
+ */
+typedef enum {
+
+    RotateOption_DEFAULT=0,
+    RotateOption_HALF_M_PI,
+    RotateOption_ONE_M_PI,
+    RotateOption_ONE_HALF_M_PI,
+    RotateOption_TWO_M_PI
+    
+}RotateOption;
+
+/**
  *  @author 许辉泽, 16-03-11 17:10:21
  *
  *  每一次的OpenGL操作都可以抽象成OperationLayer
@@ -250,7 +263,7 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
  *
  *  @since 1.0.0
  */
--(void)rotateAtZ:(int)angle;
+-(void)rotateAtZ:(RotateOption)option;
 /**
  *  @author 许辉泽, 16-03-18 21:57:48
  *
@@ -260,7 +273,7 @@ typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
  *
  *  @since 1.0.0
  */
--(void)rotateAtY:(int)angle;
+-(void)rotateAtY:(RotateOption)angle;
 
 /**
  *  @author 许辉泽, 16-04-01 15:15:11
