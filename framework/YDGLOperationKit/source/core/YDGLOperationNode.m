@@ -711,6 +711,18 @@
 
 }
 
+-(void)removeDependency:(id<YDGLOperationNode>)operation{
+
+    [_dependency removeObject:operation];
+
+}
+
+-(void)removeNextOperation:(id<YDGLOperationNode>)nextOperation{
+
+    [_nextOperations removeObject:nextOperation];
+
+}
+
 -(YDGLOperationNodeOutput*)getOutput{
 
     return self.outputData;

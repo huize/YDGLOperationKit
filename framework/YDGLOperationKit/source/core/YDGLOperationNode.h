@@ -69,6 +69,9 @@
  *  @since 1.0.0
  */
 -(void)addDependency:(id<YDGLOperationNode>_Nonnull)operation;
+
+-(void)removeDependency:(id<YDGLOperationNode>_Nonnull)operation;
+
 /**
  *  @author 许辉泽, 16-03-12 15:00:01
  *
@@ -79,6 +82,9 @@
  *  @since 1.0.0
  */
 -(void)addNextOperation:(id<YDGLOperationNode>_Nonnull)nextOperation;
+
+-(void)removeNextOperation:(id<YDGLOperationNode>_Nonnull)nextOperation;
+
 /**
  *  @author 许辉泽, 16-03-12 15:00:21
  *
