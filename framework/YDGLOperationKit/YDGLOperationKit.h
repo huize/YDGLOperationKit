@@ -16,7 +16,7 @@
 #import "YDGLOperationTwoInputNode.h"
 #import "YDGLOperationThreeInputNode.h"
 #import "YDGLOperationNodeDisplayView.h"
-#import "YDGLOperationBlendNode.h"
+#import "YDGLOperationNodeLayer.h"
 
 
 

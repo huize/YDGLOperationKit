@@ -41,8 +41,8 @@
 		426AD55D1CAD52B70023AC7E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426AD55C1CAD52B70023AC7E /* GLKit.framework */; };
 		426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD5631CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		426AD5661CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5641CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m */; };
-		429A97251CBD21AE00259908 /* YDGLOperationBlendNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97231CBD21AE00259908 /* YDGLOperationBlendNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		429A97261CBD21AE00259908 /* YDGLOperationBlendNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97241CBD21AE00259908 /* YDGLOperationBlendNode.m */; };
+		429A97251CBD21AE00259908 /* YDGLOperationNodeLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97231CBD21AE00259908 /* YDGLOperationNodeLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		429A97261CBD21AE00259908 /* YDGLOperationNodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97241CBD21AE00259908 /* YDGLOperationNodeLayer.m */; };
 		429A97371CBF693C00259908 /* YDGLOperationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97351CBF693C00259908 /* YDGLOperationContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		429A97381CBF693C00259908 /* YDGLOperationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97361CBF693C00259908 /* YDGLOperationContext.m */; };
 		42BBE21F1C9962A60035BC01 /* YDGLOperationKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42BBE21E1C9962A60035BC01 /* YDGLOperationKit.h */; };
@@ -102,8 +102,8 @@
 		426AD55C1CAD52B70023AC7E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		426AD5631CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationI420SourceNode.h; sourceTree = "<group>"; };
 		426AD5641CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationI420SourceNode.m; sourceTree = "<group>"; };
-		429A97231CBD21AE00259908 /* YDGLOperationBlendNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationBlendNode.h; sourceTree = "<group>"; };
-		429A97241CBD21AE00259908 /* YDGLOperationBlendNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationBlendNode.m; sourceTree = "<group>"; };
+		429A97231CBD21AE00259908 /* YDGLOperationNodeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationNodeLayer.h; sourceTree = "<group>"; };
+		429A97241CBD21AE00259908 /* YDGLOperationNodeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationNodeLayer.m; sourceTree = "<group>"; };
 		429A97351CBF693C00259908 /* YDGLOperationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationContext.h; sourceTree = "<group>"; };
 		429A97361CBF693C00259908 /* YDGLOperationContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationContext.m; sourceTree = "<group>"; };
 		42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libYDGLOperationKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,8 +141,8 @@
 				423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */,
 				423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */,
 				423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */,
-				429A97231CBD21AE00259908 /* YDGLOperationBlendNode.h */,
-				429A97241CBD21AE00259908 /* YDGLOperationBlendNode.m */,
+				429A97231CBD21AE00259908 /* YDGLOperationNodeLayer.h */,
+				429A97241CBD21AE00259908 /* YDGLOperationNodeLayer.m */,
 			);
 			path = extends;
 			sourceTree = "<group>";
@@ -246,7 +246,7 @@
 				426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */,
 				424EFFA61CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h in Headers */,
 				424EFFA21CB7912500396D2B /* YDGLOperationUIImageSourceNode.h in Headers */,
-				429A97251CBD21AE00259908 /* YDGLOperationBlendNode.h in Headers */,
+				429A97251CBD21AE00259908 /* YDGLOperationNodeLayer.h in Headers */,
 				426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */,
 				429A97371CBF693C00259908 /* YDGLOperationContext.h in Headers */,
 				30C70B001CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h in Headers */,
@@ -364,7 +364,7 @@
 				424EFFA71CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.m in Sources */,
 				42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */,
 				30C70B011CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.m in Sources */,
-				429A97261CBD21AE00259908 /* YDGLOperationBlendNode.m in Sources */,
+				429A97261CBD21AE00259908 /* YDGLOperationNodeLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

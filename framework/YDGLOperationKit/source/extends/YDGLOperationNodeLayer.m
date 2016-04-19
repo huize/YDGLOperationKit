@@ -6,7 +6,7 @@
 //  Copyright © 2016年 yifan. All rights reserved.
 //
 
-#import "YDGLOperationBlendNode.h"
+#import "YDGLOperationNodeLayer.h"
 #import <objc/runtime.h>
 
 /**
@@ -37,17 +37,21 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
                                                          }
                                                          );
 
-@interface YDGLOperationBlendNode()
+@interface YDGLOperationNodeLayer()
 
 @property(nonatomic,assign)GLKMatrix4 projection;//
 @property(nonatomic,assign)GLKMatrix4 view;//
 @property(nonatomic,assign)GLKMatrix4 model; //subNode
 
-@property(nonatomic,retain)NSMutableArray<YDGLOperationBlendNode*> *subNodes;
+@property(nonatomic,retain)NSMutableArray<YDGLOperationNodeLayer*> *subNodes;
 
 @end
 
-@implementation YDGLOperationBlendNode
+@implementation YDGLOperationNodeLayer
+
+
+#pragma -mark override protected method
+
 
 -(instancetype)initWithVertexShader:(NSString *)vertexShaderString andFragmentShader:(NSString *)fragmentShaderString{
 
@@ -124,7 +128,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     for (int index=0; index<_subNodes.count; index++) {
         
-        YDGLOperationBlendNode* subNode=_subNodes[index];
+        YDGLOperationNodeLayer* subNode=_subNodes[index];
         
         [self drawSubNode:subNode widthIndex:index];
         
@@ -136,7 +140,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
 }
 
--(void)drawSubNode:(YDGLOperationBlendNode*_Nonnull)subNode widthIndex:(int)indexOfSubNode{
+-(void)drawSubNode:(YDGLOperationNodeLayer*_Nonnull)subNode widthIndex:(int)indexOfSubNode{
     
     YDGLOperationNodeOutput *output=[subNode getOutput];
     
@@ -244,33 +248,6 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
 }
 
--(BOOL)innerAllSubNodeDone{
-
-    if (self.subNodes.count==0)return YES;
-    
-    __block BOOL done=YES;
-    
-    [self.subNodes enumerateObjectsUsingBlock:^(YDGLOperationBlendNode*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        YDGLOperationNodeOutput *output=[obj getOutput];
-        
-        if (output==nil) {
-            
-            done=NO;
-            *stop=YES;
-            
-        }
-    }];
-    
-    
-    return done;
-
-
-}
-
-
-#pragma -mark override protected method
-
 -(void)addDependency:(id<YDGLOperationNode>)operation{
 
     [super addDependency:operation];
@@ -288,6 +265,32 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 }
 
 
+#pragma -mark private method
+
+-(BOOL)innerAllSubNodeDone{
+    
+    if (self.subNodes.count==0)return YES;
+    
+    __block BOOL done=YES;
+    
+    [self.subNodes enumerateObjectsUsingBlock:^(YDGLOperationNodeLayer*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        YDGLOperationNodeOutput *output=[obj getOutput];
+        
+        if (output==nil) {
+            
+            done=NO;
+            *stop=YES;
+            
+        }
+    }];
+    
+    
+    return done;
+    
+    
+}
+
 #pragma -mark public api
 
 -(void)setOpaticy:(float)opaticy{
@@ -298,7 +301,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 }
 
--(void)addSubNode:(YDGLOperationBlendNode *)subNode{
+-(void)addSubNode:(YDGLOperationNodeLayer *)subNode{
 
     [_subNodes addObject:subNode];
     

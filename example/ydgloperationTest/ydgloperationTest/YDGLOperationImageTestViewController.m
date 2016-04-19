@@ -27,7 +27,7 @@
     
     YDGLOperationNode *_thirdNode;
 
-    YDGLOperationBlendNode *_secondNode;
+    YDGLOperationNodeLayer *_secondNode;
     
     CADisplayLink *_displayLink;
     
@@ -157,14 +157,27 @@
     
     [_alphaNode addDependency:_operationSecondSource];
     
-    _secondNode=[YDGLOperationBlendNode new];
+    _secondNode=[YDGLOperationNodeLayer new];
+        
+    [_secondNode addDependency:_operationSource];
     
-    [_secondNode addSubNode:_operationSource atFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
+    YDGLOperationNodeLayer *layer2=[YDGLOperationNodeLayer new];
     
-    [_secondNode addSubNode:_alphaNode atFrame:CGRectMake(50.0, 50.0, image2.size.width,image2.size.height)];
-
+    [layer2 addDependency:_operationSecondSource];
+    
+    layer2.frame=CGRectMake(50.0, 50.0, image2.size.width,image2.size.height);
+    
+    [_secondNode addSubNode:layer2];
+    
+    layer2.opaticy=1.0f;
+    
+    layer2.transform=GLKMatrix4Rotate(GLKMatrix4Identity, M_PI_4, 0.0, 0.0, 1.0);
+    
     _thirdNode=_secondNode;
     
+    
+    
+
     
 //    _secondNode.operationCompletionBlock=^(YDGLOperationNodeOutput *outputData){
 //    
