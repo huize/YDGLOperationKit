@@ -188,7 +188,7 @@ typedef enum {
  *
  *  @since 1.0.0
  */
-@interface YDGLOperationNode : NSObject<YDGLOperationNodeDrawDelegate,YDGLOperationTextureLoaderDelegate>
+@interface YDGLOperationNode : NSObject<YDGLOperationNode,YDGLOperationNodeDrawDelegate,YDGLOperationTextureLoaderDelegate>
 {
     
 @protected

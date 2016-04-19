@@ -14,7 +14,7 @@
 
 @end
 
-@interface YDGLOperationNode()<YDGLOperationNode>
+@interface YDGLOperationNode()
 
 @property(nonatomic,assign) GLuint frameBuffer;//
 @property(nonatomic,assign) GLuint renderTexture_out;//
