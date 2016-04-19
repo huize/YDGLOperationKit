@@ -15,26 +15,27 @@
 
 @property(nonatomic,assign)GLKMatrix4 modelview;//
 
-@property(nonatomic,retain)NSMutableDictionary<NSString*,NSValue*> *frames;
+@property(nonatomic,retain)NSMutableArray<YDGLOperationBlendNode*> *subNodes;
 
 @end
 
 @implementation YDGLOperationBlendNode
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
- 
+-(instancetype)initWithVertexShader:(NSString *)vertexShaderString andFragmentShader:(NSString *)fragmentShaderString{
+
+    if (self=[super initWithVertexShader:vShaderStr andFragmentShader:fShaderStr]) {
+        
         [self commonInitialization];
         
+        return  self;
     }
-    return self;
+
+    return  nil;
 }
 
 -(void)commonInitialization{
 
-    _frames=[NSMutableDictionary dictionary];
+    _subNodes=[NSMutableArray array];
 
 }
 
@@ -62,37 +63,19 @@
     self.modelview=modelview;
 
 }
-
--(void)addSubNode:(id<YDGLOperationNode>_Nonnull)subNode atFrame:(CGRect)frame{
-    
-    [self addDependency:subNode];
-    
-    NSUInteger index=[_dependency indexOfObject:subNode];
-    
-    [_frames setObject:[NSValue valueWithCGRect:frame] forKey:[NSString stringWithFormat:@"%lu",(unsigned long)index]];
-    
-}
-
--(void)updateFrame:(CGRect)frame forSubNode:(id<YDGLOperationNode>_Nonnull)subNode{
-
-    NSUInteger index=[_dependency indexOfObject:subNode];
-    
-    if (NSNotFound!=index) {
-        
-        [_frames setObject:[NSValue valueWithCGRect:frame] forKey:[NSString stringWithFormat:@"%lu",(unsigned long)index]];
-    }
-    
-}
-
 -(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect{
+    
+    //1. draw self content
+    
+    [super drawFrameBuffer:frameBuffer inRect:rect];
+    
+    if (_subNodes.count<1)return;
+    
+    //2. draw subNodes
     
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     
     glViewport(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
-    
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    
-    glClear(GL_COLOR_BUFFER_BIT);
     
     glEnable(GL_BLEND);
     
@@ -100,9 +83,9 @@
     
     glUseProgram(_drawModel.program);
     
-    for (NSUInteger index=0; index<_dependency.count; index++) {
+    for (int index=0; index<_subNodes.count; index++) {
         
-        id<YDGLOperationNode> subNode=_dependency[index];
+        YDGLOperationBlendNode* subNode=_subNodes[index];
         
         [self drawSubNode:subNode widthIndex:index];
         
@@ -114,10 +97,18 @@
     
 }
 
--(void)drawSubNode:(id<YDGLOperationNode>)subNode widthIndex:(int)indexOfSubNode{
+-(void)drawSubNode:(YDGLOperationBlendNode*_Nonnull)subNode widthIndex:(int)indexOfSubNode{
     
     YDGLOperationNodeOutput *output=[subNode getOutput];
     
+    CGRect frame=subNode.frame;
+    
+    if (CGRectIsEmpty(frame)) {
+        
+        frame=CGRectMake(0, 0, output.size.width, output.size.height);
+        
+    }
+
     //1.设置变换矩阵
     GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
     
@@ -129,7 +120,7 @@
     
     float*mm=(float*)matrix.m;
     
-    GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
+    GLfloat* const finalMatrix=malloc(sizeof(GLfloat)*16);
     
     for (int index=0; index<16; index++) {
         
@@ -144,14 +135,6 @@
     //2.设置顶点坐标
     
     GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
-    
-    CGRect frame=_frames[[NSString stringWithFormat:@"%i",indexOfSubNode]].CGRectValue;
-    
-    if (CGRectIsEmpty(frame)) {
-        
-        frame=CGRectMake(0, 0, output.size.width, output.size.height);
-        
-    }
     
     CGSize size=frame.size;
     
@@ -208,10 +191,63 @@
     
 }
 
+-(BOOL)innerAllSubNodeDone{
+
+    if (self.subNodes.count==0)return YES;
+    
+    __block BOOL done=YES;
+    
+    [self.subNodes enumerateObjectsUsingBlock:^(YDGLOperationBlendNode*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        YDGLOperationNodeOutput *output=[obj getOutput];
+        
+        if (output==nil) {
+            
+            done=NO;
+            *stop=YES;
+            
+        }
+    }];
+    
+    
+    return done;
+
+
+}
+
+
+#pragma -mark override protected method
+
+-(void)addDependency:(id<YDGLOperationNode>)operation{
+
+    [super addDependency:operation];
+    
+    if (_dependency.count>1) {
+        
+        NSAssert(NO, @"because dependency node provide the blend node content,so only support one dependency");
+    }
+
+}
+
+-(BOOL)canPerformTraversals{
+    
+   return [super canPerformTraversals]&&[self innerAllSubNodeDone];
+}
+
+
+#pragma -mark public api
+
+-(void)addSubNode:(YDGLOperationBlendNode *)subNode{
+
+    [_subNodes addObject:subNode];
+    
+    subNode.superNode=self;
+
+}
 
 -(void)dealloc{
 
-    [_frames removeAllObjects];
+    [_subNodes removeAllObjects];
 
 }
 

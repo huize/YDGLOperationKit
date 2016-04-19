@@ -507,14 +507,7 @@
     
     assert(_frameBuffer!=0);
     
-    if (self.drawDelegate&&[self.drawDelegate respondsToSelector:@selector(drawFrameBuffer:inRect:)]) {
-        
-        [self.drawDelegate drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
-    }else{
-    
-        [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
-
-    }
+    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
     
 }
 

@@ -16,9 +16,13 @@
  */
 @interface YDGLOperationBlendNode : YDGLOperationNode
 
--(void)addSubNode:(id<YDGLOperationNode>_Nonnull)node atFrame:(CGRect)frame;
+@property(nonatomic,assign)float opaticy;
 
--(void)updateFrame:(CGRect)frame forSubNode:(id<YDGLOperationNode>_Nonnull)subNode;
+@property(nonatomic,assign)CGRect frame;
+
+@property(nonatomic,assign,nullable)YDGLOperationBlendNode* superNode;
+
+-(void)addSubNode:(YDGLOperationBlendNode*_Nonnull)subNode;
 
 @end
 

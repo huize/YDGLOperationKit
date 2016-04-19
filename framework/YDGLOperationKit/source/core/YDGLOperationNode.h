@@ -149,23 +149,6 @@ static NSString *_Nonnull  const ATTRIBUTE_TEXTURE_COORDINATE=@"inputTextureCoor
 
 @end
 
-
-@protocol YDGLOperationNodeDrawDelegate <NSObject>
-
-/**
- *  @author 许辉泽, 16-03-24 15:28:13
- *
- *  该节点的渲染过程
- *
- *  @param frameBuffer 渲染缓冲区
- *  @param CGRect      区域
- *
- *  @since 1.0.0
- */
--(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect;
-
-@end
-
 typedef void(^OperationCompletionBlock)(YDGLOperationNodeOutput*_Nonnull);
 
 /**
@@ -188,7 +171,7 @@ typedef enum {
  *
  *  @since 1.0.0
  */
-@interface YDGLOperationNode : NSObject<YDGLOperationNode,YDGLOperationNodeDrawDelegate,YDGLOperationTextureLoaderDelegate>
+@interface YDGLOperationNode : NSObject<YDGLOperationNode,YDGLOperationTextureLoaderDelegate>
 {
     
 @protected
@@ -213,8 +196,6 @@ typedef enum {
 }
 
 @property(nonatomic,nullable,copy)OperationCompletionBlock completionBlock;
-
-@property(nonatomic,weak,nullable)id<YDGLOperationNodeDrawDelegate> drawDelegate;
 
 @property(nonatomic,assign,readonly)CGSize size;
 
@@ -285,11 +266,16 @@ typedef enum {
  *  @since 1.0.0
  */
 -(BOOL)canPerformTraversals;
-
--(void)performTraversalsIfCanWhenDependencyDone:(YDGLOperationNode*_Nonnull)doneOperation;
-
--(void)addDependency:(id<YDGLOperationNode>_Nonnull)operation;
--(void)addNextOperation:(id<YDGLOperationNode>_Nonnull)nextOperation;
--(void)destory;
+/**
+ *  @author 许辉泽, 16-03-24 15:28:13
+ *
+ *  该节点的渲染过程
+ *
+ *  @param frameBuffer 渲染缓冲区
+ *  @param CGRect      区域
+ *
+ *  @since 1.0.0
+ */
+-(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect;
 
 @end
