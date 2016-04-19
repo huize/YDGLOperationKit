@@ -16,7 +16,7 @@
  */
 @interface YDGLOperationBlendNode : YDGLOperationNode
 
-@property(nonatomic,assign)float opaticy;
+@property(nonatomic,assign)float opaticy;//alpha 0.0~1.0
 
 @property(nonatomic,assign)CGRect frame;
 

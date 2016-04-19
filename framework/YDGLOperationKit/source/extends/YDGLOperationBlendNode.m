@@ -111,6 +111,8 @@
     
     YDGLOperationNodeOutput *output=[subNode getOutput];
     
+    GLKMatrix4 subTransform=subNode.transform;
+    
     CGRect frame=subNode.frame;
     
     if (CGRectIsEmpty(frame)) {
@@ -126,7 +128,7 @@
     
     modelMatrix=GLKMatrix4Translate(modelMatrix, CGRectGetMidX(frame), CGRectGetMidY(frame), 0);//subnode center as (0,0,0)
     
-    modelMatrix=GLKMatrix4Multiply(modelMatrix,_transform);//multipy transform
+    modelMatrix=GLKMatrix4Multiply(modelMatrix,subTransform);//multipy transform
     
     modelMatrix=GLKMatrix4Translate(modelMatrix, 0.0, 0.0, 0.0-0.01*indexOfSubNode);//set z index
     
