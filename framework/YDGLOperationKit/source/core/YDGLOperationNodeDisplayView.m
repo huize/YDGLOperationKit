@@ -381,7 +381,7 @@
     
     glUseProgram(_drawModel.program);
     
-    GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
+    GLint location=[_drawModel locationOfUniform:UNIFORM_MATRIX];
     
     GLKMatrix4 _mvpMatrix=[self mvpMatrix4Square];;
     
@@ -398,8 +398,9 @@
     glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
     
     free(finalMatrix);
+        
+    GLint location_s_texture=[_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
     
-    GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
     glActiveTexture(GL_TEXTURE0);
         
     [YDGLOperationNode bindTexture:_textureId];

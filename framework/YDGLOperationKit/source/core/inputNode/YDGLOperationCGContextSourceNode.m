@@ -113,8 +113,8 @@
 }
 
 -(void)setupTextureForProgram:(GLuint)program{
-    
-    GLint location_s_texture=glGetUniformLocation(program, [UNIFORM_INPUTTEXTURE UTF8String]);
+        
+    GLint location_s_texture=[_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
     
     glActiveTexture(GL_TEXTURE0);
     

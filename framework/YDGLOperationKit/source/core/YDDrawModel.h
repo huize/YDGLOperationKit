@@ -127,7 +127,7 @@ struct ArrayWrapper {
  *
  *  @since 1.0.0
  */
-//-(GLint)locationOfUniform:(NSString*_Nonnull)uniformName;
+-(GLint)locationOfUniform:(NSString*_Nonnull)uniformName;
 
 @end
 

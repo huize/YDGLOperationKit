@@ -123,7 +123,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     float opaticy=_opaticy;
     
-    GLint location_opaticy= glGetUniformLocation(_drawModel.program, [@"opaticy" UTF8String]);
+    GLint location_opaticy=[_drawModel locationOfUniform:@"opaticy"];
     
     glUniform1f(location_opaticy, opaticy);
 
@@ -172,8 +172,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     float opaticy=subNode.opaticy;
     
-    GLint location_opaticy= glGetUniformLocation(_drawModel.program, [@"opaticy" UTF8String]);
-
+    GLint location_opaticy=[_drawModel locationOfUniform:@"opaticy"];
+    
     glUniform1f(location_opaticy, opaticy);
     
     GLKMatrix4 subTransform=subNode.transform;
@@ -186,7 +186,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
         
     }
     //1.设置变换矩阵
-    GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
+    
+    GLint location=[_drawModel locationOfUniform:UNIFORM_MATRIX];
     
     GLKMatrix4 modelMatrix=self.model;
     
@@ -246,8 +247,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     //4.设置纹理
-    
-    GLint location_s_texture=glGetUniformLocation(_drawModel.program, [UNIFORM_INPUTTEXTURE UTF8String]);
+        
+    GLint location_s_texture=[_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
     
     glActiveTexture(GL_TEXTURE0);
     

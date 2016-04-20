@@ -166,7 +166,7 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
 
 -(void)setupTextureForProgram:(GLuint)program{
     
-    GLint location_texture_Y=glGetUniformLocation(program, [@"SamplerY" UTF8String]);
+    GLint location_texture_Y=[_drawModel locationOfUniform:@"SamplerY"];
     
     glActiveTexture(GL_TEXTURE0);
     
@@ -174,15 +174,15 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     
     glUniform1i(location_texture_Y, 0);
     
-    GLint location_texture_U=glGetUniformLocation(program, [@"SamplerU" UTF8String]);
-    
+    GLint location_texture_U=[_drawModel locationOfUniform:@"SamplerU"];
+
     glActiveTexture(GL_TEXTURE1);
     
     [YDGLOperationNode bindTexture:_textureU];
     
     glUniform1i(location_texture_U, 1);
     
-    GLint location_texture_V=glGetUniformLocation(program, [@"SamplerV" UTF8String]);
+    GLint location_texture_V=[_drawModel locationOfUniform:@"SamplerV"];
     
     glActiveTexture(GL_TEXTURE2);
     

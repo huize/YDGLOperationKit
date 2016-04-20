@@ -576,7 +576,8 @@
     [_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
     
     //1.设置变换矩阵
-    GLint location= glGetUniformLocation(_drawModel.program, [UNIFORM_MATRIX UTF8String]);
+    
+    GLint location=[_drawModel locationOfUniform:UNIFORM_MATRIX];
     
     GLKMatrix4 matrix=GLKMatrix4Multiply(_projectionMatrix, _modelViewMatrix);
     
@@ -671,7 +672,7 @@
         
         NSString *name=[_textureLoaderDelegate textureUniformNameAtIndex:index];
         
-        GLint location_s_texture=glGetUniformLocation(_drawModel.program, [name UTF8String]);
+        GLint location_s_texture=[_drawModel locationOfUniform:name];
         
         glActiveTexture(GL_TEXTURE0+index);
         
@@ -841,8 +842,8 @@
     
     dispatch_block_t operation=^{
         
-        GLint location=glGetUniformLocation(_drawModel.program, [uniformName UTF8String]);
-
+        GLint location=[_drawModel locationOfUniform:uniformName];
+        
         glUniform1f(location, newFloat);
         
     };
@@ -859,7 +860,7 @@
 
     dispatch_block_t operation=^{
         
-        GLint location=glGetUniformLocation(_drawModel.program, [uniformName UTF8String]);
+        GLint location=[_drawModel locationOfUniform:uniformName];
         
         glUniform1i(location, newInt);
         
@@ -879,8 +880,8 @@
 
     dispatch_block_t operation=^{
         
-        GLint location=glGetUniformLocation(_drawModel.program, [uniformName UTF8String]);
-            
+        GLint location=[_drawModel locationOfUniform:uniformName];
+        
         glUniform1i(location, newBool==true);
         
     };
