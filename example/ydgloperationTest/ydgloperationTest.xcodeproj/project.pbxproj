@@ -11,6 +11,9 @@
 		423E042E1C99873300972691 /* rgb.png in Resources */ = {isa = PBXBuildFile; fileRef = 423E04291C99873300972691 /* rgb.png */; };
 		423E04801C9A714200972691 /* LVECatpureSessionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */; };
 		424D92C31C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */; };
+		426A22D51CC7576700368333 /* star22@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 426A22D21CC7576700368333 /* star22@3x.png */; };
+		426A22D61CC7576700368333 /* star22.png in Resources */ = {isa = PBXBuildFile; fileRef = 426A22D31CC7576700368333 /* star22.png */; };
+		426A22D71CC7576700368333 /* star22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 426A22D41CC7576700368333 /* star22@2x.png */; };
 		429A97291CBE257100259908 /* YDGLAlphaNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97281CBE257100259908 /* YDGLAlphaNode.m */; };
 		42BBE29A1C9969E70035BC01 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2991C9969E70035BC01 /* main.m */; };
 		42BBE29D1C9969E70035BC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE29C1C9969E70035BC01 /* AppDelegate.m */; };
@@ -53,6 +56,9 @@
 		423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVECatpureSessionHelper.m; sourceTree = "<group>"; };
 		424D92C11C9A9EFA006DA52D /* YDGLOperationImageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationImageTestViewController.h; sourceTree = "<group>"; };
 		424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationImageTestViewController.m; sourceTree = "<group>"; };
+		426A22D21CC7576700368333 /* star22@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star22@3x.png"; sourceTree = "<group>"; };
+		426A22D31CC7576700368333 /* star22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star22.png; sourceTree = "<group>"; };
+		426A22D41CC7576700368333 /* star22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star22@2x.png"; sourceTree = "<group>"; };
 		429A97271CBE257100259908 /* YDGLAlphaNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLAlphaNode.h; sourceTree = "<group>"; };
 		429A97281CBE257100259908 /* YDGLAlphaNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLAlphaNode.m; sourceTree = "<group>"; };
 		42BBE2951C9969E70035BC01 /* ydgloperationTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ydgloperationTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +118,9 @@
 		42BBE2971C9969E70035BC01 /* ydgloperationTest */ = {
 			isa = PBXGroup;
 			children = (
+				426A22D21CC7576700368333 /* star22@3x.png */,
+				426A22D31CC7576700368333 /* star22.png */,
+				426A22D41CC7576700368333 /* star22@2x.png */,
 				423E047E1C9A714200972691 /* LVECatpureSessionHelper.h */,
 				423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */,
 				423E04281C99873300972691 /* 头像.jpg */,
@@ -264,11 +273,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426A22D71CC7576700368333 /* star22@2x.png in Resources */,
 				423E042D1C99873300972691 /* 头像.jpg in Resources */,
+				426A22D61CC7576700368333 /* star22.png in Resources */,
 				423E042E1C99873300972691 /* rgb.png in Resources */,
 				42BBE2A81C9969E70035BC01 /* LaunchScreen.storyboard in Resources */,
 				42BBE2A51C9969E70035BC01 /* Assets.xcassets in Resources */,
 				42BBE2A31C9969E70035BC01 /* Main.storyboard in Resources */,
+				426A22D51CC7576700368333 /* star22@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

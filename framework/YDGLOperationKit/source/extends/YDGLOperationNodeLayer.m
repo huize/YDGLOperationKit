@@ -121,6 +121,12 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     glEnable(GL_BLEND);
     
+    //https://www.opengl.org/wiki/Blending
+    //premultiplied alpha blending
+    
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    
     glDisable(GL_DEPTH_TEST);
     
     glUseProgram(_drawModel.program);
@@ -227,9 +233,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     [YDGLOperationNode bindTexture:output.texture];
     
     glUniform1i ( location_s_texture,0);
-    //5. draw
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    
+    //5. draw    
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
     
     GLsizei count=_drawModel.count_indices;

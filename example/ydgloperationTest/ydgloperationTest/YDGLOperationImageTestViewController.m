@@ -145,9 +145,7 @@
     
     [_operationSource uploadImage:image];
     
-    NSString *path2=[[NSBundle mainBundle] pathForResource:@"rgb" ofType:@".png"];
-    
-    UIImage *image2=[UIImage imageWithContentsOfFile:path2];
+    UIImage *image2=[UIImage imageNamed:@"star22"];
     
     _operationSecondSource =[YDGLOperationUIImageSourceNode new];
     
