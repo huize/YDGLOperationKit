@@ -6,7 +6,7 @@
 //  Copyright © 2016年 yifan. All rights reserved.
 //
 
-#import <YDGLOperationKit/YDGLOperationKit.h>
+#import "YDGLOperationSourceNode.h"
 /**
  *  @author 9527, 16-04-16 18:04:06
  *

@@ -6,7 +6,7 @@
 //  Copyright © 2016年 yifan. All rights reserved.
 //
 
-#import <YDGLOperationKit/YDGLOperationKit.h>
+#import "YDGLOperationSourceNode.h"
 
 @interface YDGLOperationUIImageSourceNode : YDGLOperationSourceNode
 

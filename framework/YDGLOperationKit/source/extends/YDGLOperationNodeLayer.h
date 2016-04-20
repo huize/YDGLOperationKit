@@ -10,7 +10,7 @@
 /**
  *  @author 9527, 16-04-16 14:37:00
  *
- * like CALayer
+ * like CALayer,make YDGLOperationNode blendable
  *
  *  @since 1.0.0
  */
