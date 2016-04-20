@@ -108,6 +108,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     self.model=GLKMatrix4Identity;
     
+    //*newInputSize=CGSizeMake(_size.width, _size.height);
+    
 
 }
 -(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect{

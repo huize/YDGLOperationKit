@@ -29,6 +29,8 @@
 
     YDGLOperationNodeLayer *_secondNode;
     
+    YDGLOperationNodeLayer *_starLayer1,*_starLayer2;
+    
     CADisplayLink *_displayLink;
     
     YDGLAlphaNode *_alphaNode;
@@ -50,7 +52,7 @@
     
     [YDGLOperationContext pushContext];
     
-    _customView=[[YDGLOperationNodeDisplayView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height-100)];
+    _customView=[[YDGLOperationNodeDisplayView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
     
     //_customView.center=[_customView convertPoint:self.view.center fromView:self.view];
     
@@ -159,17 +161,25 @@
         
     [_secondNode addDependency:_operationSource];
     
-    YDGLOperationNodeLayer *layer2=[YDGLOperationNodeLayer new];
+    _starLayer1=[YDGLOperationNodeLayer new];
     
-    [layer2 addDependency:_operationSecondSource];
+    [_starLayer1 addDependency:_operationSecondSource];
     
-    layer2.frame=CGRectMake(50.0, 50.0, image2.size.width,image2.size.height);
+    _starLayer1.frame=CGRectMake(100.0, 50.0, image2.size.width/2,image2.size.height/2);
     
-    [_secondNode addSubNode:layer2];
+    [_secondNode addSubNode:_starLayer1];
     
-    layer2.opaticy=1.0f;
+    _starLayer1.opaticy=1.0f;
     
-    layer2.transform=GLKMatrix4Rotate(GLKMatrix4Identity, M_PI_4, 0.0, 0.0, 1.0);
+    _starLayer2=[YDGLOperationNodeLayer new];
+    
+    [_starLayer2 addDependency:_operationSecondSource];
+    
+    _starLayer2.opaticy=0.0;
+    
+    _starLayer2.frame=_starLayer1.frame;
+    
+    [_secondNode addSubNode:_starLayer2];
     
     _thirdNode=_secondNode;
     
@@ -221,13 +231,33 @@
             return ;
         }
         
+        static float scale=1.0f,alpha=0.0f;
+        
+        _starLayer2.transform=GLKMatrix4Scale(GLKMatrix4Identity, scale, scale, 1.0);
+        _starLayer2.opaticy=alpha;
+        
+        scale+=0.05f;
+        
+        alpha+=0.05f;
+        
+        if (scale>2.0f) {
+            
+            scale=1.0f;
+        }
+        
+        if (alpha>1.0) {
+            
+            alpha=0.0f;
+        }
+        
+        
         [_operationSource start];
         
         [_operationSecondSource start];
         
-        [_operationSource setNeedDisplay];
+        //[_operationSource setNeedDisplay];
         
-        [_operationSecondSource setNeedDisplay];
+        //[_operationSecondSource setNeedDisplay];
     
     });
     
