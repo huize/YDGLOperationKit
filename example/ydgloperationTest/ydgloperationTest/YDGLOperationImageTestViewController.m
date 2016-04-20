@@ -132,6 +132,18 @@
     
     [_secondNode destory];
     
+    [_alphaNode destory];
+    
+    [_starLayer1 destory];
+    
+    [_starLayer2 destory];
+    
+    [_secondNode removeFromSuperNodeLayer];
+    
+    [_secondNode removeFromSuperNodeLayer];
+    
+    [_secondNode removeFromSuperNodeLayer];
+    
     //[_customView removeFromSuperview];
 
 }
@@ -145,33 +157,49 @@
         
     _operationSource=[YDGLOperationUIImageSourceNode new];
     
+    NSLog(@"----%@",_operationSource);
+    
     [_operationSource uploadImage:image];
     
     UIImage *image2=[UIImage imageNamed:@"star22"];
     
     _operationSecondSource =[YDGLOperationUIImageSourceNode new];
     
+    NSLog(@"----%@",_operationSecondSource);//TODO
+    
     [_operationSecondSource uploadImage:image2];
     
     _alphaNode=[YDGLAlphaNode new];
     
+    NSLog(@"----%@",_alphaNode);
+
+    
     [_alphaNode addDependency:_operationSecondSource];
     
     _secondNode=[YDGLOperationNodeLayer new];
-        
+    
+    NSLog(@"----%@",_secondNode);
+
+    
     [_secondNode addDependency:_operationSource];
     
     _starLayer1=[YDGLOperationNodeLayer new];
     
+    NSLog(@"----%@",_starLayer1);
+
+    
     [_starLayer1 addDependency:_operationSecondSource];
     
-    _starLayer1.frame=CGRectMake(100.0, 50.0, image2.size.width/2,image2.size.height/2);
+    _starLayer1.frame=CGRectMake(100.0, 50.0, 100 ,100);
     
-    [_secondNode addSubNode:_starLayer1];
+    [_secondNode addSubNodeLayer:_starLayer1];
     
     _starLayer1.opaticy=1.0f;
     
     _starLayer2=[YDGLOperationNodeLayer new];
+    
+    NSLog(@"----%@",_starLayer2);//TODO:
+
     
     [_starLayer2 addDependency:_operationSecondSource];
     
@@ -179,13 +207,9 @@
     
     _starLayer2.frame=_starLayer1.frame;
     
-    [_secondNode addSubNode:_starLayer2];
+    [_secondNode addSubNodeLayer:_starLayer2];
     
     _thirdNode=_secondNode;
-    
-    
-    
-
     
 //    _secondNode.operationCompletionBlock=^(YDGLOperationNodeOutput *outputData){
 //    
@@ -268,7 +292,7 @@
     [_displayLink invalidate];
     
     [YDGLOperationContext popContext];
-    
+
     NSLog(@"图片测试页面已经销毁了:%@",self);
 
 }
