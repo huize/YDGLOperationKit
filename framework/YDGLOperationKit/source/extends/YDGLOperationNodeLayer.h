@@ -26,5 +26,7 @@
 
 -(void)addSubNode:(YDGLOperationNodeLayer*_Nonnull)subNode;
 
+-(void)removeSubNode:(YDGLOperationNodeLayer*_Nonnull)subNode;
+
 @end
 

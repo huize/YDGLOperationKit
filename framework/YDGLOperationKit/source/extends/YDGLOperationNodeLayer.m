@@ -328,6 +328,12 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 }
 
+-(void)removeSubNode:(YDGLOperationNodeLayer *)subNode{
+
+    [_subNodes removeObject:subNode];
+
+}
+
 -(void)dealloc{
 
     [_subNodes removeAllObjects];
