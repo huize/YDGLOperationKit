@@ -22,11 +22,35 @@
 
 @property(nonatomic,assign)GLKMatrix4 transform;//frame center as (0,0,0)
 
-@property(nonatomic,assign,nullable)YDGLOperationNodeLayer* superNode;
-
--(void)addSubNode:(YDGLOperationNodeLayer*_Nonnull)subNode;
-
--(void)removeSubNode:(YDGLOperationNodeLayer*_Nonnull)subNode;
+@property(nonatomic,assign,nullable,readonly)YDGLOperationNodeLayer* superNodeLayer;
+/**
+ *  @author 9527, 16-04-20 20:58:10
+ *
+ *  like CALayer addSubLayer
+ *
+ *  @param subLayer layer you want to add
+ *
+ *  @since 1.0.0
+ */
+-(void)addSubNodeLayer:(YDGLOperationNodeLayer*_Nonnull)subLayer;
+/**
+ *  @author 9527, 16-04-20 20:58:27
+ *
+ *  like CALayer removeSubLayer
+ *
+ *  @param subLayer layer you want to remove
+ *
+ *  @since 1.0.0
+ */
+-(void)removeSubNodeLayer:(YDGLOperationNodeLayer*_Nonnull)subLayer;
+/**
+ *  @author 9527, 16-04-20 20:58:46
+ *
+ *  like CALayer removeFromSuperLayer
+ *
+ *  @since 1.0.0
+ */
+-(void)removeFromSuperNodeLayer;
 
 @end
 

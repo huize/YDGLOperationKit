@@ -315,6 +315,12 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
 }
 
+-(void)setSuperNodeLayer:(YDGLOperationNodeLayer * _Nullable)superNodeLayer{
+
+    _superNodeLayer=superNodeLayer;
+
+}
+
 #pragma -mark public api
 
 -(void)setOpaticy:(float)opaticy{
@@ -325,17 +331,36 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 }
 
--(void)addSubNode:(YDGLOperationNodeLayer *)subNode{
+-(void)addSubNodeLayer:(YDGLOperationNodeLayer *)subNode{
 
-    [_subNodes addObject:subNode];
+    NSAssert(subNode.superNodeLayer==nil, @"YDGLOperationNodeLayer must be have one superLayer");
     
-    subNode.superNode=self;
+    [_subNodes addObject:subNode];
+
+    subNode.superNodeLayer=self;
 
 }
 
--(void)removeSubNode:(YDGLOperationNodeLayer *)subNode{
+-(void)removeSubNodeLayer:(YDGLOperationNodeLayer *)subNode{
 
-    [_subNodes removeObject:subNode];
+    if ([_subNodes containsObject:subNode]) {
+        
+        [_subNodes removeObject:subNode];
+        
+        subNode.superNodeLayer=nil;
+    }
+    
+}
+
+-(void)removeFromSuperNodeLayer{
+
+    if (_superNodeLayer) {
+        
+        [_superNodeLayer removeSubNodeLayer:self];
+        
+        _superNodeLayer=nil;
+        
+    }
 
 }
 
