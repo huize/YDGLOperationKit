@@ -771,35 +771,40 @@
 
     dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
     
-    [self.dependency removeAllObjects];
-    
-    [self.nextOperations removeAllObjects];
-    
-    [self.programOperations removeAllObjects];
+    [self clearCollections];
     
     dispatch_semaphore_signal(_lockForNodeStatus);
     
     self.completionBlock=nil;
 }
 
--(void)dealloc{
+-(void)clearCollections{
 
-    NSLog(@"节点销毁了:%@",self);
+    [self.dependency removeAllObjects];
     
-    [self activeGLContext:^{
-       
-        [self cleanUpTexture];
-        
-        glDeleteFramebuffers(1, &_frameBuffer);
-    }];
+    [self.nextOperations removeAllObjects];
     
-    _frameBuffer=0;
+    [self.programOperations removeAllObjects];
     
     [_beforePerformDrawOperations removeAllObjects];
     
     [_beforePerformTraversalsOperations removeAllObjects];
     
     [_programOperations removeAllObjects];
+
+}
+
+-(void)dealloc{
+
+    NSLog(@"节点销毁了:%@",self);
+    
+    [self clearCollections];
+    
+    [self cleanUpTexture];
+    
+    glDeleteFramebuffers(1, &_frameBuffer);
+    
+    _frameBuffer=0;
     
     CVOpenGLESTextureCacheFlush(_coreVideoTextureCache, 0);
     
