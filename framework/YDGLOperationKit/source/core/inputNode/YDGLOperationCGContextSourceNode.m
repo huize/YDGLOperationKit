@@ -21,6 +21,13 @@
 
 @implementation YDGLOperationCGContextSourceNode
 
+- (instancetype)init
+{
+   
+    return [self initWithSize:CGSizeMake(100, 100)];//default size is (100,100)
+    
+}
+
 -(instancetype)initWithSize:(CGSize)size{
     
     if (self=[super init]) {
@@ -135,6 +142,25 @@
 -(void)willSetNodeSize:(CGSize *)newInputSize{
 
     *newInputSize=CGSizeMake(_size.width, _size.height);
+
+}
+
+-(void)dealloc{
+
+    CGContextRelease(_context);
+    
+    _context=NULL;
+
+    free(_baseAddress);
+    
+    _baseAddress=0;
+
+    [self activeGLContext:^{
+        
+        glDeleteTextures(1, &_renderTexture_input);
+        
+        _renderTexture_input=0;
+    }];
 
 }
 
