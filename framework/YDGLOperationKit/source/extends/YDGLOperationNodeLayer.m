@@ -85,6 +85,13 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 -(void)willSetNodeSize:(CGSize *)newInputSize{
 
+    //force set the node size equalTo frame size
+    
+    if (CGSizeEqualToSize(_size, CGSizeZero)==NO) {
+        
+        *newInputSize=CGSizeMake(_size.width, _size.height);
+
+    }
     CGSize sizeWillSet=*newInputSize;
     
     CGSize sizeInPixel=CGSizeMake(sizeWillSet.width,sizeWillSet.height);
@@ -107,10 +114,6 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     self.view=view;
     
     self.model=GLKMatrix4Identity;
-    
-    //*newInputSize=CGSizeMake(_size.width, _size.height);
-    
-
 }
 -(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect{
     
@@ -333,6 +336,14 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 -(void)removeSubNode:(YDGLOperationNodeLayer *)subNode{
 
     [_subNodes removeObject:subNode];
+
+}
+
+-(void)setFrame:(CGRect)frame{
+
+    _frame=frame;
+    
+    _size=frame.size;
 
 }
 
