@@ -124,8 +124,11 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     //https://www.opengl.org/wiki/Blending
     //premultiplied alpha blending
     
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    //notice:use follow onfig will make export image something wrong
+    //glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    //glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     
     glDisable(GL_DEPTH_TEST);
     
