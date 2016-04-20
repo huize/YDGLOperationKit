@@ -29,10 +29,15 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
                                                          
                                                          void main()
                                                          {
+                                                             float fixedOpaticy=opaticy;
+                                                             
+                                                             if(fixedOpaticy<0.0)fixedOpaticy=0.0;
+                                                             
+                                                             if(fixedOpaticy>1.0)fixedOpaticy=1.0;
                                                              
                                                              vec4 color=texture2D(inputImageTexture, textureCoordinate.xy);
                                                              
-                                                             gl_FragColor=color;                                                             
+                                                             gl_FragColor=color*fixedOpaticy;
                                                          }
                                                          );
 
@@ -109,6 +114,14 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     //1. draw self content
     
+    glUseProgram(_drawModel.program);
+    
+    float opaticy=_opaticy;
+    
+    GLint location_opaticy= glGetUniformLocation(_drawModel.program, [@"opaticy" UTF8String]);
+    
+    glUniform1f(location_opaticy, opaticy);
+
     [super drawFrameBuffer:frameBuffer inRect:rect];
     
     if (_subNodes.count<1)return;
