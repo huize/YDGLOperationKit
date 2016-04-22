@@ -183,9 +183,7 @@ typedef enum {
 @protected
     
     GLuint _frameBuffer,_renderTexture_out;
-    
-    CGSize _size;
-    
+        
     GLKMatrix4 _modelViewMatrix;//modelview matrix
     
     YDDrawModel *_drawModel;
@@ -203,7 +201,7 @@ typedef enum {
 
 @property(nonatomic,nullable,copy)OperationCompletionBlock completionBlock;
 
-@property(nonatomic,assign,readonly)CGSize size;
+@property(nonatomic,assign)CGSize size;
 
 -(instancetype _Nullable)initWithVertexShader:(NSString*_Nonnull)vertexShaderString andFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 

@@ -157,7 +157,7 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, _imageSize.width/2, _imageSize.height/2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE,_baseAddress+(int)(_imageSize.width*_imageSize.height+_imageSize.width*_imageSize.height/4));
     
-    _size=self.imageSize;
+    self.size=self.imageSize;
     
     self.textureAvailable=YES;
     

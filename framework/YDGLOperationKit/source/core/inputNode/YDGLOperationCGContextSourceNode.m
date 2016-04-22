@@ -32,7 +32,7 @@
     
     if (self=[super init]) {
         
-        _size=size;
+        self.size=size;
         
         [self commonInitialization];
         
@@ -46,9 +46,9 @@
     
     CGColorSpaceRef genericRGBColorspace = CGColorSpaceCreateDeviceRGB();
     
-    _baseAddress=(GLubyte*)calloc(1,sizeof(GLubyte)*_size.width*_size.height*4);
+    _baseAddress=(GLubyte*)calloc(1,sizeof(GLubyte)*self.size.width*self.size.height*4);
     
-    _context = CGBitmapContextCreate(_baseAddress, (int)_size.width,(int)_size.height, 8,(int)_size.width * 4, genericRGBColorspace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    _context = CGBitmapContextCreate(_baseAddress, (int)self.size.width,(int)self.size.height, 8,(int)self.size.width * 4, genericRGBColorspace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
 
     
     
@@ -87,7 +87,7 @@
  */
 -(void)clearContext{
     
-    CGContextClearRect(_context, CGRectMake(0, 0, _size.width, _size.height));
+    CGContextClearRect(_context, CGRectMake(0, 0, self.size.width, self.size.height));
     
 }
 
@@ -106,7 +106,7 @@
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)_size.width, (int)_size.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, _baseAddress);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)self.size.width, (int)self.size.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, _baseAddress);
     
    self.textureAvailable=YES;
     
@@ -141,7 +141,7 @@
 
 -(void)willSetNodeSize:(CGSize *)newInputSize{
 
-    *newInputSize=CGSizeMake(_size.width, _size.height);
+    *newInputSize=CGSizeMake(self.size.width, self.size.height);
 
 }
 

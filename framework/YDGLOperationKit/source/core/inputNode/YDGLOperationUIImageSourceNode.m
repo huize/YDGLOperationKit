@@ -171,7 +171,7 @@
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)pixelSizeToUseForTexture.width, (int)pixelSizeToUseForTexture.height, 0, format, GL_UNSIGNED_BYTE, imageData);
     
-    _size=pixelSizeToUseForTexture;
+    self.size=pixelSizeToUseForTexture;
     
     if (_pixelFormatType!=DEFAULT_IMAGE_PIXEL_FORMAT_TYPE) {
         

@@ -104,7 +104,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     
     size_t height=CVPixelBufferGetHeight(_pixelBufferRef);
     
-    _size=CGSizeMake(width, height);
+    self.size=CGSizeMake(width, height);
     
     _pixelFormatType= CVPixelBufferGetPixelFormatType(_pixelBufferRef);
     

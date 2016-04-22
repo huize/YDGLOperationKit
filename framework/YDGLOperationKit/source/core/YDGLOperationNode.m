@@ -57,8 +57,6 @@
 
 @synthesize renderTexture_out=_renderTexture_out;
 
-@synthesize size=_size;
-
 @synthesize frameBuffer=_frameBuffer;
 
 @synthesize modelViewMatrix=_modelViewMatrix;
@@ -182,7 +180,7 @@
     //注意:glGenTextures(1, &_renderTexture_out);
     //上面那种方式创建的纹理会导致美艳算法在iOS8.4以下的机器上无效
     
-    [self createCVPixelBufferRef:&_pixelBuffer_out andTextureRef:&_cvTextureRef withSize:_size];
+    [self createCVPixelBufferRef:&_pixelBuffer_out andTextureRef:&_cvTextureRef withSize:self.size];
     
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
     
@@ -193,7 +191,7 @@
     [YDGLOperationNode bindTexture:_renderTexture_out];
     
     //注意!:这是无效的命令
-    //glTexImage2D(GL_TEXTURE_2D, 0 ,GL_RGBA, (int)_size.width, (int)_size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    //glTexImage2D(GL_TEXTURE_2D, 0 ,GL_RGBA, (int)self.size.width, (int)self.size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -374,7 +372,7 @@
 
 -(void)innerSetInputSize:(CGSize)newSize{
     
-    _size=newSize;
+    self.size=newSize;
     
 }
 
@@ -444,14 +442,14 @@
     
     if (CGSizeEqualToSize(CGSizeZero, renderSize)) {
         
-        renderSize=_size;
+        renderSize=self.size;
     }
     
     CGSize fixedRenderSize=[self fixedRenderSizeByRotatedAngle:renderSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
     
     [self willSetNodeSize:&fixedRenderSize];
 
-    if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, _size)==false) {
+    if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, self.size)==false) {
         
         [self setNeedLayout:YES];
         
@@ -507,7 +505,7 @@
     
     assert(_frameBuffer!=0);
     
-    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, _size.width, _size.height)];
+    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, self.size.width, self.size.height)];
     
 }
 
@@ -517,7 +515,7 @@
     
     output.texture=_renderTexture_out;
     
-    output.size=_size;
+    output.size=self.size;
     
     output.frameBuffer=_frameBuffer;
     
@@ -837,6 +835,18 @@
 }
 
 #pragma -mark 对外接口
+
+-(void)setSize:(CGSize)size{
+
+    if (CGSizeEqualToSize(_size, size)==NO) {
+        
+        _size=size;
+        
+        [self setNeedLayout:YES];
+        
+    }
+
+}
 
 -(void)setFloat:(GLfloat)newFloat forUniformName:(NSString *)uniformName{
     
