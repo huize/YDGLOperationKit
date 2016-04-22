@@ -77,10 +77,6 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     [self setOpaticy:1.0f];
     
-    //_transform=GLKMatrix4MakeScale(0.5, 0.5, 1.0);
-    
-    //_transform=GLKMatrix4Rotate(_transform, M_PI_4, 0.0, 0.0, 1.0);
-    
 }
 
 -(void)willSetNodeSize:(CGSize *)newInputSize{
@@ -167,6 +163,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 }
 
 -(void)drawSubNode:(YDGLOperationNodeLayer*_Nonnull)subNode widthIndex:(int)indexOfSubNode{
+    
+    if (subNode.hidden) return;
     
     YDGLOperationNodeOutput *output=[subNode getOutput];
     

@@ -16,13 +16,16 @@
  */
 @interface YDGLOperationNodeLayer : YDGLOperationNode
 
-@property(nonatomic,assign)float opaticy;//alpha 0.0~1.0
+@property(nonatomic,assign)float opaticy;//alpha 0.0~1.0,default is 1.0
 
 @property(nonatomic,assign)CGRect frame;
 
 @property(nonatomic,assign)GLKMatrix4 transform;//frame center as (0,0,0)
 
 @property(nonatomic,assign,nullable,readonly)YDGLOperationNodeLayer* superNodeLayer;
+
+@property(nonatomic,assign)BOOL hidden;//default is NO
+
 /**
  *  @author 9527, 16-04-20 20:58:10
  *
