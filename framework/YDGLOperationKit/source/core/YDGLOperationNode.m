@@ -36,10 +36,6 @@
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *beforePerformDrawOperations;//draw 的操作
 
-@property(nonatomic,nullable,retain)dispatch_semaphore_t lockForNodeStatus;
-
-@property(nonatomic,nullable,retain)dispatch_semaphore_t lockForTraversals;//TODO:后续看看能不能和lockForNode合并成一个锁
-
 @property(nonatomic,assign) int angle;//旋转的角度
 
 
@@ -111,9 +107,9 @@
     
     self.needLayout=YES;
     
-    self.lockForNodeStatus=dispatch_semaphore_create(1);
+    _lockForNodeStatus=dispatch_semaphore_create(1);
     
-    self.lockForTraversals=dispatch_semaphore_create(1);
+    _lockForTraversals=dispatch_semaphore_create(1);
     
     [self initTextureCache];
     

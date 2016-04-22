@@ -197,6 +197,11 @@ typedef enum {
     EAGLContext *_glContext;
     
     YDGLOperationNodeOutput *_outputData;
+    
+    dispatch_semaphore_t _lockForNodeStatus;
+    
+    dispatch_semaphore_t _lockForTraversals;//TODO:后续看看能不能和lockForNode合并成一个锁
+    
 }
 
 @property(nonatomic,nullable,copy)OperationCompletionBlock completionBlock;

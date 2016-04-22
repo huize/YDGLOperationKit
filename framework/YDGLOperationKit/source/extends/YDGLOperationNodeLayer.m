@@ -149,9 +149,15 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     glUseProgram(_drawModel.program);
     
-    for (int index=0; index<_subNodes.count; index++) {
+    dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
+    
+    NSArray<YDGLOperationNodeLayer*> *subNodeCopy= [self.subNodes copy];
+    
+    dispatch_semaphore_signal(_lockForNodeStatus);
+    
+    for (int index=0; index<subNodeCopy.count; index++) {
         
-        YDGLOperationNodeLayer* subNode=_subNodes[index];
+        YDGLOperationNodeLayer* subNode=subNodeCopy[index];
         
         [self drawSubNode:subNode widthIndex:index];
         
@@ -344,14 +350,21 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
     NSAssert(subNode.superNodeLayer==nil, @"YDGLOperationNodeLayer must be have one superLayer");
     
+    dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
+    
     [_subNodes addObject:subNode];
-
+    
     subNode.superNodeLayer=self;
+    
+    dispatch_semaphore_signal(_lockForNodeStatus);
+    
 
 }
 
 -(void)removeSubNodeLayer:(YDGLOperationNodeLayer *)subNode{
-
+    
+    dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
+    
     if ([_subNodes containsObject:subNode]) {
         
         [_subNodes removeObject:subNode];
@@ -359,6 +372,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
         subNode.superNodeLayer=nil;
     }
     
+    dispatch_semaphore_signal(_lockForNodeStatus);
+
 }
 
 -(void)removeFromSuperNodeLayer{
@@ -366,9 +381,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     if (_superNodeLayer) {
         
         [_superNodeLayer removeSubNodeLayer:self];
-        
-        _superNodeLayer=nil;
-        
+                
     }
 
 }
