@@ -20,8 +20,8 @@ static EAGLContext *appEAGLContext;//
 
 +(void)initialize{
     
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+   
+    if (self==[YDGLOperationContext class]) {
         
         contexts=[NSMutableOrderedSet orderedSet];
         
@@ -29,7 +29,7 @@ static EAGLContext *appEAGLContext;//
         
         appEAGLContext=[[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
         
-    });
+    }
     
 }
 
