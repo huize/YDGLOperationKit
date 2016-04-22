@@ -32,12 +32,13 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
                                                              float fixedOpaticy=opaticy;
                                                              
                                                              if(fixedOpaticy<0.0)fixedOpaticy=0.0;
-                                                             
+             
                                                              if(fixedOpaticy>1.0)fixedOpaticy=1.0;
-                                                             
-                                                             vec4 color=texture2D(inputImageTexture, textureCoordinate.xy);
-                                                             
+                                                            
+                                                             vec4 color =texture2D(inputImageTexture, textureCoordinate.xy);
+                                                        
                                                              gl_FragColor=color*fixedOpaticy;
+
                                                          }
                                                          );
 
@@ -320,6 +321,15 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 }
 
+-(void)innerSetFrame:(CGRect)frame{
+
+    _frame=frame;
+    
+    _center=CGPointMake(CGRectGetMidX(_frame), CGRectGetMidY(_frame));
+
+}
+
+
 #pragma -mark public api
 
 -(void)setOpaticy:(float)opaticy{
@@ -365,10 +375,50 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 -(void)setFrame:(CGRect)frame{
 
-    _frame=frame;
+    [self innerSetFrame:frame];
     
     self.size=frame.size;
 
+}
+/**
+ *  @author 9527, 16-04-22 20:08:09
+ *
+ *
+ *  set size may be change frame property
+ *  @param size
+ *
+ *  @since 1.0.0
+ */
+-(void)setSize:(CGSize)size{
+
+    [super setSize:size];
+    
+    if (CGRectIsEmpty(self.frame)==NO&&CGSizeEqualToSize(size, self.frame.size)==NO) {
+        
+        [self innerSetFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, size.width, size.height)];
+        
+    }
+    
+}
+
+-(void)setCenter:(CGPoint)center{
+    
+    CGRect currentFrame=_frame;
+    
+    if(CGRectIsEmpty(currentFrame)) return ;//must set frame property
+    
+    float offsetX=center.x-self.center.x;
+    
+    float offsetY=center.y-self.center.y;
+    
+    currentFrame=CGRectOffset(currentFrame, offsetX, offsetY);
+    
+    _frame=currentFrame;// reset frame property did not chage size,so should not reset size property
+
+    _center=center;
+    
+    //assert(CGPointEqualToPoint(center, CGPointMake(CGRectGetMidX(_frame), CGRectGetMidY(_frame))));
+    
 }
 
 -(void)dealloc{

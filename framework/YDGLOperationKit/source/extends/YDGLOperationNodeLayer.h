@@ -26,6 +26,8 @@
 
 @property(nonatomic,assign)BOOL hidden;//default is NO
 
+@property(nonatomic,assign)CGPoint center;//like UIVew center property,not available before set frame property
+
 /**
  *  @author 9527, 16-04-20 20:58:10
  *
