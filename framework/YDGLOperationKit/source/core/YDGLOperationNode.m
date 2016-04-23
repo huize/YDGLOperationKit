@@ -13,6 +13,18 @@
 @implementation YDGLOperationNodeOutput
 
 @end
+/**
+ *  @author 9527, 16-04-23 17:04:06
+ *
+ *  Node status
+ */
+typedef struct _NodeStatusFlag{
+
+    BOOL needLayout;//是否需要重新计算framebuffer的大小
+
+    BOOL destoried;// return YES if called destory
+    
+}NodeStatusFlag;
 
 @interface YDGLOperationNode()
 
@@ -28,8 +40,7 @@
 
 @property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperationNode>> *dependency;//
 
-@property(nonatomic,assign) BOOL needLayout;//是否需要重新计算framebuffer的大小
-
+@property(nonatomic,assign) NodeStatusFlag nodeStatusFlag;
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *programOperations;//program 的操作
 
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *beforePerformTraversalsOperations;//traversals 的操作
@@ -105,7 +116,9 @@
     
     self.beforePerformTraversalsOperations=[NSMutableArray array];
     
-    self.needLayout=YES;
+    NodeStatusFlag defaultStatus={.needLayout=YES,.destoried=NO};
+
+    self.nodeStatusFlag=defaultStatus;
     
     _lockForNodeStatus=dispatch_semaphore_create(1);
     
@@ -400,17 +413,19 @@
  */
 -(void)notifyNextOperation{
     
-    if (self.completionBlock) {
-        
-        self.completionBlock([self getOutput]);
-        
-    }
-    
     dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
+    
+    OperationCompletionBlock block=self.completionBlock;
     
     NSArray<id<YDGLOperationNode>> *nextoperations= [self.nextOperations copy];
     
     dispatch_semaphore_signal(_lockForNodeStatus);
+    
+    if (block) {
+        
+        block([self getOutput]);
+        
+    }
     
     for (id<YDGLOperationNode>  nextOperation in nextoperations) {
         
@@ -447,20 +462,21 @@
 
     if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, self.size)==false) {
         
-        [self setNeedLayout:YES];
+        //[self setNeedLayout:YES];
+        
+        _nodeStatusFlag.needLayout=YES;
         
     }
     
     [self activeGLContext:^{
         
-        if(self.needLayout){
+        if(_nodeStatusFlag.needLayout){
             
             [self innerSetInputSize:fixedRenderSize];
             
             [self performLayout];
             
-            [self setNeedLayout:NO];
-            
+            _nodeStatusFlag.needLayout=NO;
         }
         
         [self beforePerformDraw];
@@ -728,7 +744,8 @@
     
     
     dispatch_semaphore_wait(_lockForNodeStatus,DISPATCH_TIME_FOREVER);
-    BOOL ready =[self canPerformTraversals];
+    BOOL ready =(_nodeStatusFlag.destoried==NO)&&[self canPerformTraversals];
+    
     dispatch_semaphore_signal(_lockForNodeStatus);
     
     if (ready) {
@@ -768,9 +785,12 @@
     
     [self clearCollections];
     
+    self.completionBlock=nil;
+    
+    _nodeStatusFlag.destoried=YES;
+
     dispatch_semaphore_signal(_lockForNodeStatus);
     
-    self.completionBlock=nil;
 }
 
 -(void)clearCollections{
@@ -838,7 +858,9 @@
         
         _size=size;
         
-        [self setNeedLayout:YES];
+        //[self setNeedLayout:YES];
+        
+        _nodeStatusFlag.needLayout=YES;
         
     }
 
