@@ -133,7 +133,7 @@ typedef struct _NodeStatusFlag{
         [_drawModel loadSquareVex];
 
         
-    }];
+    } autoRestore:NO];
 
     _textureLoaderDelegate=self;
     
@@ -228,7 +228,7 @@ typedef struct _NodeStatusFlag{
             
         }
         
-    }];
+    } autoRestore:NO];
     
 }
 
@@ -386,7 +386,7 @@ typedef struct _NodeStatusFlag{
 }
 
 
--(void)activeGLContext:(void (^)(void))block{
+-(void)activeGLContext:(void (^)(void))block autoRestore:(BOOL) autoRestore{
     
     EAGLContext *preContext=[EAGLContext currentContext];
     
@@ -400,7 +400,12 @@ typedef struct _NodeStatusFlag{
         
         block();
         
-        [EAGLContext setCurrentContext:preContext];
+        if (autoRestore) {
+            
+            [EAGLContext setCurrentContext:preContext];
+            
+        }
+        
     }
 }
 
@@ -483,7 +488,7 @@ typedef struct _NodeStatusFlag{
         
         [self performDraw];
         
-    }];
+    } autoRestore:NO];
     
     
     [self buildOutputData];
@@ -823,7 +828,7 @@ typedef struct _NodeStatusFlag{
         
         _frameBuffer=0;
     
-    }];
+    } autoRestore:YES];
     
     CVOpenGLESTextureCacheFlush(_coreVideoTextureCache, 0);
     

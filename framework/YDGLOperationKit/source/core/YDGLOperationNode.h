@@ -223,9 +223,15 @@ typedef enum {
  *  @since 1.0.0
  */
 -(void)setupTextureForProgram:(GLuint)program;
-
--(void)activeGLContext:(void(^_Nonnull)(void))block;
-
+/**
+ *  @author 9527, 16-04-23 20:04:36
+ *
+ *  set current EAGLContext
+ *
+ *  @param block
+ *  @param autoRestore restore pre EAGLContext ?
+ */
+-(void)activeGLContext:(void (^_Nonnull)(void))block autoRestore:(BOOL) autoRestore;
 //opengl operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
 

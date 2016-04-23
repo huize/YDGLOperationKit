@@ -217,7 +217,7 @@
         glDeleteTextures(1, &_renderTexture_input);
         
         _renderTexture_input=0;
-    }];
+    } autoRestore:YES];
     
     
 

@@ -18,7 +18,7 @@
         
         [self prepareForRender];
         
-    }];
+    } autoRestore:NO];
     
     [self performTraversalsIfCanWhenDependencyDone:self];
     

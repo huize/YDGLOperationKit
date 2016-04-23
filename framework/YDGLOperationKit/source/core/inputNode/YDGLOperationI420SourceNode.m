@@ -212,7 +212,7 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
         glDeleteTextures(1, &_textureV);
         
         _textureV=0;
-    }];
+    } autoRestore:YES];
     
 }
 

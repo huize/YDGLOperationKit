@@ -279,7 +279,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         
         [self cleanUpTextures];
 
-    }];
+    } autoRestore:YES];
 
     CVOpenGLESTextureCacheFlush(_textureCache, 0);
     

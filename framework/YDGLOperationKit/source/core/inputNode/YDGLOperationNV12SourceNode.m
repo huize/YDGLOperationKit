@@ -181,7 +181,7 @@ NSString *const kYDGLOperationNV12ToLAFragmentShaderString = SHADER_STRING
         
         _textureUV=0;
         
-    }];
+    } autoRestore:YES];
     
 }
 
