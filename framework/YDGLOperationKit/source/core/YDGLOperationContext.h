@@ -6,9 +6,12 @@
 //  Copyright © 2016年 yifan. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @import OpenGLES;
+
+@import CoreVideo;
+
 /**
  *  @author 9527, 16-04-14 14:02:47
  *
@@ -43,5 +46,12 @@
  *  @since 1.0.0
  */
 +(void)popContext;
+/**
+ *  @author 9527, 16-04-23 17:04:28
+ *
+ *
+ *  @return global texture cache
+ */
+//+(CVOpenGLESTextureCacheRef _Nonnull)globalTextureCache;
 
 @end
