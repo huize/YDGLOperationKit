@@ -817,9 +817,13 @@ typedef struct _NodeStatusFlag{
     
     [self cleanUpTexture];
     
-    glDeleteFramebuffers(1, &_frameBuffer);
+    [self activeGLContext:^{
+        
+        glDeleteFramebuffers(1, &_frameBuffer);
+        
+        _frameBuffer=0;
     
-    _frameBuffer=0;
+    }];
     
     CVOpenGLESTextureCacheFlush(_coreVideoTextureCache, 0);
     
