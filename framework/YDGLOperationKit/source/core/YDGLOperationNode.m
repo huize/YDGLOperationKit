@@ -701,8 +701,17 @@ typedef struct _NodeStatusFlag{
 
 -(void)willSetNodeSize:(CGSize*_Nonnull)newInputSize{
     
+    //improtant:because setSize is public api,
+    //so should modify newInputSize=_size to force
     
+    //set the node size==_size
     
+    if (CGSizeEqualToSize(self.size, CGSizeZero)==NO) {
+        
+        *newInputSize=CGSizeMake(self.size.width, self.size.height);
+        
+    }
+
 }
 
 -(BOOL)canPerformTraversals{

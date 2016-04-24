@@ -134,12 +134,6 @@
     
 }
 
--(void)willSetNodeSize:(CGSize *)newInputSize{
-
-    *newInputSize=CGSizeMake(self.size.width, self.size.height);
-
-}
-
 -(void)dealloc{
 
     CGContextRelease(_context);
