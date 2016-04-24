@@ -131,12 +131,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
     }
     
-    [YDGLOperationNode bindTexture:CVOpenGLESTextureGetName(_lumaTexture)];
-    
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    [self bindTexture:CVOpenGLESTextureGetName(_lumaTexture)];
     
     // UV-plane
     glActiveTexture(GL_TEXTURE1);
@@ -157,11 +152,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
         NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
     }
     
-    [YDGLOperationNode bindTexture:CVOpenGLESTextureGetName(_chromaTexture)];
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    [self bindTexture:CVOpenGLESTextureGetName(_chromaTexture)];
     
     CVPixelBufferUnlockBaseAddress(_pixelBufferRef, 0);
     
