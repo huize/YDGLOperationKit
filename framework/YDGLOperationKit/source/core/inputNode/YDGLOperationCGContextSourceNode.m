@@ -71,7 +71,9 @@
     
     if (drawBlock) {
         
+        CGContextSaveGState(_context);
         drawBlock(_context);
+        CGContextRestoreGState(_context);
     }
     
 }
