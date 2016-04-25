@@ -82,13 +82,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 -(void)willSetNodeSize:(CGSize *)newInputSize{
 
-    //force set the node size equalTo frame size
+    [super willSetNodeSize:newInputSize];
     
-    if (CGSizeEqualToSize(self.size, CGSizeZero)==NO) {
-        
-        *newInputSize=CGSizeMake(self.size.width, self.size.height);
-
-    }
     CGSize sizeWillSet=*newInputSize;
     
     CGSize sizeInPixel=CGSizeMake(sizeWillSet.width,sizeWillSet.height);

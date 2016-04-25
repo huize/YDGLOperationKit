@@ -18,6 +18,8 @@ static dispatch_semaphore_t s_lock;
 
 static EAGLContext *appEAGLContext;//
 
+static CVOpenGLESTextureCacheRef globalTextureCache;
+
 +(void)initialize{
     
    
@@ -79,5 +81,24 @@ static EAGLContext *appEAGLContext;//
     return instance;
     
 }
+
++(CVOpenGLESTextureCacheRef)globalTextureCache{
+
+    dispatch_semaphore_wait(s_lock,DISPATCH_TIME_FOREVER);
+    
+    if (globalTextureCache==NULL) {
+        
+        CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL,appEAGLContext, NULL, &globalTextureCache);
+        
+        NSAssert(err==kCVReturnSuccess, @"create global textureCache fial %i",err);
+        
+    }
+    
+    dispatch_semaphore_signal(s_lock);
+    
+    return globalTextureCache;
+
+}
+
 
 @end

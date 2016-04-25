@@ -98,13 +98,8 @@
  */
 -(void)innerUploadCGContextToTexture{
     
-    [YDGLOperationNode bindTexture:_renderTexture_input];
     
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //TODO 一定要加上这2句话
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    [self bindTexture:_renderTexture_input];
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)self.size.width, (int)self.size.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, _baseAddress);
     
@@ -139,12 +134,6 @@
     
 }
 
--(void)willSetNodeSize:(CGSize *)newInputSize{
-
-    *newInputSize=CGSizeMake(self.size.width, self.size.height);
-
-}
-
 -(void)dealloc{
 
     CGContextRelease(_context);
@@ -160,7 +149,7 @@
         glDeleteTextures(1, &_renderTexture_input);
         
         _renderTexture_input=0;
-    }];
+    } autoRestore:YES];
 
 }
 

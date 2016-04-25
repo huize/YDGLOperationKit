@@ -46,6 +46,8 @@
     
     YDGLOperationImageRotationMode _inputRotationMode;
     
+    YDGLOperationNode *_contentNode;
+    
 }
 
 +(Class)layerClass{
@@ -640,11 +642,23 @@
 
 }
 
+-(void)destory{
+
+    [_contentNode removeNextOperation:self];
+    
+    _contentNode=nil;
+
+}
+
 #pragma -mark public api
 
 -(void)setContentProviderNode:(YDGLOperationNode*_Nonnull)contentNode{
 
-    [contentNode addNextOperation:self];
+    [_contentNode removeNextOperation:self];
+    
+    _contentNode=contentNode;
+    
+    [_contentNode addNextOperation:self];
     
 }
 

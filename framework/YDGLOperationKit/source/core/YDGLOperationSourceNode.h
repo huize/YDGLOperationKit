@@ -24,4 +24,6 @@
  */
 -(void)setNeedDisplay;
 
+-(void)bindTexture:(GLuint)textureId;
+
 @end

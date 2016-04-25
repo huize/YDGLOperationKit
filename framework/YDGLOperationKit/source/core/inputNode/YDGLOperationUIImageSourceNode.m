@@ -161,13 +161,7 @@
         imageData = (GLubyte *)CFDataGetBytePtr(dataFromImageDataProvider);
     }
     
-    [YDGLOperationNode bindTexture:_renderTexture_input];
-    
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //TODO 一定要加上这2句话
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    [self bindTexture:_renderTexture_input];
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)pixelSizeToUseForTexture.width, (int)pixelSizeToUseForTexture.height, 0, format, GL_UNSIGNED_BYTE, imageData);
     
@@ -217,7 +211,7 @@
         glDeleteTextures(1, &_renderTexture_input);
         
         _renderTexture_input=0;
-    }];
+    } autoRestore:YES];
     
     
 
