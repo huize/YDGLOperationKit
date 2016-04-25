@@ -504,8 +504,11 @@ typedef struct _NodeStatusFlag{
     //NSAssert(self.needLayout==YES, @"不需要调用 performLayout");
     
     [self setupFrameBuffer];
-
+    
+    [self didLayout];
+    
 }
+
 -(void)beforePerformDraw{
     
     for (dispatch_block_t drawOperation in self.beforePerformDrawOperations) {
@@ -720,6 +723,12 @@ typedef struct _NodeStatusFlag{
 
     return [self allDependencyDone];
 
+}
+
+-(void)didLayout{
+    
+    
+    
 }
 
 #pragma -mark Node 协议的实现

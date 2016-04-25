@@ -292,5 +292,13 @@ typedef enum {
  *  @since 1.0.0
  */
 -(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect;
+/**
+ *  @author 9527, 16-04-25 22:22:23
+ *
+ *  self framebuffer had layout,subclass can do something after layout self
+ *
+ *  @since 1.0.0
+ */
+-(void)didLayout;
 
 @end

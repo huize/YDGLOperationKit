@@ -289,6 +289,18 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
    return [super canPerformTraversals]&&[self innerAllSubNodeDone];
 }
 
+-(void)didLayout{
+    
+    [self layoutSubNodeLayerOfNodeLayer:self];
+    
+}
+
+#pragma  -mark subclass can override
+
+-(void)layoutSubNodeLayerOfNodeLayer:(YDGLOperationNodeLayer*_Nonnull)parentLayer{
+
+
+}
 
 #pragma -mark private method
 

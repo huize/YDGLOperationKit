@@ -57,5 +57,16 @@
  */
 -(void)removeFromSuperNodeLayer;
 
+/**
+ *  @author 9527, 16-04-25 22:25:21
+ *
+ *  subclass can custom layout subNodeLayer
+ *
+ *  @param parentLayer self
+ *
+ *  @since 1.0.0
+ */
+-(void)layoutSubNodeLayerOfNodeLayer:(YDGLOperationNodeLayer*_Nonnull)parentLayer;
+
 @end
 
