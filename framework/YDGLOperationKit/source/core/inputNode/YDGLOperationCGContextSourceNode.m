@@ -49,8 +49,6 @@
     _baseAddress=(GLubyte*)calloc(1,sizeof(GLubyte)*self.size.width*self.size.height*4);
     
     _context = CGBitmapContextCreate(_baseAddress, (int)self.size.width,(int)self.size.height, 8,(int)self.size.width * 4, genericRGBColorspace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-
-    
     
     //init CGContext config
     

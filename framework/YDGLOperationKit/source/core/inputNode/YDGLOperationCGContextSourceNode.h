@@ -18,7 +18,7 @@
 /**
  *  @author 9527, 16-04-18 17:28:41
  *
- *  get the CGContextRef to draw you content
+ *  get the CGContextRef to draw you content,(0,0) is left bottom of window
  *
  *  @param drawBlock drawBlock description
  *
