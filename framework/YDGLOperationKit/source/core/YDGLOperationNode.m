@@ -708,7 +708,9 @@ typedef struct _NodeStatusFlag{
     
     if (CGSizeEqualToSize(self.size, CGSizeZero)==NO) {
         
-        *newInputSize=CGSizeMake(self.size.width, self.size.height);
+        CGSize fixedByRoated=[self fixedRenderSizeByRotatedAngle:self.size];
+        
+        *newInputSize=CGSizeMake(fixedByRoated.width,fixedByRoated.height);
         
     }
 
