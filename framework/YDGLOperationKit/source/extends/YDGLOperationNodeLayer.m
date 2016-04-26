@@ -345,6 +345,12 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 #pragma -mark public api
 
+-(NSArray<__kindof YDGLOperationNodeLayer *> *)subNodeLayer{
+
+    return [_subNodes copy];
+
+}
+
 -(void)setOpaticy:(float)opaticy{
 
     _opaticy=opaticy;

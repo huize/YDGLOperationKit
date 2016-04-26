@@ -28,6 +28,8 @@
 
 @property(nonatomic,assign)CGPoint center;//like UIVew center property,not available before set frame property
 
+@property(nonatomic,copy,readonly,nonnull) NSArray<__kindof YDGLOperationNodeLayer*>* subNodeLayer;//
+
 /**
  *  @author 9527, 16-04-20 20:58:10
  *
