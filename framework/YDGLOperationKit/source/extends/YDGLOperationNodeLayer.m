@@ -443,6 +443,12 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 -(void)dealloc{
 
+    for (YDGLOperationNodeLayer* subLayer in _subNodes) {
+        
+        [subLayer removeFromSuperNodeLayer];
+        
+    }
+    
     [_subNodes removeAllObjects];
 
 }
