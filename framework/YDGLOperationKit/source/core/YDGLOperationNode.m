@@ -709,14 +709,16 @@ typedef struct _NodeStatusFlag{
     
     //set the node size==_size
     
-    if (CGSizeEqualToSize(self.size, CGSizeZero)==NO) {
-        
-        CGSize fixedByRoated=[self fixedRenderSizeByRotatedAngle:self.size];
-        
-        *newInputSize=CGSizeMake(fixedByRoated.width,fixedByRoated.height);
-        
-    }
-
+    //BUG:make needLayout alway TURE
+    
+    //    if (CGSizeEqualToSize(self.size, CGSizeZero)==NO) {
+    //
+    //        CGSize fixedByRoated=[self fixedRenderSizeByRotatedAngle:self.size];
+    //
+    //        *newInputSize=CGSizeMake(fixedByRoated.width,fixedByRoated.height);
+    //        
+    //    }
+    
 }
 
 -(BOOL)canPerformTraversals{
@@ -897,9 +899,12 @@ typedef struct _NodeStatusFlag{
 
 -(void)setFloat:(GLfloat)newFloat forUniformName:(NSString *)uniformName{
     
+    
+    __unsafe_unretained YDGLOperationNode* unsafe_self=self;
+    
     dispatch_block_t operation=^{
         
-        GLint location=[_drawModel locationOfUniform:uniformName];
+        GLint location=[unsafe_self.drawModel locationOfUniform:uniformName];
         
         glUniform1f(location, newFloat);
         
@@ -915,9 +920,11 @@ typedef struct _NodeStatusFlag{
 
 - (void)setInt:(GLint)newInt forUniformName:(NSString *_Nonnull)uniformName{
 
+    __unsafe_unretained YDGLOperationNode* unsafe_self=self;
+
     dispatch_block_t operation=^{
         
-        GLint location=[_drawModel locationOfUniform:uniformName];
+        GLint location=[unsafe_self.drawModel locationOfUniform:uniformName];
         
         glUniform1i(location, newInt);
         
@@ -935,9 +942,11 @@ typedef struct _NodeStatusFlag{
 
 - (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName{
 
+    __unsafe_unretained YDGLOperationNode* unsafe_self=self;
+
     dispatch_block_t operation=^{
         
-        GLint location=[_drawModel locationOfUniform:uniformName];
+        GLint location=[unsafe_self.drawModel locationOfUniform:uniformName];
         
         glUniform1i(location, newBool==true);
         
@@ -957,9 +966,11 @@ typedef struct _NodeStatusFlag{
     
     int localAngle=[self calculateAngleFromRotateOption:option];
 
+    __unsafe_unretained YDGLOperationNode* unsafe_self=self;
+
     dispatch_block_t rotateLayoutOperation=^{
         
-        self.angle=localAngle;
+        unsafe_self.angle=localAngle;
         
     };
     
@@ -967,7 +978,7 @@ typedef struct _NodeStatusFlag{
     
     dispatch_block_t rotateDrawOperation=^{
         
-        _modelViewMatrix=GLKMatrix4Rotate(_modelViewMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 0.0, 1.0);
+        unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 0.0, 1.0);
     
     };
     
@@ -983,9 +994,11 @@ typedef struct _NodeStatusFlag{
     
     int localAngle=[self calculateAngleFromRotateOption:option];
 
+    __unsafe_unretained YDGLOperationNode* unsafe_self=self;
+
     dispatch_block_t rotateDrawOperation=^{
                 
-        _modelViewMatrix=GLKMatrix4Rotate(_modelViewMatrix, GLKMathDegreesToRadians(localAngle), 0.0, 1.0, 0.0);
+        unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(localAngle), 0.0, 1.0, 0.0);
         
     };
     
