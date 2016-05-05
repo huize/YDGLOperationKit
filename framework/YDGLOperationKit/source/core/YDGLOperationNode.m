@@ -40,7 +40,7 @@ typedef struct _NodeStatusFlag{
 
 @property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperationNode>> *nextOperations;//
 
-@property(nonatomic,nonnull,retain) NSMutableArray<id<YDGLOperationNode>> *dependency;//
+@property(nonatomic,nonnull,assign) CFMutableArrayRef dependency;//
 
 @property(nonatomic,assign) NodeStatusFlag nodeStatusFlag;
 @property(nonatomic,nullable,retain) NSMutableArray<dispatch_block_t> *programOperations;//program 的操作
@@ -109,7 +109,7 @@ typedef struct _NodeStatusFlag{
     
     self.nextOperations=[NSMutableArray array];
     
-    self.dependency=[NSMutableArray array];
+    self.dependency=CFArrayCreateMutable(kCFAllocatorDefault, 1, NULL);
     
     _glContext=[YDGLOperationContext currentGLContext];
     
@@ -346,11 +346,13 @@ typedef struct _NodeStatusFlag{
  */
 -(BOOL)allDependencyDone{
     
-    if (self.dependency.count==0)return NO;
+    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+    
+    if (dependency.count==0)return NO;
     
     __block BOOL done=YES;
     
-    [self.dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [dependency enumerateObjectsUsingBlock:^(id<YDGLOperationNode>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         YDGLOperationNodeOutput *output=[obj getOutput];
         
@@ -378,7 +380,9 @@ typedef struct _NodeStatusFlag{
  */
 -(CGSize)calculateRenderSize{
     
-    YDGLOperationNodeOutput *firstNodeOutput= [[self.dependency firstObject] getOutput];
+    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+    
+    YDGLOperationNodeOutput *firstNodeOutput= [[dependency firstObject] getOutput];
 
     return firstNodeOutput.size;
     
@@ -718,7 +722,9 @@ typedef struct _NodeStatusFlag{
  */
 -(void)setTextureCoord{
 
-    for (int index=0; index<_dependency.count; index++) {
+    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+    
+    for (int index=0; index<dependency.count; index++) {
         
         NSString *name=[_textureLoaderDelegate textureCoordAttributeNameAtIndex:index];
         
@@ -735,9 +741,11 @@ typedef struct _NodeStatusFlag{
 
 -(void)setupTextureForProgram:(GLuint)program{
 
-    for (int index=0; index<self.dependency.count;index++) {
+    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+    
+    for (int index=0; index<dependency.count;index++) {
         
-        YDGLOperationNodeOutput *output=[[self.dependency objectAtIndex:index] getOutput];
+        YDGLOperationNodeOutput *output=[[dependency objectAtIndex:index] getOutput];
         
         NSString *name=[_textureLoaderDelegate textureUniformNameAtIndex:index];
         
@@ -796,16 +804,20 @@ typedef struct _NodeStatusFlag{
 
 -(void)addDependency:(id<YDGLOperationNode>)operation{
 
-    [self.dependency addObject:operation];
+    //CFArrayAppendValue(_dependency, CFBridgingRetain(operation));//will retain operation;
+    
+    CFArrayAppendValue(_dependency, (__bridge const void *)(operation));//will not retain operation;
     
     [operation addNextOperation:self];
 
 }
 
 -(void)removeDependency:(id<YDGLOperationNode>)operation{
+    
+    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
 
-    [_dependency removeObject:operation];
-
+    [dependency removeObject:operation];
+    
 }
 
 -(void)removeNextOperation:(id<YDGLOperationNode>)nextOperation{
@@ -875,7 +887,7 @@ typedef struct _NodeStatusFlag{
 
 -(void)clearCollections{
 
-    [self.dependency removeAllObjects];
+    CFArrayRemoveAllValues(_dependency);
     
     [self.nextOperations removeAllObjects];
     

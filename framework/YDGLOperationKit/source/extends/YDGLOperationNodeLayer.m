@@ -277,7 +277,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
     [super addDependency:operation];
     
-    if (_dependency.count>1) {
+    if (CFArrayGetCount(_dependency)>1) {
         
         NSAssert(NO, @"because dependency node provide the blend node content,so only support one dependency");
     }

@@ -188,7 +188,7 @@ typedef enum {
     
     YDDrawModel *_drawModel;
     
-    NSMutableArray<id<YDGLOperationNode>> *_dependency;
+    CFMutableArrayRef _dependency;//contain the id<YDGLOperationNode>,use CFMutableArrayRef to break recyle retain of dependency and nextoperation
     
     NSMutableArray<id<YDGLOperationNode>> *_nextOperations;
     
