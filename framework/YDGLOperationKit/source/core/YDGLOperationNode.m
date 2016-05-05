@@ -121,7 +121,7 @@ typedef struct _NodeStatusFlag{
     
     self.beforePerformTraversalsOperations=[NSMutableArray array];
     
-    NodeStatusFlag defaultStatus={.needLayout=YES,.destoried=NO};
+    NodeStatusFlag defaultStatus={.needLayout=YES,.destoried=NO,.needCalculateFrameBufferSize=YES};
 
     self.nodeStatusFlag=defaultStatus;
     
