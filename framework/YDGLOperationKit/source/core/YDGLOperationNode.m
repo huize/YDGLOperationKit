@@ -24,6 +24,8 @@ typedef struct _NodeStatusFlag{
 
     BOOL destoried;// return YES if called destory
     
+    BOOL needCalculateFrameBufferSize;//if size or rotated changed,framebuffer should recalculate,but maybe not needLayout
+    
 }NodeStatusFlag;
 
 @interface YDGLOperationNode()
@@ -49,10 +51,13 @@ typedef struct _NodeStatusFlag{
 
 @property(nonatomic,assign) int angle;//旋转的角度
 
+@property(nonatomic,assign)CGSize frameBufferSize;//frameBufferSize=size*angle;
 
 @property(nonatomic,assign) CVOpenGLESTextureCacheRef coreVideoTextureCache;
 
 @property(nonatomic,retain)YDGLOperationNodeOutput *outputData;//this Node output;
+
+@property(nonatomic,assign)CGSize framebufferSize;//size of framebuffer
 
 @end
 
@@ -189,7 +194,7 @@ typedef struct _NodeStatusFlag{
     //注意:glGenTextures(1, &_renderTexture_out);
     //上面那种方式创建的纹理会导致美艳算法在iOS8.4以下的机器上无效
     
-    [self createCVPixelBufferRef:&_pixelBuffer_out andTextureRef:&_cvTextureRef withSize:self.size];
+    [self createCVPixelBufferRef:&_pixelBuffer_out andTextureRef:&_cvTextureRef withSize:_frameBufferSize];
     
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
     
@@ -379,9 +384,8 @@ typedef struct _NodeStatusFlag{
     
 }
 
--(void)innerSetInputSize:(CGSize)newSize{
+-(void)innerSetFrameBufferSize:(CGSize)newSize{
     
-    self.size=newSize;
     
 }
 
@@ -454,30 +458,12 @@ typedef struct _NodeStatusFlag{
 
 -(void)performTraversals{
     
-    CGSize renderSize=[self calculateRenderSize];
-    
-    if (CGSizeEqualToSize(CGSizeZero, renderSize)) {
-        
-        renderSize=self.size;
-    }
-    
-    CGSize fixedRenderSize=[self fixedRenderSizeByRotatedAngle:renderSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
-    
-    [self willSetNodeSize:&fixedRenderSize];
-
-    if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, self.size)==false) {
-        
-        //[self setNeedLayout:YES];
-        
-        _nodeStatusFlag.needLayout=YES;
-        
-    }
+   
+    [self measureNodeSize];
     
     [self activeGLContext:^{
         
         if(_nodeStatusFlag.needLayout){
-            
-            [self innerSetInputSize:fixedRenderSize];
             
             [self performLayout];
             
@@ -525,7 +511,7 @@ typedef struct _NodeStatusFlag{
     
     assert(_frameBuffer!=0);
     
-    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, self.size.width, self.size.height)];
+    [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, self.frameBufferSize.width, self.frameBufferSize.height)];
     
 }
 
@@ -535,7 +521,7 @@ typedef struct _NodeStatusFlag{
     
     output.texture=_renderTexture_out;
     
-    output.size=self.size;
+    output.size=self.frameBufferSize;
     
     output.frameBuffer=_frameBuffer;
     
@@ -562,6 +548,71 @@ typedef struct _NodeStatusFlag{
     
     dispatch_semaphore_signal(_lockForNodeStatus);
     
+}
+
+/**
+ *  @author 9527, 16-05-05 14:53:34
+ *
+ *  measure the node frambuffer size
+ *
+ *  @since 1.0.0
+ */
+-(void)measureNodeSize{
+
+    /*
+     CGSize renderSize=[self calculateRenderSize];//如果有size了则返回size,没有的话返回first size
+     
+     if (CGSizeEqualToSize(CGSizeZero, renderSize)) {
+     
+     renderSize=self.size;
+     }
+     
+     CGSize fixedRenderSize=[self fixedRenderSizeByRotatedAngle:renderSize];//需要把角度考虑进行,不然带旋转的node 的CGSizeEqualToSize 会一直是false
+     
+     [self willSetNodeContentSize:fixedRenderSize];
+     
+     if (CGSizeEqualToSize(CGSizeZero,fixedRenderSize)==false&&CGSizeEqualToSize(fixedRenderSize, self.size)==false) {
+     
+     //[self setNeedLayout:YES];
+     
+     _nodeStatusFlag.needLayout=YES;
+     
+     }*/
+    
+    //1.calculate the node size:if setSize,use _size, else _size==first Dependency Node size,use _size
+    
+    //2.if needCalculateFrameBufferSize==YES, _framebufferSize==_size*angle
+    
+    //3.if _framebufferSize changed,needLayout=YES,self willSetNodeFrameBufferSize:framebufferSize
+    
+    //4.if
+    
+    if (CGSizeEqualToSize(CGSizeZero, _size)) {
+        
+        _size=[self calculateRenderSize];
+        
+        _nodeStatusFlag.needCalculateFrameBufferSize=YES;
+    }
+    
+    if (_nodeStatusFlag.needCalculateFrameBufferSize) {
+        
+        CGSize newFrameBufferSize=[self fixedRenderSizeByRotatedAngle:_size];
+        
+        if (CGSizeEqualToSize(_frameBufferSize, newFrameBufferSize)==NO) {
+            
+            _frameBufferSize=newFrameBufferSize;
+            
+            _nodeStatusFlag.needLayout=YES;
+            
+            [self innerSetFrameBufferSize:_frameBufferSize];
+            
+            [self willSetNodeFrameBufferSize:_frameBufferSize];
+            
+        }
+        
+        _nodeStatusFlag.needCalculateFrameBufferSize=NO;
+    }
+
 }
 
 
@@ -702,7 +753,7 @@ typedef struct _NodeStatusFlag{
     
 }
 
--(void)willSetNodeSize:(CGSize*_Nonnull)newInputSize{
+-(void)willSetNodeFrameBufferSize:(CGSize)newFrameBufferSize{
     
     //improtant:because setSize is public api,
     //so should modify newInputSize=_size to force
@@ -718,6 +769,8 @@ typedef struct _NodeStatusFlag{
     //        *newInputSize=CGSizeMake(fixedByRoated.width,fixedByRoated.height);
     //        
     //    }
+    
+    NSLog(@"framebuffer 最新size:%f %f",newFrameBufferSize.width,newFrameBufferSize.height);
     
 }
 
@@ -891,14 +944,15 @@ typedef struct _NodeStatusFlag{
         
         //[self setNeedLayout:YES];
         
-        _nodeStatusFlag.needLayout=YES;
+        //_nodeStatusFlag.needLayout=YES;
+        
+        _nodeStatusFlag.needCalculateFrameBufferSize=YES;
         
     }
 
 }
 
 -(void)setFloat:(GLfloat)newFloat forUniformName:(NSString *)uniformName{
-    
     
     __unsafe_unretained YDGLOperationNode* unsafe_self=self;
     
@@ -971,6 +1025,10 @@ typedef struct _NodeStatusFlag{
     dispatch_block_t rotateLayoutOperation=^{
         
         unsafe_self.angle=localAngle;
+        
+        NodeStatusFlag statusFlag=unsafe_self.nodeStatusFlag;
+        
+        statusFlag.needCalculateFrameBufferSize=YES;
         
     };
     

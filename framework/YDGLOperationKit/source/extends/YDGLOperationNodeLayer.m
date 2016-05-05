@@ -80,11 +80,11 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
 }
 
--(void)willSetNodeSize:(CGSize *)newInputSize{
+-(void)willSetNodeFrameBufferSize:(CGSize)newInputSize{
 
-    [super willSetNodeSize:newInputSize];
+    [super willSetNodeFrameBufferSize:newInputSize];
     
-    CGSize sizeWillSet=*newInputSize;
+    CGSize sizeWillSet=newInputSize;
     
     CGSize sizeInPixel=CGSizeMake(sizeWillSet.width,sizeWillSet.height);
     
@@ -451,7 +451,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
     for (YDGLOperationNodeLayer* subLayer in _subNodes) {
         
-        [subLayer removeFromSuperNodeLayer];
+        subLayer.superNodeLayer=nil;
         
     }
     

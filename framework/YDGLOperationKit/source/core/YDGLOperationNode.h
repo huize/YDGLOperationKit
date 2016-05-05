@@ -206,7 +206,7 @@ typedef enum {
 
 @property(nonatomic,nullable,copy)OperationCompletionBlock completionBlock;
 
-@property(nonatomic,assign)CGSize size;
+@property(nonatomic,assign)CGSize size;//
 
 -(instancetype _Nullable)initWithVertexShader:(NSString*_Nonnull)vertexShaderString andFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 
@@ -232,7 +232,7 @@ typedef enum {
  *  @param autoRestore restore pre EAGLContext ?
  */
 -(void)activeGLContext:(void (^_Nonnull)(void))block autoRestore:(BOOL) autoRestore;
-//opengl operation
+//opengl program operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
 
 - (void)setInt:(GLint)newInt forUniformName:(NSString *_Nonnull)uniformName;
@@ -240,15 +240,15 @@ typedef enum {
 - (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName;
 
 /**
- *  @author 9527, 16-04-16 18:04:18
+ *  @author 9527, 16-04-29 14:33:48
  *
- *  do something when the size had determated
+ *  will set frambuffer size
  *
- *  @param newInputSize the new size will set 
- * you can determin this size by youself;
+ *  @param newFrameBufferSize framebuffer size will be seted
  *
+ *  @since 1.0
  */
--(void)willSetNodeSize:(CGSize*_Nonnull)newInputSize;
+-(void)willSetNodeFrameBufferSize:(CGSize)newFrameBufferSize;
 
 /**
  *  @author 许辉泽, 16-03-18 17:56:56
