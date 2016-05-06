@@ -22,62 +22,85 @@
 
 @property(nonatomic,assign) OSType pixelFormatType;//
 
+@property(nonatomic,retain)NSMutableArray<UIImage*>*images;// frame animation support
+
+@property(nonatomic,assign)BOOL animationable;
+
 @property(nonatomic,nullable,retain) UIImage *image;//
 
 @end
 
 @implementation YDGLOperationUIImageSourceNode
 
-
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         
-        [self commonInitialization];
+        [self uiimageSN_commonInitialization];
         
     }
     return self;
 }
 
--(void)commonInitialization{
-    
-    
-}
+#pragma -mark public
 
 -(void)uploadImage:(UIImage *)image{
     
+    self.animationable=NO;
+
     if (self.image==image) {
         
         return;
     }
     
-    //RunInNodeProcessQueue(^{
-    
     self.image=image;
 
     self.textureAvailable=NO;
     
-    //});
+}
+
+-(void)uploadAnimationableImages:(NSArray<UIImage *> *)images{
+
+    [self.images removeAllObjects];
+    
+    [self.images addObjectsFromArray:images];
+    
+    self.animationable=YES;
+    
+    [self innerUploadFrame];
     
 }
 
--(void)prepareForRender{
+-(void)processAnimationImage{
+    
+    [self start];
+    
+    [self innerUploadFrame];
+    
+}
 
+#pragma  -mark private
+
+-(void)innerUploadFrame{
+
+    UIImage *firstFrame=[self.images firstObject];
     
-    if (_renderTexture_input==0) {
-        
-        glGenTextures(1, &_renderTexture_input);
-    }
+    [self.images removeObject:firstFrame];
     
-    if (self.textureAvailable==NO) {
-        
-        [self innerUploadImageToTexture];
+    [self.images addObject:firstFrame];
     
-    }
+    [self uploadImage:firstFrame];
+
 
 }
 
+
+-(void)uiimageSN_commonInitialization{
+    
+    self.images=[NSMutableArray array];
+    
+}
 
 -(void)innerUploadImageToTexture{
     
@@ -192,6 +215,24 @@
     
 }
 
+#pragma -mark override
+
+-(void)prepareForRender{
+    
+    
+    if (_renderTexture_input==0) {
+        
+        glGenTextures(1, &_renderTexture_input);
+    }
+    
+    if (self.textureAvailable==NO) {
+        
+        [self innerUploadImageToTexture];
+        
+    }
+    
+}
+
 -(void)setupTextureForProgram:(GLuint)program{
     
     GLint location_s_texture=[_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
@@ -213,8 +254,6 @@
         _renderTexture_input=0;
     } autoRestore:YES];
     
-    
-
 }
 
 @end

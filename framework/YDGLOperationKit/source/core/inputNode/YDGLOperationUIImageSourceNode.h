@@ -11,5 +11,23 @@
 @interface YDGLOperationUIImageSourceNode : YDGLOperationSourceNode
 
 -(void)uploadImage:(UIImage *_Nonnull)image;
+/**
+ *  @author 9527, 16-05-06 14:56:13
+ *
+ *  upload key animation images
+ *
+ *  @param images frame images
+ *
+ *  @since 1.0.0
+ */
+-(void)uploadAnimationableImages:(NSArray<UIImage*>* _Nonnull)images;
+/**
+ *  @author 9527, 16-05-06 14:55:43
+ *
+ *  process images which upload by uploadAnimationableImages
+ *
+ *  @since 1.0.0
+ */
+-(void)processAnimationImage;
 
 @end
