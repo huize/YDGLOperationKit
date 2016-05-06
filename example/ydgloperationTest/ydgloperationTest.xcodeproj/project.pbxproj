@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		423E042D1C99873300972691 /* 头像.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 423E04281C99873300972691 /* 头像.jpg */; };
 		423E042E1C99873300972691 /* rgb.png in Resources */ = {isa = PBXBuildFile; fileRef = 423E04291C99873300972691 /* rgb.png */; };
 		423E04801C9A714200972691 /* LVECatpureSessionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */; };
 		424D92C31C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */; };
+		42522AE21CDC76E500A91BC4 /* 头像.png in Resources */ = {isa = PBXBuildFile; fileRef = 42522AE11CDC76E500A91BC4 /* 头像.png */; };
 		426A22D51CC7576700368333 /* star22@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 426A22D21CC7576700368333 /* star22@3x.png */; };
 		426A22D61CC7576700368333 /* star22.png in Resources */ = {isa = PBXBuildFile; fileRef = 426A22D31CC7576700368333 /* star22.png */; };
 		426A22D71CC7576700368333 /* star22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 426A22D41CC7576700368333 /* star22@2x.png */; };
@@ -50,12 +50,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		423E04281C99873300972691 /* 头像.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "头像.jpg"; sourceTree = "<group>"; };
 		423E04291C99873300972691 /* rgb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rgb.png; sourceTree = "<group>"; };
 		423E047E1C9A714200972691 /* LVECatpureSessionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVECatpureSessionHelper.h; sourceTree = "<group>"; };
 		423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVECatpureSessionHelper.m; sourceTree = "<group>"; };
 		424D92C11C9A9EFA006DA52D /* YDGLOperationImageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationImageTestViewController.h; sourceTree = "<group>"; };
 		424D92C21C9A9EFA006DA52D /* YDGLOperationImageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationImageTestViewController.m; sourceTree = "<group>"; };
+		42522AE11CDC76E500A91BC4 /* 头像.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "头像.png"; sourceTree = "<group>"; };
 		426A22D21CC7576700368333 /* star22@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star22@3x.png"; sourceTree = "<group>"; };
 		426A22D31CC7576700368333 /* star22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star22.png; sourceTree = "<group>"; };
 		426A22D41CC7576700368333 /* star22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star22@2x.png"; sourceTree = "<group>"; };
@@ -122,8 +122,8 @@
 				426A22D31CC7576700368333 /* star22.png */,
 				426A22D41CC7576700368333 /* star22@2x.png */,
 				423E047E1C9A714200972691 /* LVECatpureSessionHelper.h */,
+				42522AE11CDC76E500A91BC4 /* 头像.png */,
 				423E047F1C9A714200972691 /* LVECatpureSessionHelper.m */,
-				423E04281C99873300972691 /* 头像.jpg */,
 				423E04291C99873300972691 /* rgb.png */,
 				42BBE29B1C9969E70035BC01 /* AppDelegate.h */,
 				42BBE29C1C9969E70035BC01 /* AppDelegate.m */,
@@ -274,10 +274,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				426A22D71CC7576700368333 /* star22@2x.png in Resources */,
-				423E042D1C99873300972691 /* 头像.jpg in Resources */,
 				426A22D61CC7576700368333 /* star22.png in Resources */,
 				423E042E1C99873300972691 /* rgb.png in Resources */,
 				42BBE2A81C9969E70035BC01 /* LaunchScreen.storyboard in Resources */,
+				42522AE21CDC76E500A91BC4 /* 头像.png in Resources */,
 				42BBE2A51C9969E70035BC01 /* Assets.xcassets in Resources */,
 				42BBE2A31C9969E70035BC01 /* Main.storyboard in Resources */,
 				426A22D51CC7576700368333 /* star22@3x.png in Resources */,
