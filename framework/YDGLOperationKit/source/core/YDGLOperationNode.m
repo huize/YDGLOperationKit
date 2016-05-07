@@ -923,7 +923,10 @@ typedef struct _NodeStatusFlag{
     
     _coreVideoTextureCache=NULL;
     
-
+    CFRelease(_dependency);
+    
+    _dependency=NULL;
+    
 }
 
 -(void)cleanUpTexture{

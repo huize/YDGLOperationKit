@@ -83,7 +83,12 @@
     [self.view addSubview:_button];
     
     _workQueue=dispatch_queue_create([@"node 工作线程" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-    
+        
+}
+
+-(void)showNotifice{
+
+
 }
 
 -(void)stopGPUQueue:(id)sender{
@@ -151,7 +156,7 @@
 
 -(void)initLayer{
     
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".jpg"];
+    NSString *path=[[NSBundle mainBundle] pathForResource:@"头像" ofType:@".png"];
     
     UIImage *image=[UIImage imageWithContentsOfFile:path];
         
