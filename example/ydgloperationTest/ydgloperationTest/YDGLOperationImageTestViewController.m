@@ -50,8 +50,6 @@
     
     CGSize screenSize=[UIScreen mainScreen].bounds.size;
     
-    [YDGLOperationContext pushContext];
-    
     _customView=[[YDGLOperationNodeDisplayView alloc]initWithFrame:CGRectMake(0, 0,screenSize.width, screenSize.height)];
     
     //_customView.center=[_customView convertPoint:self.view.center fromView:self.view];
@@ -83,7 +81,9 @@
     [self.view addSubview:_button];
     
     _workQueue=dispatch_queue_create([@"node 工作线程" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-        
+    
+    [YDGLOperationContext pushContext];
+
 }
 
 -(void)showNotifice{
@@ -152,7 +152,6 @@
     //[_customView removeFromSuperview];
 
 }
-
 
 -(void)initLayer{
     

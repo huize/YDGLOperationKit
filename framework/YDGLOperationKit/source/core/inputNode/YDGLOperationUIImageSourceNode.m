@@ -37,7 +37,7 @@
     self = [super init];
     if (self) {
         
-        [self uiimageSN_commonInitialization];
+        [self commonInitialization_uiimage];
         
     }
     return self;
@@ -96,7 +96,7 @@
 }
 
 
--(void)uiimageSN_commonInitialization{
+-(void)commonInitialization_uiimage{
     
     self.images=[NSMutableArray array];
     

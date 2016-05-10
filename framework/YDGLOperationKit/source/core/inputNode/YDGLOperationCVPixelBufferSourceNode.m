@@ -79,19 +79,20 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 {
     self = [super initWithFragmentShader:kYDGLOperationYUVToLAFragmentShaderString];
     if (self) {
-        
-        [self commonInitialization];
-        
     }
     return self;
 }
 
 
--(void)commonInitialization{
+-(void)initTexureCacheIfNeed{
     
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL,_glContext, NULL, &_textureCache);
-    
-    NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
+    if(_textureCache==NULL){
+        
+        CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL,_glContext, NULL, &_textureCache);
+        
+        NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
+        
+    }
     
 }
 
@@ -178,6 +179,8 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 
 -(void)prepareForRender{
+    
+    [self initTexureCacheIfNeed];
     
     if (_renderTexture_input==0) {
         

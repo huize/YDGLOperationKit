@@ -82,12 +82,12 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     self = [super initWithFragmentShader:kYDGLOperationI420ToLAFragmentShaderString];
     if (self) {
         
-        [self commonInitialization];
+        [self commonInitialization_i420];
     }
     return self;
 }
 
--(void)commonInitialization{
+-(void)commonInitialization_i420{
     
     
 }

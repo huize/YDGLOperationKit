@@ -132,11 +132,7 @@ typedef struct _NodeStatusFlag{
     _textureLoaderDelegate=self;
     
     [self loadProjectionMatrix];
-    
-    _glContext=[YDGLOperationContext currentGLContext];
-    
-    NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
-    
+
 }
 
 #pragma -mark 类方法
@@ -391,6 +387,14 @@ typedef struct _NodeStatusFlag{
 
 
 -(void)activeGLContext:(void (^)(void))block autoRestore:(BOOL) autoRestore{
+    
+    if (_glContext==nil) {
+        
+        _glContext=[YDGLOperationContext currentGLContext];
+        
+        NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
+        
+    }
     
     EAGLContext *preContext=[EAGLContext currentContext];
     
