@@ -57,8 +57,8 @@ static CVOpenGLESTextureCacheRef globalTextureCache;
 +(void)popContext{
     
     dispatch_semaphore_wait(s_lock, DISPATCH_TIME_FOREVER);
-    
-    [contexts removeObjectAtIndex:contexts.count-1];
+        
+    [contexts removeObject:[contexts lastObject]];
     
     EAGLContext *instance=[contexts lastObject];
     
