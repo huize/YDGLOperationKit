@@ -110,11 +110,7 @@ typedef struct _NodeStatusFlag{
     self.nextOperations=[NSMutableArray array];
     
     self.dependency=CFArrayCreateMutable(kCFAllocatorDefault, 1, NULL);
-    
-    _glContext=[YDGLOperationContext currentGLContext];
-    
-    NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
-    
+
     self.programOperations=[NSMutableArray array];
     
     self.beforePerformDrawOperations=[NSMutableArray array];
@@ -129,8 +125,6 @@ typedef struct _NodeStatusFlag{
     
     _lockForTraversals=dispatch_semaphore_create(1);
     
-    [self initTextureCache];
-    
     [_drawModel setvShaderSource:[vertexShaderString UTF8String] andfShaderSource:[fragmentShaderString UTF8String]];
     
     [_drawModel loadSquareVex];
@@ -138,6 +132,10 @@ typedef struct _NodeStatusFlag{
     _textureLoaderDelegate=self;
     
     [self loadProjectionMatrix];
+    
+    _glContext=[YDGLOperationContext currentGLContext];
+    
+    NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
     
 }
 
@@ -161,12 +159,15 @@ typedef struct _NodeStatusFlag{
 
 }
 
--(void)initTextureCache{
+-(void)buildTextureCacheIfNeed{
     
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL,_glContext, NULL, &_coreVideoTextureCache);
-    
-    NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
-    
+    if (_coreVideoTextureCache==NULL) {
+        
+        CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL,_glContext, NULL, &_coreVideoTextureCache);
+        
+        NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
+        
+    }
 }
 
 +(void)bindTexture:(GLuint)textureId{
@@ -480,14 +481,14 @@ typedef struct _NodeStatusFlag{
     
     [self notifyNextOperation];
 
-    
-    
 }
 
 -(void)performLayout{
     
     //NSAssert(self.needLayout==YES, @"不需要调用 performLayout");
     
+    [self buildTextureCacheIfNeed];
+
     [self setupFrameBuffer];
     
     [self didLayout];
@@ -899,7 +900,7 @@ typedef struct _NodeStatusFlag{
 }
 
 -(void)dealloc{
-
+    
     NSLog(@"节点销毁了:%@",self);
     
     [self clearCollections];
@@ -911,14 +912,18 @@ typedef struct _NodeStatusFlag{
         glDeleteFramebuffers(1, &_frameBuffer);
         
         _frameBuffer=0;
-    
+        
     } autoRestore:YES];
     
-    CVOpenGLESTextureCacheFlush(_coreVideoTextureCache, 0);
-    
-    CFRelease(_coreVideoTextureCache);
-    
-    _coreVideoTextureCache=NULL;
+    if (_coreVideoTextureCache!=NULL) {
+        
+        CVOpenGLESTextureCacheFlush(_coreVideoTextureCache, 0);
+        
+        CFRelease(_coreVideoTextureCache);
+        
+        _coreVideoTextureCache=NULL;
+        
+    }
     
     CFRelease(_dependency);
     
