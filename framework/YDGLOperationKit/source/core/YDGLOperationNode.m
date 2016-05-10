@@ -916,11 +916,14 @@ typedef struct _NodeStatusFlag{
     
     [self cleanUpTexture];
     
-    [self activeGLContext:^{
-    
-        [self destoryEAGLResource];
+    if (_glContext) {
         
-    } autoRestore:YES];
+        [self activeGLContext:^{
+            
+            [self destoryEAGLResource];
+            
+        } autoRestore:YES];
+    }
     
     if (_coreVideoTextureCache!=NULL) {
         
