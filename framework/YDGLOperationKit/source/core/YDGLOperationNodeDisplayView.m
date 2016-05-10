@@ -30,10 +30,6 @@
 
     GLuint _renderBuffer,_frameBuffer;//最终的缓冲区对象
     
-    GLint _framebufferWidth;
-    
-    GLint _framebufferHeight;
-    
     GLuint _textureId;
     
     CGSize _sizeInPixel;
@@ -47,6 +43,8 @@
     YDGLOperationImageRotationMode _inputRotationMode;
     
     YDGLOperationNode *_contentNode;
+    
+    BOOL _framebufferAvailable;// framebuffer available
     
 }
 
@@ -85,20 +83,12 @@
     _inputRotationMode=kYDGLOperationImageNoRotation;
     
     _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
-
+    
     [self setupLayer];
-    
-    _context=[YDGLOperationContext currentGLContext];
 
-     NSAssert(_context!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
+    [self setupProgram];
     
-        [self setupProgram];
-        
-        [self cleanup];
-        
-        [self setupBuffer];
-        
-        [self loadSquareVex];
+    [self loadSquareVex];
     
 }
 
@@ -115,8 +105,10 @@
 
 }
 
-- (void)setupBuffer {
+- (void)setupBufferIfNeed {
     
+    if (_framebufferAvailable) return;
+        
     glGenRenderbuffers(1, &_renderBuffer);
     // 设置为当前 renderbuffer
     glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
@@ -144,6 +136,7 @@
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
+    _framebufferAvailable=YES;
 }
 
 /**
@@ -219,21 +212,15 @@
 
 -(void)loadCubeVex{
     
-    [self activeGLContext:^{
-        
-        [_drawModel loadCubeVex];
-
-    }];
+    [_drawModel loadCubeVex];
     
 }
 
 -(void)loadSquareVex{
     
-    [self activeGLContext:^{
-        
-        [_drawModel loadSquareVex];
-        
-    }];
+    
+    [_drawModel loadSquareVex];
+    
 }
 
 -(void)loadSquareByFillModeType{
@@ -469,9 +456,15 @@
 
 -(void)innerRender{
     
-    assert(_frameBuffer!=0);
-    
     [_drawModel loadIfNeed];
+    
+    dispatch_sync(dispatch_get_main_queue(), ^{
+    
+        [self setupBufferIfNeed];
+        
+    });
+
+    assert(_frameBuffer!=0);
     
     [self render];
     
@@ -606,12 +599,17 @@
         
         _inputImageSize=outData.size;
         
-        [self activeGLContext:^{
-
-            [self loadSquareByFillModeType];
-
-        }];
+        [self loadSquareByFillModeType];
+        
     }
+    
+    if (_context==nil) {
+        
+        _context=[YDGLOperationContext currentGLContext];
+        
+        NSAssert(_context!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
+    }
+
     
     [self activeGLContext:^{
        
@@ -620,6 +618,8 @@
     }];
         
 }
+
+
 
 -(void)addDependency:(id<YDGLOperationNode>)operation{
 
