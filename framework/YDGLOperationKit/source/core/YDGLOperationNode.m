@@ -133,6 +133,11 @@ typedef struct _NodeStatusFlag{
     
     [self loadProjectionMatrix];
 
+    [self commonInitialization];
+}
+
+-(void)commonInitialization{
+
 }
 
 #pragma -mark 类方法

@@ -34,7 +34,7 @@
         
         self.size=size;
         
-        [self commonInitialization];
+        [self commonInitialization_cgcontext];
         
         return self;
     }
@@ -42,7 +42,7 @@
     return nil;
 }
 
--(void)commonInitialization{
+-(void)commonInitialization_cgcontext{
     
     CGColorSpaceRef genericRGBColorspace = CGColorSpaceCreateDeviceRGB();
     

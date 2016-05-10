@@ -301,4 +301,12 @@ typedef enum {
  */
 -(void)didLayout;
 
+/**
+ *  @author 9527, 16-05-10 16:39:08
+ *
+ *  custom init in this method
+ *
+ *  @since 1.0.0
+ */
+-(void)commonInitialization;
 @end

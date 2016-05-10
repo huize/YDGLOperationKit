@@ -61,9 +61,6 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 -(instancetype)initWithVertexShader:(NSString *)vertexShaderString andFragmentShader:(NSString *)fragmentShaderString{
 
     if (self=[super initWithVertexShader:vShaderStr andFragmentShader:fBlendShaderStr]) {
-        
-        [self commonInitialization];
-        
         return  self;
     }
 
@@ -72,6 +69,8 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 -(void)commonInitialization{
 
+    [super commonInitialization];
+    
     _subNodes=[NSMutableArray array];
     
     _transform=GLKMatrix4Identity;

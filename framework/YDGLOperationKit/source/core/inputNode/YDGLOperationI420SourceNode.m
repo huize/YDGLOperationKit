@@ -82,14 +82,8 @@ NSString *const kYDGLOperationI420ToLAFragmentShaderString = SHADER_STRING
     self = [super initWithFragmentShader:kYDGLOperationI420ToLAFragmentShaderString];
     if (self) {
         
-        [self commonInitialization_i420];
     }
     return self;
-}
-
--(void)commonInitialization_i420{
-    
-    
 }
 
 -(void)uploadI420Data:(uint8_t *)baseAddress andDataSize:(size_t)dataSize andImageSize:(CGSize)imageSize{

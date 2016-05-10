@@ -76,15 +76,11 @@ NSString *const kYDGLOperationNV12ToLAFragmentShaderString = SHADER_STRING
     self = [super initWithFragmentShader:kYDGLOperationNV12ToLAFragmentShaderString];
     if (self) {
         
-        [self commonInitialization_nv12];
+    
     }
     return self;
 }
 
--(void)commonInitialization_nv12{
-    
-    
-}
 
 -(void)uploadNV12Data:(uint8_t *)baseAddress andDataSize:(size_t)dataSize andImageSize:(CGSize)imageSize{
     

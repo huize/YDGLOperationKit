@@ -32,17 +32,6 @@
 
 @implementation YDGLOperationUIImageSourceNode
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        
-        [self commonInitialization_uiimage];
-        
-    }
-    return self;
-}
-
 #pragma -mark public
 
 -(void)uploadImage:(UIImage *)image{
@@ -96,7 +85,9 @@
 }
 
 
--(void)commonInitialization_uiimage{
+-(void)commonInitialization{
+    
+    [super commonInitialization];
     
     self.images=[NSMutableArray array];
     
