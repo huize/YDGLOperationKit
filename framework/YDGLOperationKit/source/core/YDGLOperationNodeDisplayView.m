@@ -92,8 +92,6 @@
 
      NSAssert(_context!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
     
-    [self activeGLContext:^{
-        
         [self setupProgram];
         
         [self cleanup];
@@ -101,8 +99,6 @@
         [self setupBuffer];
         
         [self loadSquareVex];
-        
-    }];
     
 }
 
@@ -474,6 +470,8 @@
 -(void)innerRender{
     
     assert(_frameBuffer!=0);
+    
+    [_drawModel loadIfNeed];
     
     [self render];
     

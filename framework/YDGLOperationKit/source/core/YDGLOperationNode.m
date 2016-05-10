@@ -114,15 +114,15 @@ typedef struct _NodeStatusFlag{
     _glContext=[YDGLOperationContext currentGLContext];
     
     NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
-        
+    
     self.programOperations=[NSMutableArray array];
-
+    
     self.beforePerformDrawOperations=[NSMutableArray array];
     
     self.beforePerformTraversalsOperations=[NSMutableArray array];
     
     NodeStatusFlag defaultStatus={.needLayout=YES,.destoried=NO,.needCalculateFrameBufferSize=YES};
-
+    
     self.nodeStatusFlag=defaultStatus;
     
     _lockForNodeStatus=dispatch_semaphore_create(1);
@@ -131,15 +131,10 @@ typedef struct _NodeStatusFlag{
     
     [self initTextureCache];
     
-    [self activeGLContext:^{
-        
-        [_drawModel setvShaderSource:[vertexShaderString UTF8String] andfShaderSource:[fragmentShaderString UTF8String]];
-        
-        [_drawModel loadSquareVex];
-
-        
-    } autoRestore:NO];
-
+    [_drawModel setvShaderSource:[vertexShaderString UTF8String] andfShaderSource:[fragmentShaderString UTF8String]];
+    
+    [_drawModel loadSquareVex];
+    
     _textureLoaderDelegate=self;
     
     [self loadProjectionMatrix];
@@ -514,6 +509,8 @@ typedef struct _NodeStatusFlag{
 -(void)performDraw{
     
     assert(_frameBuffer!=0);
+    
+    [_drawModel loadIfNeed];
     
     [self drawFrameBuffer:_frameBuffer inRect:CGRectMake(0, 0, self.frameBufferSize.width, self.frameBufferSize.height)];
     

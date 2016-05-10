@@ -13,40 +13,57 @@
 
 @property(nonatomic,retain)YDGLProgram *glProgram;
 
+@property(nonatomic,retain)NSMutableDictionary<NSString*,NSNumber*> *uniformDictionary;
+
+@property(nonatomic,retain)NSMutableDictionary<NSString*,NSNumber*> *attributeDictionary;
+
+@property(nonatomic,assign)BOOL needLoad;
+
+@property(nonatomic,assign)const char * vertexSource;
+
+@property(nonatomic,assign)const char * fragmentSource;
+
+@property(nonatomic,assign)struct ArrayWrapper vertices_wrapper;
+
+@property(nonatomic,assign)struct ArrayWrapper texturecoord_warpper;
+
+@property(nonatomic,assign)struct ArrayWrapper indices_warpper;
+
 @end
 
 @implementation YDDrawModel
 
-{
-
-    NSMutableDictionary<NSString*,NSNumber*> *_uniformDictionary;
-
-    NSMutableDictionary<NSString*,NSNumber*> *_attributeDictionary;//
-
-}
-
-@synthesize uniformDictionary=_uniformDictionary;
-
-@synthesize attributeDictionary=_attributeDictionary;
-
 - (instancetype)init
 {
     self = [super init];
+    
     if (self) {
         
         _uniformDictionary=[NSMutableDictionary dictionary];
         
         _attributeDictionary=[NSMutableDictionary dictionary];
         
+        self.needLoad=YES;
+        
     }
     return self;
 }
 
--(void)setvShaderSource:(const char *)vSource andfShaderSource:(const char *)fSource{
+#pragma  -mark private
 
-    self.glProgram=[[YDGLProgram alloc]initWithVertexString:vSource andFragmentString:fSource];
+-(void)loadSquareVex:(const GLfloat [12])vertices_position andTextureCoord:(const GLfloat [8])textureCoord{
     
-    [self loadProgram];
+    const GLubyte indices_position[]={
+        
+        0,1,2,3,
+        
+    };
+    
+    struct ArrayWrapper vertices_wrapper={vertices_position,12*sizeof(GLfloat),12};
+    struct ArrayWrapper texturecoord_warpper={textureCoord,8*sizeof(GLfloat),8};
+    struct ArrayWrapper indices_warpper={indices_position,sizeof(indices_position),sizeof(indices_position)/sizeof(GLubyte)};
+    
+    [self setVertices:vertices_wrapper andTextureVertices:texturecoord_warpper andIndices:indices_warpper andDrawStyle:GL_TRIANGLE_FAN];
     
 }
 /**
@@ -59,6 +76,104 @@
  *
  */
 -(void)setVertices:(struct ArrayWrapper)vertices andTextureVertices:(struct ArrayWrapper)textureVertices andIndices:(struct ArrayWrapper)indices andDrawStyle:(GLenum)drawModel{
+    
+    self.vertices_wrapper=vertices;
+    
+    self.texturecoord_warpper=textureVertices;
+    
+    self.indices_warpper=indices;
+    
+    _drawStyle=drawModel;
+    
+    self.needLoad=YES;
+    
+}
+/**
+ *  @author 许辉泽, 16-03-17 19:53:30
+ *
+ *  查询位置是一个比较耗时的操作
+ *
+ *  @since 1.0.0
+ */
+-(void)innerloadProgram{
+    
+    self.glProgram=[[YDGLProgram alloc]initWithVertexString:self.vertexSource andFragmentString:self.fragmentSource];
+    
+    [_uniformDictionary removeAllObjects];
+    
+    [_attributeDictionary removeAllObjects];
+    
+    glUseProgram([self getRealProgram]);
+    
+    //查询统一变量
+    
+    GLint maxUniformLen;
+    GLint numUniforms;
+    char *uniformName;
+    glGetProgramiv ( [self getRealProgram], GL_ACTIVE_UNIFORMS, &numUniforms );
+    glGetProgramiv ( [self getRealProgram], GL_ACTIVE_UNIFORM_MAX_LENGTH,
+                    &maxUniformLen);
+    
+    uniformName = malloc ( sizeof ( char ) * maxUniformLen );
+    
+    for (int index=0; index<numUniforms; index++) {
+        
+        GLint size;
+        GLenum type;
+        GLint location;
+        
+        glGetActiveUniform([self getRealProgram], index, maxUniformLen, NULL, &size, &type, uniformName);
+        
+        location=glGetUniformLocation([self getRealProgram], uniformName);
+        
+        NSString *name=[NSString stringWithUTF8String:uniformName];
+        
+        //NSLog(@" uniform name:%@  location:%i",name,location);
+        
+        [_uniformDictionary setObject:@(location) forKey:name];
+        
+    }
+    
+    free(uniformName);
+    
+    //查询 attribute
+    
+    //    GLint maxAttributeLen;
+    //    GLint numAttributes;
+    //    char *attributeName;
+    //
+    //    glGetProgramiv([self getRealProgram], GL_ACTIVE_ATTRIBUTES, &numAttributes);
+    //    glGetProgramiv([self getRealProgram], GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeLen);
+    //
+    //    attributeName=malloc(sizeof(char)*100);
+    //
+    //    for (int index=0; index<maxAttributeLen; index++) {
+    //
+    //        GLint size;
+    //        GLenum type;
+    //        GLint location;
+    //
+    //        glGetActiveAttrib([self getRealProgram], index, maxAttributeLen, NULL, &size, &type, attributeName);
+    //
+    //        location=glGetAttribLocation([self getRealProgram], attributeName);
+    //
+    //        NSString *name=[NSString stringWithUTF8String:attributeName];
+    //
+    //        NSLog(@" attribute name:%@  location:%i",name,location);
+    //
+    //        [_attributeDictionary setObject:@(location) forKey:name];
+    //    }
+    //    
+    //    free(attributeName);
+    
+    
+}
+
+-(void)innerLoadVertix{
+
+    struct ArrayWrapper vertices=self.vertices_wrapper;
+    struct ArrayWrapper textureVertices=self.texturecoord_warpper;
+    struct ArrayWrapper indices=self.indices_warpper;
     
     glDeleteBuffers(1, &_vertices_buffer_obj);
     glDeleteBuffers(1, &_texture_vertices_buffer_obj);
@@ -96,12 +211,24 @@
     
     _count_indices=indices.count;
     
-    _drawStyle=drawModel;
+    //_drawStyle=drawModel;
     
     free(bufferId);
-    
+
 }
 
+
+#pragma -mark public
+
+-(void)setvShaderSource:(const char *)vSource andfShaderSource:(const char *)fSource{
+
+    self.vertexSource=vSource;
+    
+    self.fragmentSource=fSource;
+    
+    self.needLoad=YES;
+    
+}
 -(void)loadSquareVex:(const GLfloat [12])vertices_position{
 
     const GLfloat vertices_texture[]={
@@ -115,24 +242,6 @@
     [self loadSquareVex:vertices_position andTextureCoord:vertices_texture];
 
 }
-
--(void)loadSquareVex:(const GLfloat [12])vertices_position andTextureCoord:(const GLfloat [8])textureCoord{
-
-    const GLubyte indices_position[]={
-        
-        0,1,2,3,
-        
-    };
-
-    struct ArrayWrapper vertices_wrapper={vertices_position,12*sizeof(GLfloat),12};
-    struct ArrayWrapper texturecoord_warpper={textureCoord,8*sizeof(GLfloat),8};
-    struct ArrayWrapper indices_warpper={indices_position,sizeof(indices_position),sizeof(indices_position)/sizeof(GLubyte)};
-    
-    [self setVertices:vertices_wrapper andTextureVertices:texturecoord_warpper andIndices:indices_warpper andDrawStyle:GL_TRIANGLE_FAN];
-
-}
-
-
 
 -(void)loadSquareVex{
     
@@ -201,96 +310,13 @@
     
 }
 
-
-
 -(void)dealloc{
 
     glDeleteBuffers(1, &_vertices_buffer_obj);
     glDeleteBuffers(1, &_texture_vertices_buffer_obj);
     glDeleteBuffers(1, &_indices_buffer_obj);
-
     [_uniformDictionary removeAllObjects];
-    
     [_attributeDictionary removeAllObjects];
-    
-}
-
-/**
- *  @author 许辉泽, 16-03-17 19:53:30
- *
- *  查询位置是一个比较耗时的操作
- *
- *  @since 1.0.0
- */
--(void)loadProgram{
-
-    [_uniformDictionary removeAllObjects];
-    
-    [_attributeDictionary removeAllObjects];
-    
-    glUseProgram([self getRealProgram]);
-    
-    //查询统一变量
-    
-    GLint maxUniformLen;
-    GLint numUniforms;
-    char *uniformName;
-    glGetProgramiv ( [self getRealProgram], GL_ACTIVE_UNIFORMS, &numUniforms );
-    glGetProgramiv ( [self getRealProgram], GL_ACTIVE_UNIFORM_MAX_LENGTH,
-                    &maxUniformLen);
-    
-    uniformName = malloc ( sizeof ( char ) * maxUniformLen );
-    
-    for (int index=0; index<numUniforms; index++) {
-        
-        GLint size;
-        GLenum type;
-        GLint location;
-        
-        glGetActiveUniform([self getRealProgram], index, maxUniformLen, NULL, &size, &type, uniformName);
-        
-        location=glGetUniformLocation([self getRealProgram], uniformName);
-        
-        NSString *name=[NSString stringWithUTF8String:uniformName];
-        
-        //NSLog(@" uniform name:%@  location:%i",name,location);
-    
-        [_uniformDictionary setObject:@(location) forKey:name];
-        
-    }
-    
-    free(uniformName);
-    
-    //查询 attribute
-    
-//    GLint maxAttributeLen;
-//    GLint numAttributes;
-//    char *attributeName;
-//    
-//    glGetProgramiv([self getRealProgram], GL_ACTIVE_ATTRIBUTES, &numAttributes);
-//    glGetProgramiv([self getRealProgram], GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeLen);
-//    
-//    attributeName=malloc(sizeof(char)*100);
-//    
-//    for (int index=0; index<maxAttributeLen; index++) {
-//        
-//        GLint size;
-//        GLenum type;
-//        GLint location;
-//        
-//        glGetActiveAttrib([self getRealProgram], index, maxAttributeLen, NULL, &size, &type, attributeName);
-//        
-//        location=glGetAttribLocation([self getRealProgram], attributeName);
-//        
-//        NSString *name=[NSString stringWithUTF8String:attributeName];
-//        
-//        NSLog(@" attribute name:%@  location:%i",name,location);
-//
-//        [_attributeDictionary setObject:@(location) forKey:name];
-//    }
-//    
-//    free(attributeName);
-    
     
 }
 
@@ -325,6 +351,17 @@
 
 }
 
+-(void)loadIfNeed{
+    
+    if (self.needLoad) {
+        
+        [self innerLoadVertix];
+        [self innerloadProgram];
+        self.needLoad=NO;
+        
+    }
+    
+}
 
 @end
 
