@@ -143,14 +143,15 @@
     free(_baseAddress);
     
     _baseAddress=0;
+}
 
-    [self activeGLContext:^{
-        
-        glDeleteTextures(1, &_renderTexture_input);
-        
-        _renderTexture_input=0;
-    } autoRestore:YES];
+-(void)destoryEAGLResource{
 
+    [super destoryEAGLResource];
+    
+    glDeleteTextures(1, &_renderTexture_input);
+    
+    _renderTexture_input=0;
 }
 
 

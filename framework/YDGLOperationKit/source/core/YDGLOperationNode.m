@@ -917,10 +917,8 @@ typedef struct _NodeStatusFlag{
     [self cleanUpTexture];
     
     [self activeGLContext:^{
-        
-        glDeleteFramebuffers(1, &_frameBuffer);
-        
-        _frameBuffer=0;
+    
+        [self destoryEAGLResource];
         
     } autoRestore:YES];
     
@@ -938,6 +936,14 @@ typedef struct _NodeStatusFlag{
     
     _dependency=NULL;
     
+}
+
+-(void)destoryEAGLResource{
+
+    glDeleteFramebuffers(1, &_frameBuffer);
+    
+    _frameBuffer=0;
+
 }
 
 -(void)cleanUpTexture{

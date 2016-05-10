@@ -153,19 +153,15 @@ NSString *const kYDGLOperationNV12ToLAFragmentShaderString = SHADER_STRING
     [self innerUpload];
 }
 
--(void)dealloc{
+-(void)destoryEAGLResource{
     
-    [self activeGLContext:^{
-        
-        glDeleteTextures(1, &_textureY);
-        
-        _textureY=0;
-        
-        glDeleteTextures(1, &_textureUV);
-        
-        _textureUV=0;
-        
-    } autoRestore:YES];
+    glDeleteTextures(1, &_textureY);
+    
+    _textureY=0;
+    
+    glDeleteTextures(1, &_textureUV);
+    
+    _textureUV=0;
     
 }
 

@@ -267,14 +267,6 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)dealloc{
     
-    [self activeGLContext:^{
-        
-        glDeleteTextures(1, &_renderTexture_input);
-        
-        [self cleanUpTextures];
-
-    } autoRestore:YES];
-
     CVOpenGLESTextureCacheFlush(_textureCache, 0);
     
     CFRelease(_textureCache);
@@ -282,5 +274,16 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     _textureCache=NULL;
 
 }
+
+-(void)destoryEAGLResource{
+
+    [super destoryEAGLResource];
+    
+    glDeleteTextures(1, &_renderTexture_input);
+    
+    [self cleanUpTextures];
+
+}
+
 
 @end

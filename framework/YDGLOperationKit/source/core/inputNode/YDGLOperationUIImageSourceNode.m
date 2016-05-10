@@ -236,15 +236,13 @@
     
 }
 
--(void)dealloc{
+-(void)destoryEAGLResource{
 
-    [self activeGLContext:^{
-        
-        glDeleteTextures(1, &_renderTexture_input);
-        
-        _renderTexture_input=0;
-    } autoRestore:YES];
+    [super destoryEAGLResource];
     
+    glDeleteTextures(1, &_renderTexture_input);
+    
+    _renderTexture_input=0;
 }
 
 @end

@@ -309,4 +309,15 @@ typedef enum {
  *  @since 1.0.0
  */
 -(void)commonInitialization;
+/**
+ *  @author 9527, 16-05-10 18:20:44
+ *
+ *  delete frambuffer,texture in this method,
+ *  should not call activeContext
+ *  if you override,must be call [super destoryEAGLResource]
+ *
+ *  @since 1.0.0
+ */
+-(void)destoryEAGLResource;
+
 @end
