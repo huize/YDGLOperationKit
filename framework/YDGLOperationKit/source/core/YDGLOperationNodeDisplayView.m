@@ -458,11 +458,7 @@
     
     [_drawModel loadIfNeed];
     
-    dispatch_sync(dispatch_get_main_queue(), ^{
-    
-        [self setupBufferIfNeed];
-        
-    });
+    [self setupBufferIfNeed];
 
     assert(_frameBuffer!=0);
     
