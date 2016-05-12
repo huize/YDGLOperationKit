@@ -38,14 +38,7 @@
     
     self.animationable=NO;
 
-    if (self.image==image) {
-        
-        return;
-    }
-    
-    self.image=image;
-
-    self.textureAvailable=NO;
+    [self innerUploadImage:image];
     
 }
 
@@ -61,12 +54,15 @@
     
 }
 
--(void)processAnimationImage{
+-(void)start{
     
-    [self start];
+    [super start];
     
-    [self innerUploadFrame];
-    
+    if (self.animationable) {
+        
+        [self innerUploadFrame];
+
+    }
 }
 
 #pragma  -mark private
@@ -79,8 +75,20 @@
     
     [self.images addObject:firstFrame];
     
-    [self uploadImage:firstFrame];
+    [self innerUploadImage:firstFrame];
 
+}
+
+-(void)innerUploadImage:(UIImage*)image{
+
+    if (self.image==image) {
+        
+        return;
+    }
+    
+    self.image=image;
+    
+    self.textureAvailable=NO;
 
 }
 
