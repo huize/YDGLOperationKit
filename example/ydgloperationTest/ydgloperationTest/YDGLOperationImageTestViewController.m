@@ -82,7 +82,6 @@
     
     _workQueue=dispatch_queue_create([@"node 工作线程" UTF8String], DISPATCH_QUEUE_CONCURRENT);
     
-    [YDGLOperationContext pushContext];
 
 }
 
@@ -254,6 +253,13 @@
     
     dispatch_barrier_async(_workQueue, ^{
         
+        
+        if([YDGLOperationContext currentGLContext]==nil){
+        
+            [YDGLOperationContext pushContext];
+
+        }
+        
         if (_invalidate) {
             
             return ;
@@ -298,7 +304,7 @@
     [YDGLOperationContext popContext];
 
     NSLog(@"图片测试页面已经销毁了:%@",self);
-
+    
 }
 
 @end
