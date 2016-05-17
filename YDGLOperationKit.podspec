@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "YDGLOperationKit"
-  s.version      = "1.0"
+  s.version      = "1.0.1"
   s.summary      = "Image process kit base on GPU"
 
   # This description is used to generate tags and improve search results.
@@ -90,10 +90,7 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  ="framework/YDGLOperationKit/source/**/*.{c,h,m}","framework/YDGLOperationKit/source/**/**/*.{c,h,m}"
-  #s.exclude_files = "Classes/Exclude"
-
-  #s.public_header_files ="framework/YDGLOperationKit/YDGLOperationKit.h"
-  
+  #s.exclude_files = "Classes/Exclude"  
   s.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
