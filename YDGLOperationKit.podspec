@@ -89,11 +89,12 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  ="framework/YDGLOperationKit/*.{c,h,m}","framework/YDGLOperationKit/source/**/*.{c,h,m}","framework/YDGLOperationKit/source/**/**/*.{c,h,m}"
+  s.source_files  ="framework/YDGLOperationKit/source/**/*.{c,h,m}","framework/YDGLOperationKit/source/**/**/*.{c,h,m}"
   #s.exclude_files = "Classes/Exclude"
 
-  # s.public_header_files = "Classes/**/*.h"
-
+  #s.public_header_files ="framework/YDGLOperationKit/YDGLOperationKit.h"
+  
+  s.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #

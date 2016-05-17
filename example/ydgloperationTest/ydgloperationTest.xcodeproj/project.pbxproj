@@ -438,7 +438,7 @@
 				INFOPLIST_FILE = ydgloperationTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.yd;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.lve;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -451,7 +451,7 @@
 				INFOPLIST_FILE = ydgloperationTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.yd;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.lve;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
