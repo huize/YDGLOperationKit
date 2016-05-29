@@ -14,7 +14,12 @@
 
 -(void)prepareForRender;
 
--(void)start;
+/**
+ *  @author 9527, 16-05-29 17:05:28
+ *
+ *  drive the node tree be traversals
+ */
+-(void)drive;
 /**
  *  @author 许辉泽, 16-04-09 16:26:54
  *
@@ -22,7 +27,7 @@
  *
  *  @since 1.0.0
  */
--(void)setNeedDisplay;
+-(void)invalidateNodeContent;
 
 -(void)bindTexture:(GLuint)textureId;
 

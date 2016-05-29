@@ -65,7 +65,7 @@
 
 -(void)commitCGContextTransaction:(void (^)(CGContextRef))drawBlock{
     
-    [self setNeedDisplay];
+    [self invalidateNodeContent];
     
     [self clearContext];
     

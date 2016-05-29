@@ -10,7 +10,7 @@
 
 @implementation YDGLOperationSourceNode
 
--(void)start{
+-(void)drive{
     
     //RunInNodeProcessQueue(^{
     
@@ -59,7 +59,7 @@
 
 }
 
--(void)setNeedDisplay{
+-(void)invalidateNodeContent{
 
     self.textureAvailable=NO;
     
