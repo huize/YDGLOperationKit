@@ -309,14 +309,18 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
     
     __block BOOL done=YES;
     
-    [self.subNodes enumerateObjectsUsingBlock:^(YDGLOperationNodeLayer*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.subNodes enumerateObjectsUsingBlock:^(YDGLOperationNodeLayer*  _Nonnull subLayer, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        YDGLOperationNodeOutput *output=[obj getOutput];
-        
-        if (output==nil) {
+        if (subLayer.hidden==NO) {
             
-            done=NO;
-            *stop=YES;
+            YDGLOperationNodeOutput *output=[subLayer getOutput];
+            
+            if (output==nil) {
+                
+                done=NO;
+                *stop=YES;
+                
+            }
             
         }
     }];
