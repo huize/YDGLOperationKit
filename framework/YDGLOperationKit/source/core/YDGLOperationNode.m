@@ -136,10 +136,6 @@ typedef struct _NodeStatusFlag{
     [self commonInitialization];
 }
 
--(void)commonInitialization{
-
-}
-
 #pragma -mark 类方法
 
 +(dispatch_queue_t)getWorkQueue{
@@ -169,12 +165,6 @@ typedef struct _NodeStatusFlag{
         NSAssert(err==kCVReturnSuccess, @"创建纹理缓冲区失败%i",err);
         
     }
-}
-
-+(void)bindTexture:(GLuint)textureId{
-    
-    glBindTexture(GL_TEXTURE_2D, textureId);
-    
 }
 
 #pragma -mark 内部接口
@@ -390,38 +380,6 @@ typedef struct _NodeStatusFlag{
     
 }
 
-
--(void)activeGLContext:(void (^)(void))block autoRestore:(BOOL) autoRestore{
-    
-    if (_glContext==nil) {
-        
-        _glContext=[YDGLOperationContext currentGLContext];
-        
-        NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
-        
-    }
-    
-    EAGLContext *preContext=[EAGLContext currentContext];
-    
-    if (preContext==_glContext) {
-        
-        block();
-        
-    }else{
-        
-        [EAGLContext setCurrentContext:_glContext];
-        
-        block();
-        
-        if (autoRestore) {
-            
-            [EAGLContext setCurrentContext:preContext];
-            
-        }
-        
-    }
-}
-
 /**
  *  @author 许辉泽, 16-03-24 14:35:42
  *
@@ -626,181 +584,6 @@ typedef struct _NodeStatusFlag{
 
 }
 
-
-#pragma -mark 支持子类重载的接口
-
--(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect{
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    
-    //glEnable(GL_CULL_FACE);
-    
-    //glCullFace(GL_BACK);
-    
-    glViewport(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
-    
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    
-    glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-    
-    glUseProgram(_drawModel.program);
-    
-    for (int index=0; index<_programOperations.count; index++) {
-        
-        dispatch_block_t operation=[_programOperations objectAtIndex:index];
-        
-        operation();
-        
-    }
-    
-    [_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
-    
-    //1.设置变换矩阵
-    
-    GLint location=[_drawModel locationOfUniform:UNIFORM_MATRIX];
-    
-    GLKMatrix4 matrix=GLKMatrix4Multiply(_projectionMatrix, _modelViewMatrix);
-    
-    float*mm=(float*)matrix.m;
-    
-    GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
-    
-    for (int index=0; index<16; index++) {
-        
-        finalMatrix[index]=(GLfloat)mm[index];
-        
-    }
-    
-    glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
-    
-    free(finalMatrix);
-    
-    //2.设置顶点坐标
-    
-    GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
-    
-    glEnableVertexAttribArray(location_position);//顶点坐标
-    
-    glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,0);
-    
-    //3.设置纹理坐标
-    
-    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
-    
-    [self setTextureCoord];
-    
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    //4.设置纹理
-    
-    [self setupTextureForProgram:_drawModel.program];
-    
-    
-    //5. draw
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
-    
-    GLsizei count=_drawModel.count_indices;
-    
-    count=count/4;
-    
-    for (int index=0; index<count; index++) {
-        
-        glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(const GLvoid*)(index*4*sizeof(GLubyte)));
-        
-    }
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-}
-
-/**
- *  @author 许辉泽, 16-04-08 17:36:00
- *
- *  设置纹理坐标
- *  注意:绘制图元的时候,是从左下角开始,按照GL_TRIANGLE_FAN方式,逆时针绘制的
- *
- *
- *  @since 1.0.0
- */
--(void)setTextureCoord{
-
-    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
-    
-    for (int index=0; index<dependency.count; index++) {
-        
-        NSString *name=[_textureLoaderDelegate textureCoordAttributeNameAtIndex:index];
-        
-        GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [name UTF8String]);
-        
-        glEnableVertexAttribArray(location_texturecoord);
-    
-        glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
-        
-    }
-    
-}
-
-
--(void)setupTextureForProgram:(GLuint)program{
-
-    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
-    
-    for (int index=0; index<dependency.count;index++) {
-        
-        YDGLOperationNodeOutput *output=[[dependency objectAtIndex:index] getOutput];
-        
-        NSString *name=[_textureLoaderDelegate textureUniformNameAtIndex:index];
-        
-        GLint location_s_texture=[_drawModel locationOfUniform:name];
-        
-        glActiveTexture(GL_TEXTURE0+index);
-        
-        [YDGLOperationNode bindTexture:output.texture];
-        
-        glUniform1i ( location_s_texture,index);
-        
-    }
-    
-}
-
--(void)willSetNodeFrameBufferSize:(CGSize)newFrameBufferSize{
-    
-    //improtant:because setSize is public api,
-    //so should modify newInputSize=_size to force
-    
-    //set the node size==_size
-    
-    //BUG:make needLayout alway TURE
-    
-    //    if (CGSizeEqualToSize(self.size, CGSizeZero)==NO) {
-    //
-    //        CGSize fixedByRoated=[self fixedRenderSizeByRotatedAngle:self.size];
-    //
-    //        *newInputSize=CGSizeMake(fixedByRoated.width,fixedByRoated.height);
-    //        
-    //    }
-    
-    NSLog(@"framebuffer 最新size:%f %f",newFrameBufferSize.width,newFrameBufferSize.height);
-    
-}
-
--(BOOL)canPerformTraversals{
-
-    return [self allDependencyDone];
-
-}
-
--(void)didLayout{
-    
-    
-    
-}
-
 #pragma -mark Node 协议的实现
 
 -(void)addNextOperation:(id<YDGLOperationNode>)nextOperation{
@@ -939,14 +722,6 @@ typedef struct _NodeStatusFlag{
     
     _dependency=NULL;
     
-}
-
--(void)destoryEAGLResource{
-
-    glDeleteFramebuffers(1, &_frameBuffer);
-    
-    _frameBuffer=0;
-
 }
 
 -(void)cleanUpTexture{
@@ -1130,4 +905,232 @@ typedef struct _NodeStatusFlag{
 }
 
 @end
+
+@implementation YDGLOperationNode(ProtectedMethods)
+
+#pragma -mark 支持子类重载的接口
+
+-(void)commonInitialization{
+    
+}
+
+-(void)drawFrameBuffer:(GLuint)frameBuffer inRect:(CGRect)rect{
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    
+    //glEnable(GL_CULL_FACE);
+    
+    //glCullFace(GL_BACK);
+    
+    glViewport(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+    
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    
+    glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+    
+    glUseProgram(_drawModel.program);
+    
+    for (int index=0; index<_programOperations.count; index++) {
+        
+        dispatch_block_t operation=[_programOperations objectAtIndex:index];
+        
+        operation();
+        
+    }
+    
+    [_programOperations removeAllObjects];//_programOperation 里面的操作只要执行一次就生效了,不需要每次render的时候赋值
+    
+    //1.设置变换矩阵
+    
+    GLint location=[_drawModel locationOfUniform:UNIFORM_MATRIX];
+    
+    GLKMatrix4 matrix=GLKMatrix4Multiply(_projectionMatrix, _modelViewMatrix);
+    
+    float*mm=(float*)matrix.m;
+    
+    GLfloat* finalMatrix=malloc(sizeof(GLfloat)*16);
+    
+    for (int index=0; index<16; index++) {
+        
+        finalMatrix[index]=(GLfloat)mm[index];
+        
+    }
+    
+    glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
+    
+    free(finalMatrix);
+    
+    //2.设置顶点坐标
+    
+    GLint location_position=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_POSITION UTF8String]);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.vertices_buffer_obj);
+    
+    glEnableVertexAttribArray(location_position);//顶点坐标
+    
+    glVertexAttribPointer(location_position, 3, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*3,0);
+    
+    //3.设置纹理坐标
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _drawModel.texture_vertices_buffer_obj);
+    
+    [self setTextureCoord];
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    //4.设置纹理
+    
+    [self setupTextureForProgram:_drawModel.program];
+    
+    
+    //5. draw
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _drawModel.indices_buffer_obj);
+    
+    GLsizei count=_drawModel.count_indices;
+    
+    count=count/4;
+    
+    for (int index=0; index<count; index++) {
+        
+        glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(const GLvoid*)(index*4*sizeof(GLubyte)));
+        
+    }
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+}
+
+/**
+ *  @author 许辉泽, 16-04-08 17:36:00
+ *
+ *  设置纹理坐标
+ *  注意:绘制图元的时候,是从左下角开始,按照GL_TRIANGLE_FAN方式,逆时针绘制的
+ *
+ *
+ *  @since 1.0.0
+ */
+-(void)setTextureCoord{
+    
+    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+    
+    for (int index=0; index<dependency.count; index++) {
+        
+        NSString *name=[_textureLoaderDelegate textureCoordAttributeNameAtIndex:index];
+        
+        GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [name UTF8String]);
+        
+        glEnableVertexAttribArray(location_texturecoord);
+        
+        glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
+        
+    }
+    
+}
+
+
+-(void)setupTextureForProgram:(GLuint)program{
+    
+    NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+    
+    for (int index=0; index<dependency.count;index++) {
+        
+        YDGLOperationNodeOutput *output=[[dependency objectAtIndex:index] getOutput];
+        
+        NSString *name=[_textureLoaderDelegate textureUniformNameAtIndex:index];
+        
+        GLint location_s_texture=[_drawModel locationOfUniform:name];
+        
+        glActiveTexture(GL_TEXTURE0+index);
+        
+        [YDGLOperationNode bindTexture:output.texture];
+        
+        glUniform1i ( location_s_texture,index);
+        
+    }
+    
+}
+
+-(void)willSetNodeFrameBufferSize:(CGSize)newFrameBufferSize{
+    
+    //improtant:because setSize is public api,
+    //so should modify newInputSize=_size to force
+    
+    //set the node size==_size
+    
+    //BUG:make needLayout alway TURE
+    
+    //    if (CGSizeEqualToSize(self.size, CGSizeZero)==NO) {
+    //
+    //        CGSize fixedByRoated=[self fixedRenderSizeByRotatedAngle:self.size];
+    //
+    //        *newInputSize=CGSizeMake(fixedByRoated.width,fixedByRoated.height);
+    //
+    //    }
+    
+    NSLog(@"framebuffer 最新size:%f %f",newFrameBufferSize.width,newFrameBufferSize.height);
+    
+}
+
+-(BOOL)canPerformTraversals{
+    
+    return [self allDependencyDone];
+    
+}
+
+-(void)didLayout{
+    
+    
+    
+}
+
+-(void)activeGLContext:(void (^)(void))block autoRestore:(BOOL) autoRestore{
+    
+    if (_glContext==nil) {
+        
+        _glContext=[YDGLOperationContext currentGLContext];
+        
+        NSAssert(_glContext!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
+        
+    }
+    
+    EAGLContext *preContext=[EAGLContext currentContext];
+    
+    if (preContext==_glContext) {
+        
+        block();
+        
+    }else{
+        
+        [EAGLContext setCurrentContext:_glContext];
+        
+        block();
+        
+        if (autoRestore) {
+            
+            [EAGLContext setCurrentContext:preContext];
+            
+        }
+        
+    }
+}
+
+-(void)destoryEAGLResource{
+    
+    glDeleteFramebuffers(1, &_frameBuffer);
+    
+    _frameBuffer=0;
+    
+}
+
++(void)bindTexture:(GLuint)textureId{
+    
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    
+}
+
+@end
+
 

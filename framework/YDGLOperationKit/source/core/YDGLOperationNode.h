@@ -212,43 +212,12 @@ typedef enum {
 
 -(instancetype _Nullable)initWithFragmentShader:(NSString*_Nonnull)fragmentShaderString;
 
-+(void)bindTexture:(GLuint)textureId;
-
-//-------------------------
-/**
- *  @author 许辉泽, 16-03-12 17:36:46
- *
- *  加载当前program的纹理,子类可以重载它来自定义加载纹理
- *  @param program 当前使用的program
- *  @since 1.0.0
- */
--(void)setupTextureForProgram:(GLuint)program;
-/**
- *  @author 9527, 16-04-23 20:04:36
- *
- *  set current EAGLContext
- *
- *  @param block
- *  @param autoRestore restore pre EAGLContext ?
- */
--(void)activeGLContext:(void (^_Nonnull)(void))block autoRestore:(BOOL) autoRestore;
 //opengl program operation
 - (void)setFloat:(GLfloat)newFloat forUniformName:(NSString *_Nonnull)uniformName;
 
 - (void)setInt:(GLint)newInt forUniformName:(NSString *_Nonnull)uniformName;
 
 - (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName;
-
-/**
- *  @author 9527, 16-04-29 14:33:48
- *
- *  will set frambuffer size
- *
- *  @param newFrameBufferSize framebuffer size will be seted
- *
- *  @since 1.0
- */
--(void)willSetNodeFrameBufferSize:(CGSize)newFrameBufferSize;
 
 /**
  *  @author 许辉泽, 16-03-18 17:56:56
@@ -270,6 +239,36 @@ typedef enum {
  *  @since 1.0.0
  */
 -(void)rotateAtY:(RotateOption)angle;
+
+@end
+
+/**
+ *  @author 9527, 16-06-09 12:06:47
+ *
+ *  can overrided by subclass,should not call directly
+ */
+@interface YDGLOperationNode (ProtectedMethods)
+
++(void)bindTexture:(GLuint)textureId;
+
+//-------------------------
+/**
+ *  @author 许辉泽, 16-03-12 17:36:46
+ *
+ *  加载当前program的纹理,子类可以重载它来自定义加载纹理
+ *  @param program 当前使用的program
+ *  @since 1.0.0
+ */
+-(void)setupTextureForProgram:(GLuint)program;
+/**
+ *  @author 9527, 16-04-23 20:04:36
+ *
+ *  set current EAGLContext
+ *
+ *  @param block
+ *  @param autoRestore restore pre EAGLContext ?
+ */
+-(void)activeGLContext:(void (^_Nonnull)(void))block autoRestore:(BOOL) autoRestore;
 
 /**
  *  @author 许辉泽, 16-04-01 15:15:11
@@ -320,4 +319,18 @@ typedef enum {
  */
 -(void)destoryEAGLResource;
 
+/**
+ *  @author 9527, 16-04-29 14:33:48
+ *
+ *  will set frambuffer size
+ *
+ *  @param newFrameBufferSize framebuffer size will be seted
+ *
+ *  @since 1.0
+ */
+-(void)willSetNodeFrameBufferSize:(CGSize)newFrameBufferSize;
+
+
 @end
+
+
