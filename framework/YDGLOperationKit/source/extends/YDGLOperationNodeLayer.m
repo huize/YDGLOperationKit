@@ -7,7 +7,6 @@
 //
 
 #import "YDGLOperationNodeLayer.h"
-#import <objc/runtime.h>
 
 /**
  *  @author 9527, 16-04-19 16:56:38
@@ -364,7 +363,7 @@ static NSString *_Nonnull const fBlendShaderStr=SHADER_STRING(
 
 -(void)addSubNodeLayer:(YDGLOperationNodeLayer *)subNode{
 
-    NSAssert(subNode.superNodeLayer==nil, @"YDGLOperationNodeLayer must be have one superLayer");
+    NSAssert(subNode.superNodeLayer==nil, @"YDGLOperationNodeLayer had parentLayer");
     
     dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
     
