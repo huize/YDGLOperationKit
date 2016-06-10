@@ -163,17 +163,19 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)uploadCVPixelBuffer:(CVPixelBufferRef)pixelBufferRef{
     
-    CVPixelBufferRetain(pixelBufferRef);
+    //TODO:where to release pixelBufferRef
     
-    //RunInNodeProcessQueue(^{
+    OSType pixelFormate= CVPixelBufferGetPixelFormatType(pixelBufferRef);
+    
+    NSAssert(kCVPixelFormatType_420YpCbCr8Planar==pixelFormate||kCVPixelFormatType_420YpCbCr8PlanarFullRange==pixelFormate, @"YDGLOperationCVPixelBufferSourceNode now only support I420");
+    
+    CVPixelBufferRetain(pixelBufferRef);
     
     CVPixelBufferRelease(_pixelBufferRef);
     
     _pixelBufferRef=pixelBufferRef;
     
     self.textureAvailable=NO;
-    
-    //});
     
 }
 
