@@ -71,8 +71,8 @@
 
     UIImage *firstFrame=[self.images firstObject];
     
-    [self.images removeObject:firstFrame];
-    
+    [self.images removeObjectAtIndex:0];
+
     [self.images addObject:firstFrame];
     
     [self innerUploadImage:firstFrame];
