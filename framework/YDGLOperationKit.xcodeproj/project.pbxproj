@@ -240,7 +240,6 @@
 				424D94B11C9BF183006DA52D /* YDGLOperationNodeDisplayView.h in Headers */,
 				42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */,
 				42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */,
-				426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */,
 				426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */,
 				424EFFA61CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h in Headers */,
 				424EFFA21CB7912500396D2B /* YDGLOperationUIImageSourceNode.h in Headers */,
@@ -251,6 +250,7 @@
 				30C70B001CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h in Headers */,
 				423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */,
 				423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */,
+				426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */,
 				42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

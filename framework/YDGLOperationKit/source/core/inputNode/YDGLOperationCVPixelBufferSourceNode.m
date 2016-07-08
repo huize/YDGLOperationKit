@@ -167,7 +167,7 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
     
     OSType pixelFormate= CVPixelBufferGetPixelFormatType(pixelBufferRef);
     
-    NSAssert(kCVPixelFormatType_420YpCbCr8Planar==pixelFormate||kCVPixelFormatType_420YpCbCr8PlanarFullRange==pixelFormate, @"YDGLOperationCVPixelBufferSourceNode now only support I420");
+    NSAssert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange==pixelFormate||kCVPixelFormatType_420YpCbCr8BiPlanarFullRange==pixelFormate, @"YDGLOperationCVPixelBufferSourceNode now only support NV12");
     
     CVPixelBufferRetain(pixelBufferRef);
     
