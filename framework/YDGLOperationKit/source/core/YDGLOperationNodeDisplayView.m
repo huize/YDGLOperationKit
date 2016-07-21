@@ -18,6 +18,20 @@
 
 @import GLKit;
 
+#define dispatch_main_sync_safe(block)\
+if ([NSThread isMainThread]) {\
+block();\
+} else {\
+dispatch_sync(dispatch_get_main_queue(), block);\
+}
+
+#define dispatch_main_async_safe(block)\
+if ([NSThread isMainThread]) {\
+block();\
+} else {\
+dispatch_async(dispatch_get_main_queue(), block);\
+}
+
 @interface YDGLOperationNodeDisplayView()<YDGLOperationNode>
 
 @end
@@ -87,8 +101,6 @@
     [self setupLayer];
 
     [self setupProgram];
-    
-    [self loadSquareVex];
     
 }
 
@@ -216,13 +228,6 @@
     
 }
 
--(void)loadSquareVex{
-    
-    
-    [_drawModel loadSquareVex];
-    
-}
-
 -(void)loadSquareByFillModeType{
 
     if (CGSizeEqualToSize(_inputImageSize, CGSizeZero)) {
@@ -232,12 +237,14 @@
     
     CGFloat heightScaling, widthScaling;
     
-    CGSize currentViewSize = self.bounds.size;
+    __block CGSize currentViewSize;
+    __block CGRect insetRect;
+    dispatch_main_sync_safe(^{
     
-    //    CGFloat imageAspectRatio = inputImageSize.width / inputImageSize.height;
-    //    CGFloat viewAspectRatio = currentViewSize.width / currentViewSize.height;
+        currentViewSize = self.bounds.size;
+        insetRect = AVMakeRectWithAspectRatioInsideRect(_inputImageSize, self.bounds);
     
-    CGRect insetRect = AVMakeRectWithAspectRatioInsideRect(_inputImageSize, self.bounds);
+    });
     
     switch(_fillMode)
     {
