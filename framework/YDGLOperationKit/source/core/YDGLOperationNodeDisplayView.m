@@ -235,7 +235,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
         return ;
     }
     
-    CGFloat heightScaling, widthScaling;
+    float heightScaling, widthScaling;
     
     __block CGSize currentViewSize;
     __block CGRect insetRect;
