@@ -287,7 +287,8 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     [_drawModel loadSquareVex:imageVertices andTextureCoord:[YDGLOperationNodeDisplayView textureCoordinatesForRotation:_inputRotationMode]];
     
-    free(imageVertices);
+    //TODO: free in this time ,will make position unexpected
+    //free(imageVertices);
 
 }
 
