@@ -654,7 +654,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 #pragma -mark public api
 
--(void)setContentProviderNode:(YDGLOperationNode*_Nonnull)contentNode{
+-(void)setContentProviderNode:(YDGLOperationNode* _Nullable)contentNode{
 
     [_contentNode removeNextOperation:self];
     
