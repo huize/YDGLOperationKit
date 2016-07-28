@@ -269,12 +269,15 @@ NSString *const kYDGLOperationYUVToLAFragmentShaderString = SHADER_STRING
 
 -(void)dealloc{
     
-    CVOpenGLESTextureCacheFlush(_textureCache, 0);
+    if (_textureCache) {
+        
+        CVOpenGLESTextureCacheFlush(_textureCache, 0);
+        
+        CFRelease(_textureCache);
+        
+        _textureCache=NULL;
+    }
     
-    CFRelease(_textureCache);
-    
-    _textureCache=NULL;
-
 }
 
 -(void)destoryEAGLResource{
