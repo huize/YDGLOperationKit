@@ -846,7 +846,7 @@ typedef struct _NodeStatusFlag{
     
     dispatch_block_t rotateDrawOperation=^{
         
-        unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(self.angle), 0.0, 0.0, 1.0);
+        unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(unsafe_self.angle), 0.0, 0.0, 1.0);
     
     };
     
