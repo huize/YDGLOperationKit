@@ -129,6 +129,7 @@
         NSString *name=[NSString stringWithUTF8String:uniformName];
         
         //NSLog(@" uniform name:%@  location:%i",name,location);
+        if (!name) continue;
         
         [_uniformDictionary setObject:@(location) forKey:name];
         
