@@ -87,6 +87,16 @@ dispatch_async(dispatch_get_main_queue(), block);\
 }
 
 
+-(void)layoutSubviews{
+
+    [super layoutSubviews];
+    
+    //fixed view's frame changed,should recreate renderbuffer and framebuffer
+    _framebufferAvailable=NO;
+
+}
+
+
 #pragma -mark 初始化
 -(void)commonInit{
     
@@ -120,7 +130,12 @@ dispatch_async(dispatch_get_main_queue(), block);\
 - (void)setupBufferIfNeed {
     
     if (_framebufferAvailable) return;
-        
+    
+    GLuint renderBuffers[1]={_renderBuffer};
+    glDeleteRenderbuffers(1, renderBuffers);
+    GLuint frameBuffers[1]={_frameBuffer};
+    glDeleteFramebuffers(1,frameBuffers);
+    
     glGenRenderbuffers(1, &_renderBuffer);
     // 设置为当前 renderbuffer
     glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
