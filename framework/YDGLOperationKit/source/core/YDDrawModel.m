@@ -19,9 +19,9 @@
 
 @property(nonatomic,assign)BOOL needLoad;
 
-@property(nonatomic,assign)const char * vertexSource;
+@property(nonatomic,copy)NSString * vertexSource;
 
-@property(nonatomic,assign)const char * fragmentSource;
+@property(nonatomic,copy)NSString * fragmentSource;
 
 @property(nonatomic,assign)struct ArrayWrapper vertices_wrapper;
 
@@ -97,7 +97,7 @@
  */
 -(void)innerloadProgram{
     
-    self.glProgram=[[YDGLProgram alloc]initWithVertexString:self.vertexSource andFragmentString:self.fragmentSource];
+    self.glProgram=[[YDGLProgram alloc]initWithVertexString:[self.vertexSource UTF8String] andFragmentString:[self.fragmentSource UTF8String]];
     
     [_uniformDictionary removeAllObjects];
     
@@ -164,14 +164,14 @@
     //
     //        [_attributeDictionary setObject:@(location) forKey:name];
     //    }
-    //    
+    //
     //    free(attributeName);
     
     
 }
 
 -(void)innerLoadVertix{
-
+    
     struct ArrayWrapper vertices=self.vertices_wrapper;
     struct ArrayWrapper textureVertices=self.texturecoord_warpper;
     struct ArrayWrapper indices=self.indices_warpper;
@@ -215,14 +215,14 @@
     //_drawStyle=drawModel;
     
     free(bufferId);
-
+    
 }
 
 
 #pragma -mark public
 
--(void)setvShaderSource:(const char *)vSource andfShaderSource:(const char *)fSource{
-
+-(void)setvShaderSource:(NSString*)vSource andfShaderSource:(NSString*)fSource{
+    
     self.vertexSource=vSource;
     
     self.fragmentSource=fSource;
@@ -231,7 +231,7 @@
     
 }
 -(void)loadSquareVex:(const GLfloat [12])vertices_position{
-
+    
     const GLfloat vertices_texture[]={
         
         0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0,
@@ -241,7 +241,7 @@
     };
     
     [self loadSquareVex:vertices_position andTextureCoord:vertices_texture];
-
+    
 }
 
 -(void)loadSquareVex{
@@ -312,7 +312,7 @@
 }
 
 -(void)dealloc{
-
+    
     glDeleteBuffers(1, &_vertices_buffer_obj);
     glDeleteBuffers(1, &_texture_vertices_buffer_obj);
     glDeleteBuffers(1, &_indices_buffer_obj);
@@ -322,34 +322,34 @@
 }
 
 -(GLint)locationOfUniform:(NSString *)uniformName{
-
+    
     NSNumber *location=self.uniformDictionary[uniformName];
     
     //NSAssert(location!=nil, @"招不到着色器里面的统一变量名:%@,请检查清楚",uniformName);
     
-//    if (location==nil) {
-//        
-//        NSLog(@"错误,找不到unifrom %@ location",uniformName);
-//    }
+    //    if (location==nil) {
+    //
+    //        NSLog(@"错误,找不到unifrom %@ location",uniformName);
+    //    }
     
     return location.intValue;
-
+    
 }
 
 -(GLint)locationOfAttribute:(NSString *)attributeName{
-
+    
     NSNumber *location=self.attributeDictionary[attributeName];
     
     //NSAssert(location!=nil, @"招不到着色器里面的属性名:%@,请检查清楚",attributeName);
     
     return location.intValue;
-
+    
 }
 
 -(GLuint)getRealProgram{
-
+    
     return self.glProgram.program;
-
+    
 }
 
 -(void)loadIfNeed{
@@ -370,7 +370,7 @@
 @implementation YDGLProgram
 
 -(instancetype)initWithVertexString:(const char *)vShaderSource andFragmentString:(const char *)fShaderSource{
-
+    
     if (self=[super init]) {
         
         _vShader=LoadShader(GL_VERTEX_SHADER,vShaderSource);
@@ -381,7 +381,7 @@
         
         return  self;
     }
-
+    
     return nil;
 }
 

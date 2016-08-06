@@ -37,11 +37,11 @@ dispatch_async(dispatch_get_main_queue(), block);\
 @end
 
 @implementation YDGLOperationNodeDisplayView{
-
+    
     CAEAGLLayer *_egallayer;
     
     EAGLContext *_context;
-
+    
     GLuint _renderBuffer,_frameBuffer;//最终的缓冲区对象
     
     GLuint _textureId;
@@ -49,7 +49,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     CGSize _sizeInPixel;
     
     float _angle;
-
+    
     YDDrawModel *_drawModel;
     
     CGSize _inputImageSize;//要显示的纹理的大小
@@ -63,9 +63,9 @@ dispatch_async(dispatch_get_main_queue(), block);\
 }
 
 +(Class)layerClass{
-
+    
     return [CAEAGLLayer class];
-
+    
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -88,12 +88,12 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 
 -(void)layoutSubviews{
-
+    
     [super layoutSubviews];
     
     //fixed view's frame changed,should recreate renderbuffer and framebuffer
     _framebufferAvailable=NO;
-
+    
 }
 
 
@@ -109,22 +109,22 @@ dispatch_async(dispatch_get_main_queue(), block);\
     _fillMode=kYDGLOperationImageFillModePreserveAspectRatioAndFill;
     
     [self setupLayer];
-
+    
     [self setupProgram];
     
 }
 
 -(void)setupLayer{
-
+    
     self.opaque = YES;
     self.hidden = NO;
-   
+    
     _egallayer=(CAEAGLLayer *)[self layer];
-
+    
     _egallayer.opaque=YES;
     
     _egallayer.drawableProperties = @{kEAGLDrawablePropertyRetainedBacking:@NO, kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8};
-
+    
 }
 
 - (void)setupBufferIfNeed {
@@ -174,46 +174,45 @@ dispatch_async(dispatch_get_main_queue(), block);\
  *  @since 1.0.2
  */
 //- (void)setupMSAABuffer {
-//    
+//
 //    glGenFramebuffers(1, &_resolveFrameBuffer);
-//    
+//
 //    glBindFramebuffer(GL_FRAMEBUFFER, _resolveFrameBuffer);
-//    
+//
 //    glGenRenderbuffers(1, &_resolveRenderBuffer);
-//    
+//
 //    glBindRenderbuffer(GL_RENDERBUFFER, _resolveRenderBuffer);
-//    
+//
 //    GLint max_samples;
-//    
+//
 //    glGetIntegerv(GL_MAX_SAMPLES_APPLE, &max_samples);
-//    
+//
 //    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER,max_samples,GL_RGBA8_OES, _sizeInPixel.width, _sizeInPixel.height);
-//    
+//
 //    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _resolveRenderBuffer);
-//    
-//    
+//
+//
 //    glGenRenderbuffers(1, &_resolveDepthBuffer);
-//    
+//
 //    glBindRenderbuffer(GL_RENDERBUFFER, _resolveDepthBuffer);
 //    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT16, _sizeInPixel.width , _sizeInPixel.height);
 //    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _resolveDepthBuffer);
-//    
+//
 //    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
-//    
+//
 //        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
 //
 //    }
-//    
+//
 //    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-//    
+//
 //    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//    
+//
 //}
 
 -(void)setupProgram{
     
-    
-    [_drawModel setvShaderSource:[vShaderStr UTF8String] andfShaderSource:[fShaderStr UTF8String]];
+    [_drawModel setvShaderSource:vShaderStr andfShaderSource:fShaderStr ];
     
 }
 
@@ -244,9 +243,9 @@ dispatch_async(dispatch_get_main_queue(), block);\
 }
 
 -(void)loadSquareByFillModeType{
-
-    if (CGSizeEqualToSize(_inputImageSize, CGSizeZero)) {
     
+    if (CGSizeEqualToSize(_inputImageSize, CGSizeZero)) {
+        
         return ;
     }
     
@@ -255,10 +254,10 @@ dispatch_async(dispatch_get_main_queue(), block);\
     __block CGSize currentViewSize;
     __block CGRect insetRect;
     dispatch_main_sync_safe(^{
-    
+        
         currentViewSize = self.bounds.size;
         insetRect = AVMakeRectWithAspectRatioInsideRect(_inputImageSize, self.bounds);
-    
+        
     });
     
     switch(_fillMode)
@@ -304,13 +303,13 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     //TODO: free in this time ,will make position unexpected
     //free(imageVertices);
-
+    
 }
 
 -(GLKMatrix4)mvpMatrix4Cube{
     
     CGSize virtualSize=CGSizeMake(2.0, 2.0);//近平面的窗口和opengl的坐标系窗口重叠,因为顶点坐标的赋值方式导致需要设置这么一个virtualSize
-
+    
     
     float aspect=virtualSize.width/virtualSize.height;
     float nearZ=virtualSize.height/2;
@@ -327,7 +326,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     {
         _angle -= 360.0f;
     }
-
+    
     modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ-1.5);//移动到视锥体内,原点是(0,0,-nearZ-2)
     
     //移动到屏幕中心
@@ -354,7 +353,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     GLKMatrix4 projection=GLKMatrix4MakePerspective(M_PI_2, aspect, nearZ, farZ);
     
     GLKMatrix4 modelView=GLKMatrix4Identity;
-
+    
     modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ);//移动到视锥体内,原点是(0,0,-nearZ-2)
     
     return GLKMatrix4Multiply(projection,modelView);//modelView*projection
@@ -363,7 +362,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 
 -(void)render{
-
+    
     //glBindFramebuffer(GL_FRAMEBUFFER, _resolveFrameBuffer);
     
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
@@ -406,11 +405,11 @@ dispatch_async(dispatch_get_main_queue(), block);\
     glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)finalMatrix);
     
     free(finalMatrix);
-        
+    
     GLint location_s_texture=[_drawModel locationOfUniform:UNIFORM_INPUTTEXTURE];
     
     glActiveTexture(GL_TEXTURE0);
-        
+    
     [YDGLOperationNode bindTexture:_textureId];
     
     glUniform1i ( location_s_texture, 0);
@@ -426,7 +425,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     GLint location_texturecoord=glGetAttribLocation(_drawModel.program, [ATTRIBUTE_TEXTURE_COORDINATE UTF8String]);
     
-
+    
     glEnableVertexAttribArray(location_texturecoord);
     
     glVertexAttribPointer(location_texturecoord, 2, GL_FLOAT, GL_FALSE,sizeof(GLfloat)*2,0);//纹理坐标
@@ -440,7 +439,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     GLsizei count=_drawModel.count_indices;
     
     count=count/4;
-
+    
     for (int index=0; index<count; index++) {
         
         glDrawElements(_drawModel.drawStyle, 4, GL_UNSIGNED_BYTE,(const GLvoid*)(0+index*4*sizeof(GLubyte)));
@@ -455,26 +454,26 @@ dispatch_async(dispatch_get_main_queue(), block);\
     //glDisableVertexAttribArray(location_s_texture);
     //glDisableVertexAttribArray(location_texturecoord);
     //glDisableVertexAttribArray(location);
-
-/*
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER_APPLE, _frameBuffer);
     
-    glBindFramebuffer(GL_READ_FRAMEBUFFER_APPLE, _resolveFrameBuffer);
-    
-    //glBlitFramebuffer(0, 0, _sizeInPixel.width, _sizeInPixel.height, 0, 0, _sizeInPixel.width, _sizeInPixel.height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-    
-    //glInvalidateFramebuffer(GL_READ_FRAMEBUFFER, 1, (GLenum[]){GL_COLOR_ATTACHMENT0});
-    
-    
-    glResolveMultisampleFramebufferAPPLE();
-    
-    const GLenum discards[]  = {GL_COLOR_ATTACHMENT0};
-    glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE,1,discards);*/
+    /*
+     glBindFramebuffer(GL_DRAW_FRAMEBUFFER_APPLE, _frameBuffer);
+     
+     glBindFramebuffer(GL_READ_FRAMEBUFFER_APPLE, _resolveFrameBuffer);
+     
+     //glBlitFramebuffer(0, 0, _sizeInPixel.width, _sizeInPixel.height, 0, 0, _sizeInPixel.width, _sizeInPixel.height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+     
+     //glInvalidateFramebuffer(GL_READ_FRAMEBUFFER, 1, (GLenum[]){GL_COLOR_ATTACHMENT0});
+     
+     
+     glResolveMultisampleFramebufferAPPLE();
+     
+     const GLenum discards[]  = {GL_COLOR_ATTACHMENT0};
+     glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE,1,discards);*/
     
     glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
-        
+    
 }
 
 -(void)innerRender{
@@ -482,7 +481,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     [_drawModel loadIfNeed];
     
     [self setupBufferIfNeed];
-
+    
     assert(_frameBuffer!=0);
     
     [self render];
@@ -502,7 +501,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
  */
 + (const GLfloat *)textureCoordinatesForRotation:(YDGLOperationImageRotationMode)rotationMode;
 {
-       
+    
     static const GLfloat noRotationTextureCoordinates[] = {
         0.0f, 1.0f,
         1.0f, 1.0f,
@@ -628,49 +627,49 @@ dispatch_async(dispatch_get_main_queue(), block);\
         
         NSAssert(_context!=nil, @"did you forgot call [YDGLOperationContext pushContext] ?");
     }
-
+    
     
     [self activeGLContext:^{
-       
+        
         [self innerRender];
         
     }];
-        
+    
 }
 
 
 
 -(void)addDependency:(id<YDGLOperationNode>)operation{
-
-
+    
+    
     
 }
 
 -(void)addNextOperation:(id<YDGLOperationNode>)nextOperation{
-
-
+    
+    
     NSAssert(NO, @"display node can not as dependency node");
     
 }
 
 -(YDGLOperationNodeOutput *)getOutput{
-
+    
     return nil;
-
+    
 }
 
 -(void)destory{
-
+    
     [_contentNode removeNextOperation:self];
     
     _contentNode=nil;
-
+    
 }
 
 #pragma -mark public api
 
 -(void)setContentProviderNode:(YDGLOperationNode* _Nullable)contentNode{
-
+    
     [_contentNode removeNextOperation:self];
     
     _contentNode=contentNode;
@@ -719,7 +718,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     free(t);
-
+    
 }
 
 @end

@@ -19,9 +19,9 @@
  *  Node status
  */
 typedef struct _NodeStatusFlag{
-
+    
     BOOL needLayout;//是否需要重新计算framebuffer的大小
-
+    
     BOOL destoried;// return YES if called destory
     
     BOOL needCalculateFrameBufferSize;//if size or rotated changed,framebuffer should recalculate,but maybe not needLayout
@@ -62,9 +62,9 @@ typedef struct _NodeStatusFlag{
 @end
 
 @implementation YDGLOperationNode{
-
+    
     CVOpenGLESTextureRef _cvTextureRef;//从纹理缓存池获取的纹理对象
-
+    
 }
 
 @synthesize renderTexture_out=_renderTexture_out;
@@ -110,7 +110,7 @@ typedef struct _NodeStatusFlag{
     self.nextOperations=[NSMutableArray array];
     
     self.dependency=CFArrayCreateMutable(kCFAllocatorDefault, 1, NULL);
-
+    
     self.programOperations=[NSMutableArray array];
     
     self.beforePerformDrawOperations=[NSMutableArray array];
@@ -125,21 +125,21 @@ typedef struct _NodeStatusFlag{
     
     _lockForTraversals=dispatch_semaphore_create(1);
     
-    [_drawModel setvShaderSource:[vertexShaderString UTF8String] andfShaderSource:[fragmentShaderString UTF8String]];
+    [_drawModel setvShaderSource:vertexShaderString andfShaderSource:fragmentShaderString];
     
     [_drawModel loadSquareVex];
     
     _textureLoaderDelegate=self;
     
     [self loadProjectionMatrix];
-
+    
     [self commonInitialization];
 }
 
 #pragma -mark 类方法
 
 +(dispatch_queue_t)getWorkQueue{
-
+    
     static dispatch_queue_t workQueue;
     
     static dispatch_once_t onceToken;
@@ -153,7 +153,7 @@ typedef struct _NodeStatusFlag{
     });
     
     return workQueue;
-
+    
 }
 
 -(void)buildTextureCacheIfNeed{
@@ -231,7 +231,7 @@ typedef struct _NodeStatusFlag{
  *
  *  @return
  *
- *  @since 
+ *  @since
  */
 -(void)loadProjectionMatrix{
     
@@ -245,13 +245,13 @@ typedef struct _NodeStatusFlag{
     GLKMatrix4 projection=GLKMatrix4MakePerspective(M_PI_2, aspect, nearZ, farZ);
     
     _projectionMatrix=projection;
-
+    
     GLKMatrix4 modelView=GLKMatrix4Identity;
     
     modelView=GLKMatrix4Translate(modelView, 0.0, 0.0, -nearZ);//移动到视锥体内,原点是(0,0,-nearZ-2)
     
     _modelViewMatrix=modelView;
-   
+    
 }
 
 -(void)createCVPixelBufferRef:(CVPixelBufferRef*)pixelBuffer andTextureRef:(CVOpenGLESTextureRef*)textureRef withSize:(CGSize)size{
@@ -370,7 +370,7 @@ typedef struct _NodeStatusFlag{
     NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
     
     YDGLOperationNodeOutput *firstNodeOutput= [[dependency firstObject] getOutput];
-
+    
     return firstNodeOutput.size;
     
 }
@@ -412,7 +412,7 @@ typedef struct _NodeStatusFlag{
 }
 
 -(void)beforePerformTraversals{
-
+    
     for (dispatch_block_t layoutOperation in self.beforePerformTraversalsOperations) {
         
         layoutOperation();
@@ -420,12 +420,12 @@ typedef struct _NodeStatusFlag{
     }
     
     [self.beforePerformTraversalsOperations removeAllObjects];//线程同步问题
-
+    
 }
 
 -(void)performTraversals{
     
-   
+    
     [self measureNodeSize];
     
     [self activeGLContext:^{
@@ -447,7 +447,7 @@ typedef struct _NodeStatusFlag{
     [self buildOutputData];
     
     [self notifyNextOperation];
-
+    
 }
 
 -(void)performLayout{
@@ -455,7 +455,7 @@ typedef struct _NodeStatusFlag{
     //NSAssert(self.needLayout==YES, @"不需要调用 performLayout");
     
     [self buildTextureCacheIfNeed];
-
+    
     [self setupFrameBuffer];
     
     [self didLayout];
@@ -485,7 +485,7 @@ typedef struct _NodeStatusFlag{
 }
 
 -(void)buildOutputData{
-
+    
     YDGLOperationNodeOutput* output=[YDGLOperationNodeOutput new];
     
     output.texture=_renderTexture_out;
@@ -510,7 +510,7 @@ typedef struct _NodeStatusFlag{
  *  @since 1.0.0
  */
 -(void)lockNodeFor:(dispatch_block_t)block{
-
+    
     dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
     
     block();
@@ -527,7 +527,7 @@ typedef struct _NodeStatusFlag{
  *  @since 1.0.0
  */
 -(void)measureNodeSize{
-
+    
     /*
      CGSize renderSize=[self calculateRenderSize];//如果有size了则返回size,没有的话返回first size
      
@@ -581,7 +581,7 @@ typedef struct _NodeStatusFlag{
         
         _nodeStatusFlag.needCalculateFrameBufferSize=NO;
     }
-
+    
 }
 
 #pragma -mark Node 协议的实现
@@ -593,33 +593,33 @@ typedef struct _NodeStatusFlag{
 }
 
 -(void)addDependency:(id<YDGLOperationNode>)operation{
-
+    
     //CFArrayAppendValue(_dependency, CFBridgingRetain(operation));//will retain operation;
     
     CFArrayAppendValue(_dependency, (__bridge const void *)(operation));//will not retain operation;
     
     [operation addNextOperation:self];
-
+    
 }
 
 -(void)removeDependency:(id<YDGLOperationNode>)operation{
     
     NSMutableArray<id<YDGLOperationNode>> *dependency=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
-
+    
     [dependency removeObject:operation];
     
 }
 
 -(void)removeNextOperation:(id<YDGLOperationNode>)nextOperation{
-
+    
     [_nextOperations removeObject:nextOperation];
-
+    
 }
 
 -(YDGLOperationNodeOutput*)getOutput{
-
+    
     return self.outputData;
-
+    
 }
 
 -(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>)doneOperation{
@@ -648,21 +648,21 @@ typedef struct _NodeStatusFlag{
 #pragma -mark  纹理加载的代理
 
 -(NSString *)textureUniformNameAtIndex:(NSInteger)index{
-
+    
     return UNIFORM_INPUTTEXTURE;
-
+    
 }
 
 -(NSString *)textureCoordAttributeNameAtIndex:(NSInteger)index{
-
+    
     return ATTRIBUTE_TEXTURE_COORDINATE;
-
+    
 }
 
 #pragma  -mark 清理资源
 
 -(void)destory{
-
+    
     dispatch_semaphore_wait(_lockForNodeStatus, DISPATCH_TIME_FOREVER);
     
     [self clearCollections];
@@ -670,13 +670,13 @@ typedef struct _NodeStatusFlag{
     self.completionBlock=nil;
     
     _nodeStatusFlag.destoried=YES;
-
+    
     dispatch_semaphore_signal(_lockForNodeStatus);
     
 }
 
 -(void)clearCollections{
-
+    
     CFArrayRemoveAllValues(_dependency);
     
     [self.nextOperations removeAllObjects];
@@ -688,7 +688,7 @@ typedef struct _NodeStatusFlag{
     [_beforePerformTraversalsOperations removeAllObjects];
     
     [_programOperations removeAllObjects];
-
+    
 }
 
 -(void)dealloc{
@@ -747,7 +747,7 @@ typedef struct _NodeStatusFlag{
 #pragma -mark 对外接口
 
 -(void)setSize:(CGSize)size{
-
+    
     if (CGSizeEqualToSize(_size, size)==NO) {
         
         _size=size;
@@ -759,7 +759,7 @@ typedef struct _NodeStatusFlag{
         _nodeStatusFlag.needCalculateFrameBufferSize=YES;
         
     }
-
+    
 }
 
 -(void)setFloat:(GLfloat)newFloat forUniformName:(NSString *)uniformName{
@@ -783,9 +783,9 @@ typedef struct _NodeStatusFlag{
 }
 
 - (void)setInt:(GLint)newInt forUniformName:(NSString *_Nonnull)uniformName{
-
+    
     __unsafe_unretained YDGLOperationNode* unsafe_self=self;
-
+    
     dispatch_block_t operation=^{
         
         GLint location=[unsafe_self.drawModel locationOfUniform:uniformName];
@@ -801,13 +801,13 @@ typedef struct _NodeStatusFlag{
         
     }];
     
-
+    
 }
 
 - (void)setBool:(GLboolean)newBool forUniformName:(NSString *_Nonnull)uniformName{
-
+    
     __unsafe_unretained YDGLOperationNode* unsafe_self=self;
-
+    
     dispatch_block_t operation=^{
         
         GLint location=[unsafe_self.drawModel locationOfUniform:uniformName];
@@ -821,7 +821,7 @@ typedef struct _NodeStatusFlag{
         [self.programOperations addObject:operation];
         
     }];
-
+    
 }
 
 
@@ -829,9 +829,9 @@ typedef struct _NodeStatusFlag{
 -(void)rotateAtZ:(RotateOption)option{
     
     int localAngle=[self calculateAngleFromRotateOption:option];
-
+    
     __unsafe_unretained YDGLOperationNode* unsafe_self=self;
-
+    
     dispatch_block_t rotateLayoutOperation=^{
         
         unsafe_self.angle=localAngle;
@@ -847,11 +847,11 @@ typedef struct _NodeStatusFlag{
     dispatch_block_t rotateDrawOperation=^{
         
         unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(unsafe_self.angle), 0.0, 0.0, 1.0);
-    
+        
     };
     
     [self lockNodeFor:^{
-    
+        
         [self.beforePerformDrawOperations addObject:rotateDrawOperation];
         
     }];
@@ -861,11 +861,11 @@ typedef struct _NodeStatusFlag{
 -(void)rotateAtY:(RotateOption)option{
     
     int localAngle=[self calculateAngleFromRotateOption:option];
-
+    
     __unsafe_unretained YDGLOperationNode* unsafe_self=self;
-
+    
     dispatch_block_t rotateDrawOperation=^{
-                
+        
         unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(localAngle), 0.0, 1.0, 0.0);
         
     };
@@ -875,7 +875,7 @@ typedef struct _NodeStatusFlag{
         [self.beforePerformDrawOperations addObject:rotateDrawOperation];
         
     }];
-
+    
 }
 
 -(int)calculateAngleFromRotateOption:(RotateOption)option{
@@ -1070,7 +1070,7 @@ typedef struct _NodeStatusFlag{
     //
     //    }
     
-    NSLog(@"framebuffer 最新size:%f %f",newFrameBufferSize.width,newFrameBufferSize.height);
+    //NSLog(@"framebuffer 最新size:%f %f",newFrameBufferSize.width,newFrameBufferSize.height);
     
 }
 

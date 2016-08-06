@@ -17,7 +17,7 @@
  *
  *  数组的简易封装
  *
- * 
+ *
  */
 struct ArrayWrapper {
     
@@ -57,7 +57,7 @@ struct ArrayWrapper {
 
 -(void)loadIfNeed;
 
--(void)setvShaderSource:(const char*)vSource andfShaderSource:(const char*)fSource;
+-(void)setvShaderSource:(NSString*)vSource andfShaderSource:(NSString*)fSource;
 /**
  *  @author 许辉泽, 16-03-18 14:07:09
  *
