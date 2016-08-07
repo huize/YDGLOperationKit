@@ -244,11 +244,6 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 -(void)loadSquareByFillModeType{
     
-    if (CGSizeEqualToSize(_inputImageSize, CGSizeZero)) {
-        
-        return ;
-    }
-    
     float heightScaling, widthScaling;
     
     __block CGSize currentViewSize;
@@ -611,6 +606,8 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     YDGLOperationNodeOutput* outData=[doneOperation getOutput];
     
+    if (CGSizeEqualToSize(outData.size, CGSizeZero)) return ;
+
     _textureId=outData.texture;
     
     if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO) {
