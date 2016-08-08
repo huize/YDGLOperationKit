@@ -148,7 +148,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &backingWidth);
     glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &backingHeight);
     
-    _sizeInPixel=CGSizeMake(backingWidth, backingHeight);
+    _sizeInPixel=CGSizeMake((CGFloat)backingWidth,(CGFloat)backingHeight);
     
     glGenFramebuffers(1, &_frameBuffer);
     // 设置为当前 framebuffer
@@ -375,7 +375,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     //glCullFace(GL_BACK);
     
-    glViewport(0, 0,_sizeInPixel.width,_sizeInPixel.height);
+    glViewport(0, 0,(GLint)_sizeInPixel.width,(GLint)_sizeInPixel.height);
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
     
@@ -610,7 +610,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
     _textureId=outData.texture;
     
-    if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO) {
+    if (CGSizeEqualToSize(_inputImageSize, outData.size)==NO||_framebufferAvailable==NO) {
         
         _inputImageSize=outData.size;
         
