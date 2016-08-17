@@ -246,14 +246,11 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     float heightScaling, widthScaling;
     
-    __block CGSize currentViewSize;
-    __block CGRect insetRect;
-    dispatch_main_sync_safe(^{
-        
-        currentViewSize = self.bounds.size;
-        insetRect = AVMakeRectWithAspectRatioInsideRect(_inputImageSize, self.bounds);
-        
-    });
+    CGSize currentViewSize;
+    CGRect insetRect;
+    
+    currentViewSize = self.bounds.size;
+    insetRect = AVMakeRectWithAspectRatioInsideRect(_inputImageSize, self.bounds);
     
     switch(_fillMode)
     {
