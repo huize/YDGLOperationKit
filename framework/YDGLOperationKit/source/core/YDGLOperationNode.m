@@ -860,13 +860,25 @@ typedef struct _NodeStatusFlag{
 
 -(void)rotateAtY:(RotateOption)option{
     
+    if(option==RotateOption_DEFAULT||option==RotateOption_TWO_M_PI) return ;
+    
     int localAngle=[self calculateAngleFromRotateOption:option];
     
     __unsafe_unretained YDGLOperationNode* unsafe_self=self;
     
     dispatch_block_t rotateDrawOperation=^{
         
-        unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(localAngle), 0.0, 1.0, 0.0);
+        if (localAngle==180) {
+            
+            unsafe_self.modelViewMatrix=GLKMatrix4Scale(unsafe_self.modelViewMatrix, -1, 1, 1);
+            
+        }else{
+            
+            unsafe_self.modelViewMatrix=GLKMatrix4Rotate(unsafe_self.modelViewMatrix, GLKMathDegreesToRadians(localAngle), 0.0, 1.0, 0.0);
+            
+        }
+        
+        
         
     };
     
