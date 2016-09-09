@@ -47,6 +47,8 @@
 		429A97381CBF693C00259908 /* YDGLOperationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97361CBF693C00259908 /* YDGLOperationContext.m */; };
 		429BEAD31D56FAC5002194A5 /* YDGLOperationLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 429BEAD11D56FAC5002194A5 /* YDGLOperationLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		429BEAD41D56FAC5002194A5 /* YDGLOperationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 429BEAD21D56FAC5002194A5 /* YDGLOperationLogger.m */; };
+		42AD39E01D8262AA002B6246 /* YDGLUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD39DE1D8262AA002B6246 /* YDGLUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42AD39E11D8262AA002B6246 /* YDGLUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD39DF1D8262AA002B6246 /* YDGLUtil.m */; };
 		42AE46E01CEADE500089353C /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AE46DF1CEADE500089353C /* YDGLOperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */; };
 		42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22C1C99630E0035BC01 /* YDDrawModel.m */; };
@@ -108,6 +110,8 @@
 		429A97361CBF693C00259908 /* YDGLOperationContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationContext.m; sourceTree = "<group>"; };
 		429BEAD11D56FAC5002194A5 /* YDGLOperationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationLogger.h; sourceTree = "<group>"; };
 		429BEAD21D56FAC5002194A5 /* YDGLOperationLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationLogger.m; sourceTree = "<group>"; };
+		42AD39DE1D8262AA002B6246 /* YDGLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLUtil.h; sourceTree = "<group>"; };
+		42AD39DF1D8262AA002B6246 /* YDGLUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLUtil.m; sourceTree = "<group>"; };
 		42AE46DF1CEADE500089353C /* YDGLOperationKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationKit.h; sourceTree = "<group>"; };
 		42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libYDGLOperationKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationSourceNode.m; sourceTree = "<group>"; };
@@ -158,6 +162,8 @@
 				426AD5501CAD3E070023AC7E /* YDGLOperationColorConversion.m */,
 				429BEAD11D56FAC5002194A5 /* YDGLOperationLogger.h */,
 				429BEAD21D56FAC5002194A5 /* YDGLOperationLogger.m */,
+				42AD39DE1D8262AA002B6246 /* YDGLUtil.h */,
+				42AD39DF1D8262AA002B6246 /* YDGLUtil.m */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -248,14 +254,15 @@
 				42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */,
 				426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */,
 				424EFFA61CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h in Headers */,
-				424EFFA21CB7912500396D2B /* YDGLOperationUIImageSourceNode.h in Headers */,
 				429A97251CBD21AE00259908 /* YDGLOperationNodeLayer.h in Headers */,
+				424EFFA21CB7912500396D2B /* YDGLOperationUIImageSourceNode.h in Headers */,
 				42AE46E01CEADE500089353C /* YDGLOperationKit.h in Headers */,
 				426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */,
 				429A97371CBF693C00259908 /* YDGLOperationContext.h in Headers */,
 				429BEAD31D56FAC5002194A5 /* YDGLOperationLogger.h in Headers */,
 				30C70B001CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h in Headers */,
 				423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */,
+				42AD39E01D8262AA002B6246 /* YDGLUtil.h in Headers */,
 				423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */,
 				426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */,
 				42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */,
@@ -360,6 +367,7 @@
 				426AD5581CAD3E070023AC7E /* YDGLOperationColorConversion.m in Sources */,
 				42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */,
 				42DF41FE1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m in Sources */,
+				42AD39E11D8262AA002B6246 /* YDGLUtil.m in Sources */,
 				423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */,
 				429A97381CBF693C00259908 /* YDGLOperationContext.m in Sources */,
 				424EFFA31CB7912500396D2B /* YDGLOperationUIImageSourceNode.m in Sources */,

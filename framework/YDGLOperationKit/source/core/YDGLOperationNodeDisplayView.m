@@ -10,7 +10,7 @@
 
 #import "YDGLOperationContext.h"
 
-@import AVFoundation;
+#import "YDGLUtil.h"
 
 @import OpenGLES.ES2;
 
@@ -247,10 +247,11 @@ dispatch_async(dispatch_get_main_queue(), block);\
     float heightScaling, widthScaling;
     
     CGSize currentViewSize;
-    CGRect insetRect;
+    CGSize fitSize;
     
     currentViewSize = self.bounds.size;
-    insetRect = AVMakeRectWithAspectRatioInsideRect(_inputImageSize, self.bounds);
+    
+    fitSize=[self calculateSize:_inputImageSize aspectFill:self.bounds];
     
     switch(_fillMode)
     {
@@ -261,14 +262,14 @@ dispatch_async(dispatch_get_main_queue(), block);\
         }; break;
         case kYDGLOperationImageFillModePreserveAspectRatio:
         {
-            widthScaling = insetRect.size.width / currentViewSize.width;
-            heightScaling = insetRect.size.height / currentViewSize.height;
+            widthScaling  = fitSize.width / currentViewSize.width;
+            heightScaling = fitSize.height / currentViewSize.height;
         }; break;
         case kYDGLOperationImageFillModePreserveAspectRatioAndFill:
         {
             //            CGFloat widthHolder = insetRect.size.width / currentViewSize.width;
-            widthScaling = currentViewSize.height / insetRect.size.height;
-            heightScaling = currentViewSize.width / insetRect.size.width;
+            widthScaling = currentViewSize.height / fitSize.height;
+            heightScaling = currentViewSize.width / fitSize.width;
         }; break;
     }
     
@@ -297,6 +298,17 @@ dispatch_async(dispatch_get_main_queue(), block);\
     //free(imageVertices);
     
 }
+
+-(CGSize)calculateSize:(CGSize)imageSize aspectFill:(CGRect)rect{
+
+   //CGRect insetRect = AVMakeRectWithAspectRatioInsideRect(imageSize,rect);
+    
+    CGSize fitSize=_ASSizeFitWithAspectRatio(imageSize.width/imageSize.height,rect.size);
+    
+    return fitSize;
+
+}
+
 
 -(GLKMatrix4)mvpMatrix4Cube{
     
