@@ -694,14 +694,15 @@ typedef struct _NodeStatusFlag{
 }
 
 -(void)removeFromDependency{
-    
-    NSMutableArray<id<YDGLOperationNode>> *dependencies=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
-    
-    for (YDGLOperationNode *dependency in dependencies) {
-        
-        [dependency removeNextOperation:self];
-        
-    }
+
+    //TODO:bug
+//    NSMutableArray<id<YDGLOperationNode>> *dependencies=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+//    
+//    for (YDGLOperationNode *dependency in dependencies) {
+//        
+//        [dependency removeNextOperation:self];
+//        
+//    }
     
 }
 
