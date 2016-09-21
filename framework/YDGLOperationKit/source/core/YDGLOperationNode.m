@@ -677,6 +677,8 @@ typedef struct _NodeStatusFlag{
 
 -(void)clearCollections{
     
+    [self removeFromDependency];
+    
     CFArrayRemoveAllValues(_dependency);
     
     [self.nextOperations removeAllObjects];
@@ -688,6 +690,18 @@ typedef struct _NodeStatusFlag{
     [_beforePerformTraversalsOperations removeAllObjects];
     
     [_programOperations removeAllObjects];
+    
+}
+
+-(void)removeFromDependency{
+    
+    NSMutableArray<id<YDGLOperationNode>> *dependencies=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
+    
+    for (YDGLOperationNode *dependency in dependencies) {
+        
+        [dependency removeNextOperation:self];
+        
+    }
     
 }
 
