@@ -114,7 +114,7 @@
     
     NSLog(@"视频测试页面已经销毁了");
     
-    [_operationSource destory];
+    [_operationSource removeFromAllDependency];
        
     [_customView removeFromSuperview];
     

@@ -29,11 +29,11 @@
  */
 @interface YDGLOperationNodeOutput : NSObject
 
-@property(nonatomic,assign) GLuint texture;//
+@property(nonatomic,assign)GLuint texture;//
 
 @property(nonatomic,assign)GLuint frameBuffer;
 
-@property(nonatomic,assign) CGSize size;//
+@property(nonatomic,assign)CGSize size;//
 
 @property(nonatomic,nullable,assign)CVPixelBufferRef pixelBuffer;
 
@@ -50,14 +50,6 @@
 @protocol YDGLOperationNode <NSObject>
 
 @required
-/**
- *  @author 许辉泽, 16-03-17 16:39:58
- *
- *  销毁节点,导致不可再用
- *
- *  @since 1.0.0
- */
--(void)destory;
 
 /**
  *  @author 许辉泽, 16-03-12 14:57:54
@@ -107,6 +99,11 @@
  */
 
 -(void)performTraversalsIfCanWhenDependencyDone:(id<YDGLOperationNode>_Nonnull)doneOperation;
+
+/**
+ * remove all dependency
+ */
+-(void)removeFromAllDependency;
 
 @end
 
@@ -329,7 +326,6 @@ typedef enum {
  *  @since 1.0
  */
 -(void)willSetNodeFrameBufferSize:(CGSize)newFrameBufferSize;
-
 
 @end
 

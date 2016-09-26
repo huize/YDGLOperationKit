@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "YDGLOperationKit"
-  s.version      = "1.0.4"
+  s.version      = "1.1.4"
   s.summary      = "Image process kit base on GPU"
 
   # This description is used to generate tags and improve search results.
@@ -131,6 +131,6 @@ Pod::Spec.new do |s|
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"
 
-  s.ios.frameworks   = ['OpenGLES','GLKit', 'CoreMedia', 'QuartzCore', 'AVFoundation']
+  s.ios.frameworks   = ['OpenGLES','GLKit', 'CoreMedia', 'QuartzCore']
 
 end

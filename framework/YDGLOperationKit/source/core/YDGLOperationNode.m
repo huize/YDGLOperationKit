@@ -677,8 +677,6 @@ typedef struct _NodeStatusFlag{
 
 -(void)clearCollections{
     
-    [self removeFromDependency];
-    
     CFArrayRemoveAllValues(_dependency);
     
     [self.nextOperations removeAllObjects];
@@ -693,16 +691,17 @@ typedef struct _NodeStatusFlag{
     
 }
 
--(void)removeFromDependency{
-
-    //TODO:bug
-//    NSMutableArray<id<YDGLOperationNode>> *dependencies=(__bridge NSMutableArray<id<YDGLOperationNode>> *)(_dependency);
-//    
-//    for (YDGLOperationNode *dependency in dependencies) {
-//        
-//        [dependency removeNextOperation:self];
-//        
-//    }
+-(void)removeFromAllDependency{
+    
+    NSArray<id<YDGLOperationNode>> *dependencies=(__bridge NSArray<id<YDGLOperationNode>> *)(CFArrayCreateCopy(kCFAllocatorDefault, _dependency));
+    
+    CFArrayRemoveAllValues(_dependency);
+    
+    for (YDGLOperationNode *dependency in dependencies) {
+        
+        [dependency removeNextOperation:self];
+        
+    }
     
 }
 
@@ -710,7 +709,7 @@ typedef struct _NodeStatusFlag{
     
     NSLog(@"节点销毁了:%@",self);
     
-    [self clearCollections];
+    [self destory];
     
     [self cleanUpTexture];
     

@@ -128,28 +128,10 @@
     
     _invalidate=YES;
     
-    [_operationSource destory];
+    [_starLayer1 removeFromSuperNodeLayer];
     
-    [_operationSecondSource destory];
+    [_starLayer2 removeFromSuperNodeLayer];
     
-    [_thirdNode destory];
-    
-    [_secondNode destory];
-    
-    [_alphaNode destory];
-    
-    [_starLayer1 destory];
-    
-    [_starLayer2 destory];
-    
-    [_secondNode removeFromSuperNodeLayer];
-    
-    [_secondNode removeFromSuperNodeLayer];
-    
-    [_secondNode removeFromSuperNodeLayer];
-    
-    //[_customView removeFromSuperview];
-
 }
 
 -(void)initLayer{
