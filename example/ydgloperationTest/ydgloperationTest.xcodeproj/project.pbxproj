@@ -21,7 +21,6 @@
 		42BBE2A31C9969E70035BC01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42BBE2A11C9969E70035BC01 /* Main.storyboard */; };
 		42BBE2A51C9969E70035BC01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42BBE2A41C9969E70035BC01 /* Assets.xcassets */; };
 		42BBE2A81C9969E70035BC01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42BBE2A61C9969E70035BC01 /* LaunchScreen.storyboard */; };
-		42BBE2B31C9969E70035BC01 /* ydgloperationTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2B21C9969E70035BC01 /* ydgloperationTestTests.m */; };
 		42BBE2F91C9970770035BC01 /* libYDGLOperationKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BBE2F81C9970710035BC01 /* libYDGLOperationKit.a */; };
 /* End PBXBuildFile section */
 
@@ -32,13 +31,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 423E04161C99846100972691;
 			remoteInfo = framework;
-		};
-		42BBE2AF1C9969E70035BC01 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 42BBE28D1C9969E70035BC01 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 42BBE2941C9969E70035BC01;
-			remoteInfo = ydgloperationTest;
 		};
 		42BBE2F71C9970710035BC01 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -71,7 +63,6 @@
 		42BBE2A41C9969E70035BC01 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		42BBE2A71C9969E70035BC01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42BBE2A91C9969E70035BC01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		42BBE2AE1C9969E70035BC01 /* ydgloperationTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ydgloperationTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BBE2B21C9969E70035BC01 /* ydgloperationTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ydgloperationTestTests.m; sourceTree = "<group>"; };
 		42BBE2B41C9969E70035BC01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42BBE2F31C9970710035BC01 /* YDGLOperationKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = YDGLOperationKit.xcodeproj; path = ../../../framework/YDGLOperationKit.xcodeproj; sourceTree = "<group>"; };
@@ -83,13 +74,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				42BBE2F91C9970770035BC01 /* libYDGLOperationKit.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		42BBE2AB1C9969E70035BC01 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +94,6 @@
 			isa = PBXGroup;
 			children = (
 				42BBE2951C9969E70035BC01 /* ydgloperationTest.app */,
-				42BBE2AE1C9969E70035BC01 /* ydgloperationTestTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,24 +179,6 @@
 			productReference = 42BBE2951C9969E70035BC01 /* ydgloperationTest.app */;
 			productType = "com.apple.product-type.application";
 		};
-		42BBE2AD1C9969E70035BC01 /* ydgloperationTestTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 42BBE2BA1C9969E70035BC01 /* Build configuration list for PBXNativeTarget "ydgloperationTestTests" */;
-			buildPhases = (
-				42BBE2AA1C9969E70035BC01 /* Sources */,
-				42BBE2AB1C9969E70035BC01 /* Frameworks */,
-				42BBE2AC1C9969E70035BC01 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				42BBE2B01C9969E70035BC01 /* PBXTargetDependency */,
-			);
-			name = ydgloperationTestTests;
-			productName = ydgloperationTestTests;
-			productReference = 42BBE2AE1C9969E70035BC01 /* ydgloperationTestTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -225,11 +190,7 @@
 				TargetAttributes = {
 					42BBE2941C9969E70035BC01 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = CWJARZK56C;
-					};
-					42BBE2AD1C9969E70035BC01 = {
-						CreatedOnToolsVersion = 7.2;
-						TestTargetID = 42BBE2941C9969E70035BC01;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -253,7 +214,6 @@
 			projectRoot = "";
 			targets = (
 				42BBE2941C9969E70035BC01 /* ydgloperationTest */,
-				42BBE2AD1C9969E70035BC01 /* ydgloperationTestTests */,
 			);
 		};
 /* End PBXProject section */
@@ -284,13 +244,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42BBE2AC1C9969E70035BC01 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -307,14 +260,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42BBE2AA1C9969E70035BC01 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42BBE2B31C9969E70035BC01 /* ydgloperationTestTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -322,11 +267,6 @@
 			isa = PBXTargetDependency;
 			name = framework;
 			targetProxy = 423E041D1C99849500972691 /* PBXContainerItemProxy */;
-		};
-		42BBE2B01C9969E70035BC01 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 42BBE2941C9969E70035BC01 /* ydgloperationTest */;
-			targetProxy = 42BBE2AF1C9969E70035BC01 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -435,11 +375,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ydgloperationTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.lve;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -448,45 +391,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ydgloperationTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.lve;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		42BBE2BB1C9969E70035BC01 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = ydgloperationTestTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.yd.ydgloperationTestTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ydgloperationTest.app/ydgloperationTest";
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = Debug;
-		};
-		42BBE2BC1C9969E70035BC01 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = ydgloperationTestTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yifan.yd.ydgloperationTestTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ydgloperationTest.app/ydgloperationTest";
-				USER_HEADER_SEARCH_PATHS = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
@@ -507,15 +419,6 @@
 			buildConfigurations = (
 				42BBE2B81C9969E70035BC01 /* Debug */,
 				42BBE2B91C9969E70035BC01 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		42BBE2BA1C9969E70035BC01 /* Build configuration list for PBXNativeTarget "ydgloperationTestTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				42BBE2BB1C9969E70035BC01 /* Debug */,
-				42BBE2BC1C9969E70035BC01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

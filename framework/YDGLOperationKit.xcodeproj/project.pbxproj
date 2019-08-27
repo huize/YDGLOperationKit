@@ -35,7 +35,7 @@
 		424EFFA61CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 424EFFA41CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		424EFFA71CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 424EFFA51CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.m */; };
 		426AD5551CAD3E070023AC7E /* ShaderLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 426AD54D1CAD3E070023AC7E /* ShaderLoader.c */; };
-		426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54E1CAD3E070023AC7E /* ShaderLoader.h */; };
+		426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54E1CAD3E070023AC7E /* ShaderLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54F1CAD3E070023AC7E /* YDGLOperationColorConversion.h */; };
 		426AD5581CAD3E070023AC7E /* YDGLOperationColorConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5501CAD3E070023AC7E /* YDGLOperationColorConversion.m */; };
 		426AD55D1CAD52B70023AC7E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426AD55C1CAD52B70023AC7E /* GLKit.framework */; };
