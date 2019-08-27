@@ -6,85 +6,43 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		423E04161C99846100972691 /* framework */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 423E04171C99846100972691 /* Build configuration list for PBXAggregateTarget "framework" */;
-			buildPhases = (
-				423E041C1C99847200972691 /* ShellScript */,
-			);
-			dependencies = (
-				423E041B1C99846F00972691 /* PBXTargetDependency */,
-			);
-			name = framework;
-			productName = framework;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
-		30C70B001CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 30C70AFE1CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		30C70B011CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 30C70AFF1CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.m */; };
-		423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E043B1C998A1600972691 /* YDGLOperationThreeInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */; };
-		423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */; };
-		424D94B01C9BF183006DA52D /* YDGLOperationNodeDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D94AE1C9BF183006DA52D /* YDGLOperationNodeDisplayView.m */; };
-		424D94B11C9BF183006DA52D /* YDGLOperationNodeDisplayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 424D94AF1C9BF183006DA52D /* YDGLOperationNodeDisplayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		424EFFA21CB7912500396D2B /* YDGLOperationUIImageSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 424EFFA01CB7912500396D2B /* YDGLOperationUIImageSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		424EFFA31CB7912500396D2B /* YDGLOperationUIImageSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 424EFFA11CB7912500396D2B /* YDGLOperationUIImageSourceNode.m */; };
-		424EFFA61CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 424EFFA41CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		424EFFA71CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 424EFFA51CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.m */; };
-		426AD5551CAD3E070023AC7E /* ShaderLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 426AD54D1CAD3E070023AC7E /* ShaderLoader.c */; };
-		426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54E1CAD3E070023AC7E /* ShaderLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54F1CAD3E070023AC7E /* YDGLOperationColorConversion.h */; };
-		426AD5581CAD3E070023AC7E /* YDGLOperationColorConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5501CAD3E070023AC7E /* YDGLOperationColorConversion.m */; };
-		426AD55D1CAD52B70023AC7E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426AD55C1CAD52B70023AC7E /* GLKit.framework */; };
-		426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD5631CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		426AD5661CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5641CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m */; };
-		429A97251CBD21AE00259908 /* YDGLOperationNodeLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97231CBD21AE00259908 /* YDGLOperationNodeLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		429A97261CBD21AE00259908 /* YDGLOperationNodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97241CBD21AE00259908 /* YDGLOperationNodeLayer.m */; };
-		429A97371CBF693C00259908 /* YDGLOperationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97351CBF693C00259908 /* YDGLOperationContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		429A97381CBF693C00259908 /* YDGLOperationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97361CBF693C00259908 /* YDGLOperationContext.m */; };
-		429BEAD31D56FAC5002194A5 /* YDGLOperationLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 429BEAD11D56FAC5002194A5 /* YDGLOperationLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		429BEAD41D56FAC5002194A5 /* YDGLOperationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 429BEAD21D56FAC5002194A5 /* YDGLOperationLogger.m */; };
-		42AD39E01D8262AA002B6246 /* YDGLUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD39DE1D8262AA002B6246 /* YDGLUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42AD39E11D8262AA002B6246 /* YDGLUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD39DF1D8262AA002B6246 /* YDGLUtil.m */; };
-		42AE46E01CEADE500089353C /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AE46DF1CEADE500089353C /* YDGLOperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */; };
-		42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22C1C99630E0035BC01 /* YDDrawModel.m */; };
-		42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */; };
-		42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22B1C99630E0035BC01 /* YDDrawModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42BBE2E91C996F220035BC01 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BBE2E81C996F220035BC01 /* Foundation.framework */; };
-		42BBE2EB1C996F280035BC01 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BBE2EA1C996F280035BC01 /* UIKit.framework */; };
-		42DF41FD1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DF41FB1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42DF41FE1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DF41FC1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m */; };
+		30292A2F2315774500917554 /* ShaderLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 426AD54D1CAD3E070023AC7E /* ShaderLoader.c */; };
+		30292A322315774500917554 /* YDGLOperationColorConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5501CAD3E070023AC7E /* YDGLOperationColorConversion.m */; };
+		30292A342315774500917554 /* YDGLOperationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 429BEAD21D56FAC5002194A5 /* YDGLOperationLogger.m */; };
+		30292A362315774500917554 /* YDGLUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD39DF1D8262AA002B6246 /* YDGLUtil.m */; };
+		30292A382315774500917554 /* YDGLOperationThreeInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043C1C998A1600972691 /* YDGLOperationThreeInputNode.m */; };
+		30292A3A2315774500917554 /* YDGLOperationTwoInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E043E1C998A1600972691 /* YDGLOperationTwoInputNode.m */; };
+		30292A3C2315774500917554 /* YDGLOperationNodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97241CBD21AE00259908 /* YDGLOperationNodeLayer.m */; };
+		30292A3E2315774500917554 /* YDGLOperationNV12SourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DF41FC1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m */; };
+		30292A402315774500917554 /* YDGLOperationI420SourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AD5641CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m */; };
+		30292A422315774500917554 /* YDGLOperationUIImageSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 424EFFA11CB7912500396D2B /* YDGLOperationUIImageSourceNode.m */; };
+		30292A442315774500917554 /* YDGLOperationCVPixelBufferSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 424EFFA51CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.m */; };
+		30292A462315774500917554 /* YDGLOperationCGContextSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 30C70AFF1CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.m */; };
+		30292A472315774500917554 /* YDGLOperationNodeDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 424D94AE1C9BF183006DA52D /* YDGLOperationNodeDisplayView.m */; };
+		30292A492315774500917554 /* YDGLOperationSourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */; };
+		30292A4C2315774500917554 /* YDDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22C1C99630E0035BC01 /* YDDrawModel.m */; };
+		30292A4E2315774500917554 /* YDGLOperationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BBE22E1C99630E0035BC01 /* YDGLOperationNode.m */; };
+		30292A512315774500917554 /* YDGLOperationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A97361CBF693C00259908 /* YDGLOperationContext.m */; };
+		30292A522315777C00917554 /* ShaderLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54E1CAD3E070023AC7E /* ShaderLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A532315778200917554 /* YDGLOperationColorConversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD54F1CAD3E070023AC7E /* YDGLOperationColorConversion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A542315778800917554 /* YDGLOperationLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 429BEAD11D56FAC5002194A5 /* YDGLOperationLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A552315778D00917554 /* YDGLUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD39DE1D8262AA002B6246 /* YDGLUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A562315779300917554 /* YDGLOperationThreeInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E043B1C998A1600972691 /* YDGLOperationThreeInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A572315779800917554 /* YDGLOperationTwoInputNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E043D1C998A1600972691 /* YDGLOperationTwoInputNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A582315779C00917554 /* YDGLOperationNodeLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97231CBD21AE00259908 /* YDGLOperationNodeLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A59231577A300917554 /* YDGLOperationNodeDisplayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 424D94AF1C9BF183006DA52D /* YDGLOperationNodeDisplayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A5A231577A800917554 /* YDGLOperationSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A5B231577AE00917554 /* YDDrawModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22B1C99630E0035BC01 /* YDDrawModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A5C231577B300917554 /* YDGLOperationNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BBE22D1C99630E0035BC01 /* YDGLOperationNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A5D231577B900917554 /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AE46DF1CEADE500089353C /* YDGLOperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A5E231577BF00917554 /* YDGLOperationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97351CBF693C00259908 /* YDGLOperationContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30292A602315781300917554 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30292A5F2315781300917554 /* Info.plist */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		423E041A1C99846F00972691 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 42BBE2131C9962A60035BC01 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 42BBE21A1C9962A60035BC01;
-			remoteInfo = YDGLOperationKit;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		42BBE2191C9962A60035BC01 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		30292A27231576FE00917554 /* YDGLOperationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YDGLOperationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		30292A5F2315781300917554 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		30C70AFE1CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationCGContextSourceNode.h; sourceTree = "<group>"; };
 		30C70AFF1CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationCGContextSourceNode.m; sourceTree = "<group>"; };
 		423E043B1C998A1600972691 /* YDGLOperationThreeInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationThreeInputNode.h; sourceTree = "<group>"; };
@@ -113,7 +71,6 @@
 		42AD39DE1D8262AA002B6246 /* YDGLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLUtil.h; sourceTree = "<group>"; };
 		42AD39DF1D8262AA002B6246 /* YDGLUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLUtil.m; sourceTree = "<group>"; };
 		42AE46DF1CEADE500089353C /* YDGLOperationKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationKit.h; sourceTree = "<group>"; };
-		42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libYDGLOperationKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BBE2291C99630E0035BC01 /* YDGLOperationSourceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDGLOperationSourceNode.m; sourceTree = "<group>"; };
 		42BBE22A1C99630E0035BC01 /* YDGLOperationSourceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDGLOperationSourceNode.h; sourceTree = "<group>"; };
 		42BBE22B1C99630E0035BC01 /* YDDrawModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDDrawModel.h; sourceTree = "<group>"; };
@@ -127,13 +84,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		42BBE2181C9962A60035BC01 /* Frameworks */ = {
+		30292A24231576FE00917554 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				426AD55D1CAD52B70023AC7E /* GLKit.framework in Frameworks */,
-				42BBE2EB1C996F280035BC01 /* UIKit.framework in Frameworks */,
-				42BBE2E91C996F220035BC01 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +153,7 @@
 		42BBE21C1C9962A60035BC01 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */,
+				30292A27231576FE00917554 /* YDGLOperationKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -207,6 +161,7 @@
 		42BBE21D1C9962A60035BC01 /* YDGLOperationKit */ = {
 			isa = PBXGroup;
 			children = (
+				30292A5F2315781300917554 /* Info.plist */,
 				42BBE2271C9962EE0035BC01 /* source */,
 			);
 			path = YDGLOperationKit;
@@ -244,43 +199,37 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		42BBE23F1C9965780035BC01 /* Headers */ = {
+		30292A22231576FE00917554 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42DF41FD1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h in Headers */,
-				424D94B11C9BF183006DA52D /* YDGLOperationNodeDisplayView.h in Headers */,
-				42BBE2411C9965820035BC01 /* YDGLOperationNode.h in Headers */,
-				42BBE2421C9965840035BC01 /* YDGLOperationSourceNode.h in Headers */,
-				426AD5651CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h in Headers */,
-				424EFFA61CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h in Headers */,
-				429A97251CBD21AE00259908 /* YDGLOperationNodeLayer.h in Headers */,
-				424EFFA21CB7912500396D2B /* YDGLOperationUIImageSourceNode.h in Headers */,
-				42AE46E01CEADE500089353C /* YDGLOperationKit.h in Headers */,
-				426AD5571CAD3E070023AC7E /* YDGLOperationColorConversion.h in Headers */,
-				429A97371CBF693C00259908 /* YDGLOperationContext.h in Headers */,
-				429BEAD31D56FAC5002194A5 /* YDGLOperationLogger.h in Headers */,
-				30C70B001CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h in Headers */,
-				423E043F1C998A1600972691 /* YDGLOperationThreeInputNode.h in Headers */,
-				42AD39E01D8262AA002B6246 /* YDGLUtil.h in Headers */,
-				423E04411C998A1600972691 /* YDGLOperationTwoInputNode.h in Headers */,
-				426AD5561CAD3E070023AC7E /* ShaderLoader.h in Headers */,
-				42BBE2431C9965860035BC01 /* YDDrawModel.h in Headers */,
+				30292A5E231577BF00917554 /* YDGLOperationContext.h in Headers */,
+				30292A562315779300917554 /* YDGLOperationThreeInputNode.h in Headers */,
+				30292A5D231577B900917554 /* YDGLOperationKit.h in Headers */,
+				30292A5C231577B300917554 /* YDGLOperationNode.h in Headers */,
+				30292A542315778800917554 /* YDGLOperationLogger.h in Headers */,
+				30292A582315779C00917554 /* YDGLOperationNodeLayer.h in Headers */,
+				30292A5A231577A800917554 /* YDGLOperationSourceNode.h in Headers */,
+				30292A532315778200917554 /* YDGLOperationColorConversion.h in Headers */,
+				30292A59231577A300917554 /* YDGLOperationNodeDisplayView.h in Headers */,
+				30292A552315778D00917554 /* YDGLUtil.h in Headers */,
+				30292A572315779800917554 /* YDGLOperationTwoInputNode.h in Headers */,
+				30292A522315777C00917554 /* ShaderLoader.h in Headers */,
+				30292A5B231577AE00917554 /* YDDrawModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		42BBE21A1C9962A60035BC01 /* YDGLOperationKit */ = {
+		30292A26231576FE00917554 /* YDGLOperationKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 42BBE2241C9962A60035BC01 /* Build configuration list for PBXNativeTarget "YDGLOperationKit" */;
+			buildConfigurationList = 30292A2C231576FE00917554 /* Build configuration list for PBXNativeTarget "YDGLOperationKit" */;
 			buildPhases = (
-				42BBE2171C9962A60035BC01 /* Sources */,
-				42BBE2181C9962A60035BC01 /* Frameworks */,
-				42BBE2191C9962A60035BC01 /* CopyFiles */,
-				42BBE23F1C9965780035BC01 /* Headers */,
-				42BBE2FA1C9970DA0035BC01 /* run script */,
+				30292A22231576FE00917554 /* Headers */,
+				30292A23231576FE00917554 /* Sources */,
+				30292A24231576FE00917554 /* Frameworks */,
+				30292A25231576FE00917554 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -288,8 +237,8 @@
 			);
 			name = YDGLOperationKit;
 			productName = YDGLOperationKit;
-			productReference = 42BBE21B1C9962A60035BC01 /* libYDGLOperationKit.a */;
-			productType = "com.apple.product-type.library.static";
+			productReference = 30292A27231576FE00917554 /* YDGLOperationKit.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -298,14 +247,13 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = YD;
+				DefaultBuildSystemTypeForWorkspace = Original;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = yifan;
 				TargetAttributes = {
-					423E04161C99846100972691 = {
-						CreatedOnToolsVersion = 7.2;
-					};
-					42BBE21A1C9962A60035BC01 = {
-						CreatedOnToolsVersion = 7.2;
+					30292A26231576FE00917554 = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -321,89 +269,137 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				42BBE21A1C9962A60035BC01 /* YDGLOperationKit */,
-				423E04161C99846100972691 /* framework */,
+				30292A26231576FE00917554 /* YDGLOperationKit */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		423E041C1C99847200972691 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
+/* Begin PBXResourcesBuildPhase section */
+		30292A25231576FE00917554 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
+				30292A602315781300917554 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nRW_FRAMEWORK_NAME=${PROJECT_NAME}\nRW_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nRW_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${RW_FRAMEWORK_NAME}.framework\"\n\nfunction build_static_library {\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nRW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nRW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$RW_SDK_PLATFORM\" == \"iphoneos\" ]; then\nRW_OTHER_PLATFORM=iphonesimulator\nelse\nRW_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$RW_SDK_PLATFORM$ ]]; then\nRW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${RW_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${RW_OTHER_PLATFORM}${RW_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$RW_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_FRAMEWORK_NAME}.framework/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Copy the framework to the user's desktop\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${HOME}/Desktop/${RW_FRAMEWORK_NAME}.framework\"\n\n";
 		};
-		42BBE2FA1C9970DA0035BC01 /* run script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "run script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers dir\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"";
-		};
-/* End PBXShellScriptBuildPhase section */
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		42BBE2171C9962A60035BC01 /* Sources */ = {
+		30292A23231576FE00917554 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				426AD5661CAE68AE0023AC7E /* YDGLOperationI420SourceNode.m in Sources */,
-				429BEAD41D56FAC5002194A5 /* YDGLOperationLogger.m in Sources */,
-				426AD5581CAD3E070023AC7E /* YDGLOperationColorConversion.m in Sources */,
-				42BBE2331C99630E0035BC01 /* YDGLOperationSourceNode.m in Sources */,
-				42DF41FE1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.m in Sources */,
-				42AD39E11D8262AA002B6246 /* YDGLUtil.m in Sources */,
-				423E04401C998A1600972691 /* YDGLOperationThreeInputNode.m in Sources */,
-				429A97381CBF693C00259908 /* YDGLOperationContext.m in Sources */,
-				424EFFA31CB7912500396D2B /* YDGLOperationUIImageSourceNode.m in Sources */,
-				424D94B01C9BF183006DA52D /* YDGLOperationNodeDisplayView.m in Sources */,
-				42BBE2351C99630E0035BC01 /* YDGLOperationNode.m in Sources */,
-				426AD5551CAD3E070023AC7E /* ShaderLoader.c in Sources */,
-				423E04421C998A1600972691 /* YDGLOperationTwoInputNode.m in Sources */,
-				424EFFA71CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.m in Sources */,
-				42BBE2341C99630E0035BC01 /* YDDrawModel.m in Sources */,
-				30C70B011CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.m in Sources */,
-				429A97261CBD21AE00259908 /* YDGLOperationNodeLayer.m in Sources */,
+				30292A2F2315774500917554 /* ShaderLoader.c in Sources */,
+				30292A322315774500917554 /* YDGLOperationColorConversion.m in Sources */,
+				30292A342315774500917554 /* YDGLOperationLogger.m in Sources */,
+				30292A362315774500917554 /* YDGLUtil.m in Sources */,
+				30292A382315774500917554 /* YDGLOperationThreeInputNode.m in Sources */,
+				30292A3A2315774500917554 /* YDGLOperationTwoInputNode.m in Sources */,
+				30292A3C2315774500917554 /* YDGLOperationNodeLayer.m in Sources */,
+				30292A3E2315774500917554 /* YDGLOperationNV12SourceNode.m in Sources */,
+				30292A402315774500917554 /* YDGLOperationI420SourceNode.m in Sources */,
+				30292A422315774500917554 /* YDGLOperationUIImageSourceNode.m in Sources */,
+				30292A442315774500917554 /* YDGLOperationCVPixelBufferSourceNode.m in Sources */,
+				30292A462315774500917554 /* YDGLOperationCGContextSourceNode.m in Sources */,
+				30292A472315774500917554 /* YDGLOperationNodeDisplayView.m in Sources */,
+				30292A492315774500917554 /* YDGLOperationSourceNode.m in Sources */,
+				30292A4C2315774500917554 /* YDDrawModel.m in Sources */,
+				30292A4E2315774500917554 /* YDGLOperationNode.m in Sources */,
+				30292A512315774500917554 /* YDGLOperationContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		423E041B1C99846F00972691 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 42BBE21A1C9962A60035BC01 /* YDGLOperationKit */;
-			targetProxy = 423E041A1C99846F00972691 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		423E04181C99846100972691 /* Debug */ = {
+		30292A2D231576FE00917554 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = YDGLOperationKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = sss.YDGLOperationKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		423E04191C99846100972691 /* Release */ = {
+		30292A2E231576FE00917554 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = YDGLOperationKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = sss.YDGLOperationKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -443,7 +439,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -480,47 +476,21 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		42BBE2251C9962A60035BC01 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEAD_CODE_STRIPPING = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
-				SKIP_INSTALL = YES;
-				STRIP_STYLE = "non-global";
-			};
-			name = Debug;
-		};
-		42BBE2261C9962A60035BC01 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEAD_CODE_STRIPPING = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
-				SKIP_INSTALL = YES;
-				STRIP_STYLE = "non-global";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		423E04171C99846100972691 /* Build configuration list for PBXAggregateTarget "framework" */ = {
+		30292A2C231576FE00917554 /* Build configuration list for PBXNativeTarget "YDGLOperationKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				423E04181C99846100972691 /* Debug */,
-				423E04191C99846100972691 /* Release */,
+				30292A2D231576FE00917554 /* Debug */,
+				30292A2E231576FE00917554 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -530,15 +500,6 @@
 			buildConfigurations = (
 				42BBE2221C9962A60035BC01 /* Debug */,
 				42BBE2231C9962A60035BC01 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		42BBE2241C9962A60035BC01 /* Build configuration list for PBXNativeTarget "YDGLOperationKit" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				42BBE2251C9962A60035BC01 /* Debug */,
-				42BBE2261C9962A60035BC01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
