@@ -38,6 +38,11 @@
 		30292A5D231577B900917554 /* YDGLOperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AE46DF1CEADE500089353C /* YDGLOperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		30292A5E231577BF00917554 /* YDGLOperationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 429A97351CBF693C00259908 /* YDGLOperationContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		30292A602315781300917554 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30292A5F2315781300917554 /* Info.plist */; };
+		305948BD23161DFD00C2FC53 /* YDGLOperationNV12SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DF41FB1CB39B090099A6B2 /* YDGLOperationNV12SourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		305948BE23161E0200C2FC53 /* YDGLOperationI420SourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 426AD5631CAE68AE0023AC7E /* YDGLOperationI420SourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		305948BF23161E0800C2FC53 /* YDGLOperationUIImageSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 424EFFA01CB7912500396D2B /* YDGLOperationUIImageSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		305948C023161E0D00C2FC53 /* YDGLOperationCVPixelBufferSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 424EFFA41CB7933200396D2B /* YDGLOperationCVPixelBufferSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		305948C123161E1200C2FC53 /* YDGLOperationCGContextSourceNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 30C70AFE1CC245B4004A08F5 /* YDGLOperationCGContextSourceNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -209,12 +214,17 @@
 				30292A5C231577B300917554 /* YDGLOperationNode.h in Headers */,
 				30292A542315778800917554 /* YDGLOperationLogger.h in Headers */,
 				30292A582315779C00917554 /* YDGLOperationNodeLayer.h in Headers */,
+				305948BE23161E0200C2FC53 /* YDGLOperationI420SourceNode.h in Headers */,
 				30292A5A231577A800917554 /* YDGLOperationSourceNode.h in Headers */,
 				30292A532315778200917554 /* YDGLOperationColorConversion.h in Headers */,
+				305948C123161E1200C2FC53 /* YDGLOperationCGContextSourceNode.h in Headers */,
 				30292A59231577A300917554 /* YDGLOperationNodeDisplayView.h in Headers */,
 				30292A552315778D00917554 /* YDGLUtil.h in Headers */,
 				30292A572315779800917554 /* YDGLOperationTwoInputNode.h in Headers */,
 				30292A522315777C00917554 /* ShaderLoader.h in Headers */,
+				305948BD23161DFD00C2FC53 /* YDGLOperationNV12SourceNode.h in Headers */,
+				305948C023161E0D00C2FC53 /* YDGLOperationCVPixelBufferSourceNode.h in Headers */,
+				305948BF23161E0800C2FC53 /* YDGLOperationUIImageSourceNode.h in Headers */,
 				30292A5B231577AE00917554 /* YDDrawModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,6 +272,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 42BBE2121C9962A60035BC01;
